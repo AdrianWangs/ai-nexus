@@ -1,0 +1,21 @@
+# 转发请求
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: go-zero-demo-user-api-ingress
+    namespace: go-zero-demo
+    annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+    ingressClassName: nginx
+    rules:
+        -   host: localhost
+            http:
+                paths:
+                    -   path: /user-api/(.*)
+                        pathType: ImplementationSpecific
+                        backend:
+                            service:
+                                name: go-zero-demo-user-api-svc
+                                port:
+                                    number: 8888
