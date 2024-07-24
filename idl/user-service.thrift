@@ -105,5 +105,4 @@ service UserService {
     api.path="/user",
     api.version="v1",
     api.description="用户服务"
-
 )
