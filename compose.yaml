@@ -1,14 +1,18 @@
 services:
-#    etcd:
-#        image: bitnami/etcd:3.5.14
-#        container_name: etcd
-#        ports:
-#            - "2379:2379"
-#            - "2380:2380"
-#        environment:
-#            - ALLOW_SINGLE_CLUSTER=true
-#            - TZ=Asia/Shanghai
-#            - ALLOW_NONE_AUTHENTICATION=yes
+    consul:
+        image: hashicorp/consul:latest
+        ports:
+            - 8500:8500
+    etcd:
+        image: bitnami/etcd:3.5.14
+        container_name: etcd
+        ports:
+            - "2379:2379"
+            - "2380:2380"
+        environment:
+            - ALLOW_SINGLE_CLUSTER=true
+            - TZ=Asia/Shanghai
+            - ALLOW_NONE_AUTHENTICATION=yes
     nacos:
         image: nacos/nacos-server:v2.3.2
         container_name: nacos
@@ -16,10 +20,6 @@ services:
             - "8848:8848"
             - "9849:9849"
             - "9849:9849"
-        volumes:
-            - ./nacos/conf:/home/nacos/conf
-            - ./nacos/logs:/home/nacos/logs
-            - ./nacos/data:/home/nacos/data
         environment:
             - PREFER_HOST_MODE=hostname
             - MODE=standalone
@@ -37,8 +37,6 @@ services:
         container_name: redis
         ports:
             - "6379:6379"
-        volumes:
-            - ./redis/data:/data
         networks:
             - micro-service-net
 #    mysql:
@@ -57,5 +55,5 @@ services:
 networks:
     micro-service-net:
         driver: bridge
-#volumes:
-#    dbdata:
+volumes:
+    dbdata:

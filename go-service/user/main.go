@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/AdrianWangs/nexus/go-common/nacos"
 	"net"
 	"time"
 
@@ -41,6 +42,11 @@ func kitexInit() (opts []server.Option) {
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
 	}))
+
+	r := nacos.GetNacosRegistry()
+
+	opts = append(opts, server.WithRegistry(r))
+
 	// thrift meta handler
 	opts = append(opts, server.WithMetaHandler(transmeta.ServerTTHeaderHandler))
 

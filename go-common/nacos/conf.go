@@ -3,13 +3,16 @@ package nacos
 
 import (
 	"github.com/AdrianWangs/nexus/go-common/conf"
+	register "github.com/cloudwego/kitex/pkg/registry"
+	"github.com/kitex-contrib/registry-nacos/registry"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
+	"log"
 )
 
-func GetNacosConfig() (iClient naming_client.INamingClient, err error) {
+func GetNacosConfig() (iClient naming_client.INamingClient) {
 
 	nacos := conf.GetConf().Nacos
 
@@ -28,11 +31,27 @@ func GetNacosConfig() (iClient naming_client.INamingClient, err error) {
 		Password:            nacos.Password,
 	}
 
-	return clients.NewNamingClient(
+	client, err := clients.NewNamingClient(
 		vo.NacosClientParam{
 			ClientConfig:  &cc,
 			ServerConfigs: sc,
 		},
 	)
+
+	if err != nil {
+		log.Fatalf("create nacos client error: %v", err)
+		return nil
+	}
+
+	return client
+
+}
+
+func GetNacosRegistry() register.Registry {
+
+	// 获取nacos配置
+	client := GetNacosConfig()
+
+	return registry.NewNacosRegistry(client)
 
 }
