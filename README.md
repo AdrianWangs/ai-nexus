@@ -1,3 +1,11 @@
+> ## 更新计划
+> - [ ] go 用户微服务的编写
+> - [ ] go 用户部署的配置文件
+> - [ ] go 配置中心的代码编写
+> - [ ] 编写thrift模板代码来配置自己的模板文件
+> - [ ] java demo 的编写
+
+
 # 一、编写go代码
 
 # 二、使用Dockerfile更新镜像
@@ -40,6 +48,7 @@ kubectl apply -f k8s-config/auth.yaml
 ```
 
 4. 运行`k8s-config/cluster-config.yaml`文件，将服务跑起来
+> 这里需要注意一下，使用配置中的镜像名称，需要修改配置文件中的镜像名称
 ```bash
 kubectl apply -f k8s-config/cluster-config.yaml
 ```
