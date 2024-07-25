@@ -71,11 +71,11 @@ func initConf() {
 	conf = new(Config)
 	err = yaml.Unmarshal(content, conf)
 	if err != nil {
-		klog.Error("parse yaml error - %v", err)
+		klog.Error("parse yaml error_code - %v", err)
 		panic(err)
 	}
 	if err := validator.Validate(conf); err != nil {
-		klog.Error("validate config error - %v", err)
+		klog.Error("validate config error_code - %v", err)
 		panic(err)
 	}
 	conf.Env = GetEnv()
@@ -103,7 +103,7 @@ func LogLevel() klog.Level {
 		return klog.LevelNotice
 	case "warn":
 		return klog.LevelWarn
-	case "error":
+	case "error_code":
 		return klog.LevelError
 	case "fatal":
 		return klog.LevelFatal

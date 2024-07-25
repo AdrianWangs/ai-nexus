@@ -39,7 +39,7 @@ func GetNacosConfig() (iClient naming_client.INamingClient) {
 	)
 
 	if err != nil {
-		log.Fatalf("create nacos client error: %v", err)
+		log.Fatalf("create nacos client error_code: %v", err)
 		return nil
 	}
 

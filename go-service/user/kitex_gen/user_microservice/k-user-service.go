@@ -179,17 +179,17 @@ func (p *User) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_User[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_User[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *User) FastReadField1(buf []byte) (int, error) {
@@ -564,17 +564,17 @@ func (p *LoginRequest) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_LoginRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_LoginRequest[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *LoginRequest) FastReadField1(buf []byte) (int, error) {
@@ -770,17 +770,17 @@ func (p *LoginResponse) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_LoginResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_LoginResponse[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *LoginResponse) FastReadField1(buf []byte) (int, error) {
@@ -1079,17 +1079,17 @@ func (p *RegisterRequest) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RegisterRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_RegisterRequest[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *RegisterRequest) FastReadField1(buf []byte) (int, error) {
@@ -1393,17 +1393,17 @@ func (p *RegisterResponse) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RegisterResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_RegisterResponse[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *RegisterResponse) FastReadField1(buf []byte) (int, error) {
@@ -1574,17 +1574,17 @@ func (p *ThirdPartyLoginRequest) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ThirdPartyLoginRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_ThirdPartyLoginRequest[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *ThirdPartyLoginRequest) FastReadField1(buf []byte) (int, error) {
@@ -1780,17 +1780,17 @@ func (p *ThirdPartyLoginResponse) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ThirdPartyLoginResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_ThirdPartyLoginResponse[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) FastReadField1(buf []byte) (int, error) {
@@ -2103,17 +2103,17 @@ func (p *UpdateUserRequest) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateUserRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UpdateUserRequest[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UpdateUserRequest) FastReadField1(buf []byte) (int, error) {
@@ -2469,17 +2469,17 @@ func (p *UpdateUserResponse) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateUserResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UpdateUserResponse[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UpdateUserResponse) FastReadField1(buf []byte) (int, error) {
@@ -2636,17 +2636,17 @@ func (p *GetUserRequest) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetUserRequest[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_GetUserRequest[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *GetUserRequest) FastReadField1(buf []byte) (int, error) {
@@ -2794,17 +2794,17 @@ func (p *GetUserResponse) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetUserResponse[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_GetUserResponse[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *GetUserResponse) FastReadField1(buf []byte) (int, error) {
@@ -2996,17 +2996,17 @@ func (p *UserServiceLoginArgs) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceLoginArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceLoginArgs[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceLoginArgs) FastReadField1(buf []byte) (int, error) {
@@ -3123,17 +3123,17 @@ func (p *UserServiceLoginResult) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceLoginResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceLoginResult[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceLoginResult) FastReadField0(buf []byte) (int, error) {
@@ -3254,17 +3254,17 @@ func (p *UserServiceRegisterArgs) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceRegisterArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceRegisterArgs[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceRegisterArgs) FastReadField1(buf []byte) (int, error) {
@@ -3381,17 +3381,17 @@ func (p *UserServiceRegisterResult) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceRegisterResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceRegisterResult[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceRegisterResult) FastReadField0(buf []byte) (int, error) {
@@ -3512,17 +3512,17 @@ func (p *UserServiceThirdPartyLoginArgs) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginArgs[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginArgs) FastReadField1(buf []byte) (int, error) {
@@ -3639,17 +3639,17 @@ func (p *UserServiceThirdPartyLoginResult) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginResult[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginResult) FastReadField0(buf []byte) (int, error) {
@@ -3770,17 +3770,17 @@ func (p *UserServiceUpdateUserProfileArgs) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileArgs[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileArgs) FastReadField1(buf []byte) (int, error) {
@@ -3897,17 +3897,17 @@ func (p *UserServiceUpdateUserProfileResult) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileResult[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileResult) FastReadField0(buf []byte) (int, error) {
@@ -4028,17 +4028,17 @@ func (p *UserServiceGetUserArgs) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceGetUserArgs[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceGetUserArgs) FastReadField1(buf []byte) (int, error) {
@@ -4155,17 +4155,17 @@ func (p *UserServiceGetUserResult) FastRead(buf []byte) (int, error) {
 
 	return offset, nil
 ReadStructBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
 ReadFieldBeginError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceGetUserResult[fieldId]), err)
 SkipFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
 ReadStructEndError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
 }
 
 func (p *UserServiceGetUserResult) FastReadField0(buf []byte) (int, error) {
