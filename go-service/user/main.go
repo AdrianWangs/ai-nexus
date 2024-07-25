@@ -43,7 +43,7 @@ func kitexInit() (opts []server.Option) {
 		ServiceName: conf.GetConf().Kitex.Service,
 	}))
 
-	r := nacos.GetNacosRegistry()
+	r := nacos.GetNacosRegistryClient()
 
 	opts = append(opts, server.WithRegistry(r))
 

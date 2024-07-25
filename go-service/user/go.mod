@@ -5,7 +5,7 @@ go 1.22.5
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/apache/thrift v0.13.0
+	github.com/apache/thrift v0.16.0
 	github.com/cloudwego/hertz v0.9.1
 	github.com/cloudwego/kitex v0.10.1
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20240515092919-1f776656cb66
@@ -44,7 +44,7 @@ require (
 	github.com/go-errors/errors v1.0.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
+	github.com/google/pprof v0.0.0-20230509042627-b1315fad0c5a // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
@@ -54,6 +54,7 @@ require (
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/kitex-contrib/config-nacos v0.4.0 // indirect
 	github.com/kitex-contrib/registry-nacos v0.1.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
@@ -74,14 +75,17 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	go.opentelemetry.io/otel v1.19.0 // indirect
 	go.opentelemetry.io/otel/trace v1.19.0 // indirect
-	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.2.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sync v0.1.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	google.golang.org/genproto v0.0.0-20210513213006-bf773b8c8384 // indirect
+	google.golang.org/genproto v0.0.0-20231012201019-e917dd12ba7a // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/ini.v1 v1.42.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	sigs.k8s.io/yaml v1.3.0 // indirect
 )

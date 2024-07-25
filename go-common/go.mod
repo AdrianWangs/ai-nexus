@@ -4,10 +4,11 @@ go 1.22.5
 
 require (
 	github.com/cloudwego/kitex v0.10.1
+	github.com/kitex-contrib/registry-nacos v0.1.2
 	github.com/kr/pretty v0.3.1
 	github.com/nacos-group/nacos-sdk-go v1.1.4
 	gopkg.in/validator.v2 v2.0.1
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -21,10 +22,10 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
-	go.uber.org/atomic v1.6.0 // indirect
-	go.uber.org/multierr v1.5.0 // indirect
-	go.uber.org/zap v1.15.0 // indirect
-	golang.org/x/sync v0.1.0 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	go.uber.org/zap v1.26.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
 	gopkg.in/ini.v1 v1.42.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )

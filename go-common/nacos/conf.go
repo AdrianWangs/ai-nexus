@@ -47,7 +47,7 @@ func GetNacosConfig() (iClient naming_client.INamingClient) {
 
 }
 
-func GetNacosRegistry() register.Registry {
+func GetNacosRegistryClient() register.Registry {
 
 	// 获取nacos配置
 	client := GetNacosConfig()
