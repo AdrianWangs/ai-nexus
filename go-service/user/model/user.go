@@ -1,6 +1,8 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type User struct {
 	gorm.Model
@@ -13,4 +15,9 @@ type User struct {
 	Email       string `gorm:"type:varchar(50)" json:"Email"`
 	// 第三方登录token，可选
 	ThirdPartyToken string `gorm:"type:varchar(100)" json:"ThirdPartyToken"`
+}
+
+// TableName 表名
+func (User) TableName() string {
+	return "user"
 }

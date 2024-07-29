@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sync"
 
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -79,6 +80,12 @@ func GetConf() *Config {
 func initConf() {
 	prefix := "../../go-common/conf"
 	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
+
+	// 拼接上当前文件的路径
+	_, filename, _, _ := runtime.Caller(0)
+	dir := filepath.Dir(filename)
+	confFileRelPath = filepath.Join(dir, confFileRelPath)
+
 	content, err := ioutil.ReadFile(confFileRelPath)
 	if err != nil {
 		panic(err)
