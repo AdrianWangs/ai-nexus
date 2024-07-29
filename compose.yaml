@@ -42,21 +42,21 @@ services:
             - "6379:6379"
         networks:
             - micro-service-net
-#    mysql:
-#        image: mysql:5.7 # 使用MySQL官方镜像，版本8
-#        restart: always # 容器退出后总是重启
-#        environment:
-#            MYSQL_ROOT_PASSWORD: 88888888 # 设置root用户的密码，生产环境中请使用更复杂的密码
-#            MYSQL_DATABASE: go-zero-demo # 初始化时创建的数据库名称
-#            MYSQL_USER: go-zero # 创建的新用户
-#            MYSQL_PASSWORD: 88888888 # 新用户的密码
-#        ports:
-#            - "3306:3306" # 映射容器的3306端口到主机的3306端口
-#        volumes:
-#            - dbdata:/var/lib/mysql # 挂载宿主机的目录到容器的MySQL数据目录，用于持久化数据
+    mysql:
+        image: mysql:8.0 # 使用MySQL官方镜像，版本8
+        restart: always # 容器退出后总是重启
+        environment:
+            MYSQL_ROOT_PASSWORD: 88888888 # 设置root用户的密码，生产环境中请使用更复杂的密码
+            MYSQL_DATABASE: go-zero-demo # 初始化时创建的数据库名称
+            MYSQL_USER: go-zero # 创建的新用户
+            MYSQL_PASSWORD: 88888888 # 新用户的密码
+        ports:
+            - "3306:3306" # 映射容器的3306端口到主机的3306端口
+        volumes:
+            - db_data:/var/lib/mysql # 挂载宿主机的目录到容器的MySQL数据目录，用于持久化数据
 
 networks:
     micro-service-net:
         driver: bridge
 volumes:
-    dbdata:
+    db_data:
