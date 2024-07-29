@@ -21,10 +21,11 @@ struct LoginRequest {
 
 // 登录响应结构体
 struct LoginResponse {
-    1: bool Success,
-    2: optional string ErrorMessage,
-    3: optional User UserProfile,
-    4: optional string Token,
+    1:i64 UserId,
+    2: bool Success,
+    3: optional string ErrorMessage,
+    4: optional User UserProfile,
+    5: optional string Token,
 }
 
 // 注册请求结构体

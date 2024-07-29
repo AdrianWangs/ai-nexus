@@ -11,6 +11,7 @@ import (
 
 // 定义用户信息结构体
 type User struct {
+	UserId      int64  `thrift:"UserId,1" frugal:"1,default,i64" form:"UserId" json:"UserId" query:"UserId"`
 	Username    string `thrift:"Username,1" frugal:"1,default,string" form:"Username" json:"Username" query:"Username"`
 	Password    string `thrift:"Password,2" frugal:"2,default,string" form:"Password" json:"Password" query:"Password"`
 	Birthday    string `thrift:"Birthday,3" frugal:"3,default,string" form:"Birthday" json:"Birthday" query:"Birthday"`
