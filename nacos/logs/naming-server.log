@@ -22,3 +22,91 @@
 
 2024-07-29 13:17:50,545 INFO Load instance extension handler []
 
+2024-07-29 13:30:32,732 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 13:30:32,758 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 13:30:42,703 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 13:31:12,944 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 13:32:19,946 WARN namespace : public, [DEFAULT_GROUP@@user-service] services are automatically cleaned
+
+2024-07-29 13:36:47,172 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 13:36:47,173 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 13:45:51,008 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 13:47:09,768 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=2}, 192.168.1.66:8888#true
+
+2024-07-29 13:49:44,502 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=3}, 192.168.1.66:8888#true
+
+2024-07-29 13:50:25,442 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=4}, 192.168.1.66:8888#true
+
+2024-07-29 13:51:50,675 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=5}, 192.168.1.66:8888#true
+
+2024-07-29 13:52:25,212 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=6}, 192.168.1.66:8888#true
+
+2024-07-29 13:53:44,014 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=7}, 192.168.1.66:8888#true
+
+2024-07-29 13:55:17,522 INFO [AUTO-DELETE-IP] service: Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=8}, ip: {"ip":"192.168.1.66","port":8888,"healthy":false,"cluster":"DEFAULT","extendDatum":{"customInstanceId":"192.168.1.66#8888#DEFAULT#DEFAULT_GROUP@@user-service","cloudwego.nacos.client":"kitex","publishInstanceWeight":10.0},"lastHeartBeatTime":1722232484196,"metadataId":"192.168.1.66:8888:DEFAULT"}
+
+2024-07-29 13:55:17,522 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=8}, 192.168.1.66:8888#true
+
+2024-07-29 13:55:18,204 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 13:56:19,931 WARN namespace : public, [DEFAULT_GROUP@@user-service] services are automatically cleaned
+
+2024-07-29 13:56:57,541 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 13:56:57,542 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 13:59:40,200 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 13:59:51,962 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=2}, 192.168.1.66:8888#true
+
+2024-07-29 14:01:37,605 INFO [AUTO-DELETE-IP] service: Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=3}, ip: {"ip":"192.168.1.66","port":8888,"healthy":false,"cluster":"DEFAULT","extendDatum":{"customInstanceId":"192.168.1.66#8888#DEFAULT#DEFAULT_GROUP@@user-service","cloudwego.nacos.client":"kitex","publishInstanceWeight":10.0},"lastHeartBeatTime":1722232867101,"metadataId":"192.168.1.66:8888:DEFAULT"}
+
+2024-07-29 14:01:37,605 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=3}, 192.168.1.66:8888#true
+
+2024-07-29 14:01:38,298 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 14:03:19,943 WARN namespace : public, [DEFAULT_GROUP@@user-service] services are automatically cleaned
+
+2024-07-29 14:04:14,430 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 14:04:14,431 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 14:04:36,992 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 14:05:08,341 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 14:05:12,714 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 14:05:12,714 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=2}, 192.168.1.66:8888#true
+
+2024-07-29 14:05:36,683 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=3}, 192.168.1.66:8888#true
+
+2024-07-29 14:06:08,354 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 14:07:19,911 WARN namespace : public, [DEFAULT_GROUP@@user-service] services are automatically cleaned
+
+2024-07-29 14:10:00,277 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 14:10:00,279 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 14:10:23,872 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 14:10:58,372 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+
+2024-07-29 14:12:19,914 WARN namespace : public, [DEFAULT_GROUP@@user-service] services are automatically cleaned
+
+2024-07-29 14:17:58,411 INFO Client connection 192.168.1.66:8888#true connect
+
+2024-07-29 14:17:58,412 INFO Client change for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=0}, 192.168.1.66:8888#true
+
+2024-07-29 14:18:21,656 INFO Client remove for service Service{namespace='public', group='DEFAULT_GROUP', name='user-service', ephemeral=true, revision=1}, 192.168.1.66:8888#true
+
+2024-07-29 14:18:53,495 INFO Client connection 192.168.1.66:8888#true disconnect, remove instances and subscribers
+

@@ -77,8 +77,8 @@ func GetConf() *Config {
 }
 
 func initConf() {
-	prefix := "../../go-common/conf1"
-	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf1.yaml"))
+	prefix := "../../go-common/conf"
+	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
 	content, err := ioutil.ReadFile(confFileRelPath)
 	if err != nil {
 		panic(err)
