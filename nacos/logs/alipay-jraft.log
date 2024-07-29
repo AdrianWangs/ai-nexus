@@ -8556,3 +8556,263 @@ peers: "c27345de1429:7848"
 
 2024-07-29 14:20:14,540 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
 
+2024-07-29 14:20:17,839 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:17,839 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:19,565 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:19,567 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:20,333 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:20,334 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:23,137 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:23,138 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:25,109 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:25,110 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:25,678 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:25,678 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:28,954 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:28,955 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:30,170 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:30,170 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:31,338 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:31,339 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:34,504 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:34,510 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:36,131 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:36,132 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:36,985 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:36,986 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:40,179 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:40,180 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:41,246 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:41,247 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:42,613 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:42,614 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:45,209 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:45,210 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:46,952 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:46,955 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:48,331 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:48,334 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:50,597 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:50,598 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:52,711 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:52,711 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:54,306 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:54,307 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:56,053 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:56,055 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:20:58,063 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:20:58,064 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:00,216 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:00,217 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:01,268 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:01,269 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:03,175 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:03,176 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:05,840 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:05,842 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:07,169 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:07,171 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:08,381 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:08,381 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:11,194 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:11,195 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:12,270 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:12,271 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:13,979 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:13,981 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:16,591 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:16,592 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:17,365 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:17,366 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:19,125 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:19,136 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:22,552 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:22,553 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:22,775 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:22,776 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:24,995 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:24,995 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:28,127 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:28,128 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:28,453 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:28,454 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:30,440 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:30,440 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:33,990 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:33,991 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:34,061 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:34,062 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:35,532 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:35,533 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:39,763 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:39,764 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:39,816 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:39,817 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:40,652 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:40,654 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:45,569 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:45,571 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:45,645 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:45,645 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:45,946 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:45,946 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:50,791 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:50,792 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:50,847 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:50,847 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:51,850 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:51,851 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:56,323 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:56,324 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:56,671 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:56,672 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:21:57,376 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:21:57,377 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:01,948 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:01,949 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:02,412 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:02,415 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:02,588 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:02,589 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:06,999 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:07,000 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:07,508 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:07,509 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:07,891 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:07,891 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:12,120 INFO Node <naming_persistent_service_v2/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:12,121 WARN Node <naming_persistent_service_v2/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:13,305 INFO Node <naming_service_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:13,306 WARN Node <naming_service_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=1, term=1], conf=c27345de1429:7848, oldConf=]>.
+
+2024-07-29 14:22:13,430 INFO Node <naming_instance_metadata/fb295db7b12e:7848> term 1 start preVote.
+
+2024-07-29 14:22:13,430 WARN Node <naming_instance_metadata/fb295db7b12e:7848> can't do preVote as it is not in conf <ConfigurationEntry [id=LogId [index=4, term=1], conf=c27345de1429:7848, oldConf=]>.
+
