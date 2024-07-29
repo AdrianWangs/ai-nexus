@@ -13404,3 +13404,15 @@
 
 2024-07-29 14:20:11,035 INFO Connection check task end
 
+2024-07-29 14:20:12,227 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
+2024-07-29 14:20:14,036 INFO Connection check task start
+
+2024-07-29 14:20:14,038 INFO Long connection metrics detail ,Total count =0, sdkCount=0,clusterCount=0
+
+2024-07-29 14:20:14,039 INFO Out dated connection ,size=0
+
+2024-07-29 14:20:14,039 INFO Connection check task end
+
+2024-07-29 14:20:15,230 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
