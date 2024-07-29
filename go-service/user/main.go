@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/AdrianWangs/nexus/go-common/nacos"
+	"github.com/joho/godotenv"
+	"log"
 	"net"
 	"time"
 
@@ -17,11 +19,18 @@ import (
 )
 
 func main() {
+
+	// 读取环境变量
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("环境变量文件加载失败", err)
+	}
+
 	opts := kitexInit()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
 
-	err := svr.Run()
+	err = svr.Run()
 	if err != nil {
 		klog.Error(err.Error())
 	}
@@ -43,8 +52,8 @@ func kitexInit() (opts []server.Option) {
 		ServiceName: conf.GetConf().Kitex.Service,
 	}))
 
-	r := nacos.GetNacosRegistryClient()
-
+	// nacos 注册中心
+	r := nacos.GetNacosRegistry()
 	opts = append(opts, server.WithRegistry(r))
 
 	// thrift meta handler

@@ -14,7 +14,18 @@ func NewGetUserService(ctx context.Context) *GetUserService {
 
 // Run create note info
 func (s *GetUserService) Run(request *user_microservice.GetUserRequest) (resp *user_microservice.GetUserResponse, err error) {
-	// Finish your business logic.
 
+	resp = &user_microservice.GetUserResponse{}
+
+	resp.Success = true
+	resp.ErrorMessage = nil
+	resp.UserProfile = &user_microservice.User{
+		Username:    "test",
+		Password:    "test",
+		Email:       "",
+		PhoneNumber: "",
+	}
+
+	err = nil
 	return
 }

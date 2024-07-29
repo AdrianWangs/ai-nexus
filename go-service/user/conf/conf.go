@@ -1,14 +1,14 @@
 package conf
 
 import (
-	"io/ioutil"
+	"github.com/kitex-contrib/config-nacos/nacos"
+	"github.com/kr/pretty"
+	"github.com/nacos-group/nacos-sdk-go/vo"
 	"os"
-	"path/filepath"
 	"sync"
 
+	common_config "github.com/AdrianWangs/nexus/go-common/conf"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
-	"gopkg.in/validator.v2"
 	"gopkg.in/yaml.v2"
 )
 
@@ -23,6 +23,7 @@ type Config struct {
 	MySQL    MySQL    `yaml:"mysql"`
 	Redis    Redis    `yaml:"redis"`
 	Registry Registry `yaml:"registry"`
+	Nacos    Nacos    `yaml:"nacos"`
 }
 
 type MySQL struct {
@@ -55,6 +56,20 @@ type Registry struct {
 	Password        string   `yaml:"password"`
 }
 
+type Nacos struct {
+	Address             string `yaml:"address"`
+	Port                uint64 `yaml:"port"`
+	Namespace           string `yaml:"namespace"`
+	Group               string `yaml:"group"`
+	Username            string `yaml:"username"`
+	Password            string `yaml:"password"`
+	LogDir              string `yaml:"log_dir"`
+	CacheDir            string `yaml:"cache_dir"`
+	LogLevel            string `yaml:"log_level"`
+	TimeoutMs           uint64 `yaml:"timeout_ms"`
+	NotLoadCacheAtStart bool   `yaml:"not_load_cache_at_start"`
+}
+
 // GetConf gets configuration instance
 func GetConf() *Config {
 	once.Do(initConf)
@@ -62,24 +77,45 @@ func GetConf() *Config {
 }
 
 func initConf() {
-	prefix := "conf"
-	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
-	content, err := ioutil.ReadFile(confFileRelPath)
-	if err != nil {
-		panic(err)
-	}
+
+	// 获取当前环境配置
+	env := GetEnv()
+	klog.Infof("当前环境: %s", env)
+
 	conf = new(Config)
-	err = yaml.Unmarshal(content, conf)
+
+	// 从公共配置中加载 Nacos 配置
+	nacos_config := common_config.GetConf().Nacos
+	client, err := nacos.NewClient(nacos.Options{
+		Address:     nacos_config.Address,
+		Port:        nacos_config.Port,
+		NamespaceID: nacos_config.Namespace,
+		Group:       nacos_config.Group,
+	})
+
 	if err != nil {
-		klog.Error("parse yaml error_code - %v", err)
 		panic(err)
 	}
-	if err := validator.Validate(conf); err != nil {
-		klog.Error("validate config error_code - %v", err)
-		panic(err)
-	}
-	conf.Env = GetEnv()
-	pretty.Printf("%+v\n", conf)
+	client.RegisterConfigCallback(vo.ConfigParam{
+		DataId:   "user-config.yaml",
+		Group:    env,
+		Type:     "yaml",
+		OnChange: nil,
+	}, func(s string, parser nacos.ConfigParser) {
+		err = yaml.Unmarshal([]byte(s), conf)
+		if err != nil {
+			klog.Error("转换配置失败 - %v", err)
+			panic(err)
+		}
+		klog.Info("重启配置")
+
+		// 打印配置
+		klog.Infof("配置:")
+
+		pretty.Printf("%# v\n", conf)
+
+		klog.Info("配置加载成功")
+	}, 100)
 }
 
 func GetEnv() string {

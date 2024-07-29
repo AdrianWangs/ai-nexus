@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-func GetNacosConfig() (iClient naming_client.INamingClient) {
+func GetNacosConfigClient() (iClient naming_client.INamingClient, err error) {
 
 	nacos := conf.GetConf().Nacos
 
@@ -40,17 +40,22 @@ func GetNacosConfig() (iClient naming_client.INamingClient) {
 
 	if err != nil {
 		log.Fatalf("create nacos client error_code: %v", err)
-		return nil
+		return nil, err
 	}
 
-	return client
+	return client, nil
 
 }
 
-func GetNacosRegistryClient() register.Registry {
+func GetNacosRegistry() register.Registry {
 
 	// 获取nacos配置
-	client := GetNacosConfig()
+	client, err := GetNacosConfigClient()
+
+	if err != nil {
+		log.Fatalf("get nacos client error_code: %v", err)
+		return nil
+	}
 
 	return registry.NewNacosRegistry(client)
 
