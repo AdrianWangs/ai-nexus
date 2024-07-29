@@ -13814,3 +13814,15 @@
 
 2024-07-29 14:22:14,254 INFO Connection check task end
 
+2024-07-29 14:22:15,332 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
+2024-07-29 14:22:17,256 INFO Connection check task start
+
+2024-07-29 14:22:17,257 INFO Long connection metrics detail ,Total count =0, sdkCount=0,clusterCount=0
+
+2024-07-29 14:22:17,258 INFO Out dated connection ,size=0
+
+2024-07-29 14:22:17,259 INFO Connection check task end
+
+2024-07-29 14:22:18,334 INFO ConnectionMetrics, totalCount = 0, detail = {long_connection=0, long_polling=0}
+
