@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/AdrianWangs/nexus/go-common/nacos"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/dal"
 	"github.com/joho/godotenv"
 	"log"
 	"net"
@@ -37,6 +38,10 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
+
+	// 初始化数据库
+	dal.Init()
+
 	opts = append(opts, server.
 		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 
