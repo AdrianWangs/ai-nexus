@@ -43,10 +43,12 @@ require (
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-errors/errors v1.0.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/pprof v0.0.0-20230509042627-b1315fad0c5a // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
+	github.com/hertz-contrib/jwt v1.0.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

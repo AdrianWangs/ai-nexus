@@ -3,7 +3,10 @@
 package user_microservice
 
 import (
+	"github.com/AdrianWangs/nexus/go-common/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kr/pretty"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -12,13 +15,21 @@ func rootMw() []app.HandlerFunc {
 }
 
 func _getuserMw() []app.HandlerFunc {
-	// your code...
-	return nil
+
+	klog.Info("getuserMw")
+	handlers := make([]app.HandlerFunc, 0)
+	handlers = append(handlers, middleware.JwtMiddleware.MiddlewareFunc())
+
+	pretty.Printf("getuserMw: %v\n", handlers[0])
+
+	return handlers
 }
 
 func _loginMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JwtMiddleware.LoginHandler,
+	}
 }
 
 func _registerMw() []app.HandlerFunc {
@@ -28,10 +39,14 @@ func _registerMw() []app.HandlerFunc {
 
 func _thirdpartyloginMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JwtMiddleware.LoginHandler,
+	}
 }
 
 func _updateuserprofileMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JwtMiddleware.MiddlewareFunc(),
+	}
 }

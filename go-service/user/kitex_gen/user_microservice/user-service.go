@@ -12,15 +12,15 @@ import (
 // 定义用户信息结构体
 type User struct {
 	UserId      int64  `thrift:"UserId,1" frugal:"1,default,i64" form:"UserId" json:"UserId" query:"UserId"`
-	Username    string `thrift:"Username,1" frugal:"1,default,string" form:"Username" json:"Username" query:"Username"`
-	Password    string `thrift:"Password,2" frugal:"2,default,string" form:"Password" json:"Password" query:"Password"`
-	Birthday    string `thrift:"Birthday,3" frugal:"3,default,string" form:"Birthday" json:"Birthday" query:"Birthday"`
-	Gender      string `thrift:"Gender,4" frugal:"4,default,string" form:"Gender" json:"Gender" query:"Gender"`
-	RoleId      int32  `thrift:"RoleId,5" frugal:"5,default,i32" form:"RoleId" json:"RoleId" query:"RoleId"`
-	PhoneNumber string `thrift:"PhoneNumber,6" frugal:"6,default,string" form:"PhoneNumber" json:"PhoneNumber" query:"PhoneNumber"`
-	Email       string `thrift:"Email,7" frugal:"7,default,string" form:"Email" json:"Email" query:"Email"`
+	Username    string `thrift:"Username,2" frugal:"2,default,string" form:"Username" json:"Username" query:"Username"`
+	Password    string `thrift:"Password,3" frugal:"3,default,string" form:"Password" json:"Password" query:"Password"`
+	Birthday    string `thrift:"Birthday,4" frugal:"4,default,string" form:"Birthday" json:"Birthday" query:"Birthday"`
+	Gender      string `thrift:"Gender,5" frugal:"5,default,string" form:"Gender" json:"Gender" query:"Gender"`
+	RoleId      int32  `thrift:"RoleId,6" frugal:"6,default,i32" form:"RoleId" json:"RoleId" query:"RoleId"`
+	PhoneNumber string `thrift:"PhoneNumber,7" frugal:"7,default,string" form:"PhoneNumber" json:"PhoneNumber" query:"PhoneNumber"`
+	Email       string `thrift:"Email,8" frugal:"8,default,string" form:"Email" json:"Email" query:"Email"`
 	// 第三方登录token，可选
-	ThirdPartyToken *string `thrift:"ThirdPartyToken,8,optional" frugal:"8,optional,string" form:"ThirdPartyToken" json:"ThirdPartyToken,omitempty" query:"ThirdPartyToken"`
+	ThirdPartyToken *string `thrift:"ThirdPartyToken,9,optional" frugal:"9,optional,string" form:"ThirdPartyToken" json:"ThirdPartyToken,omitempty" query:"ThirdPartyToken"`
 }
 
 func NewUser() *User {
@@ -28,6 +28,10 @@ func NewUser() *User {
 }
 
 func (p *User) InitDefault() {
+}
+
+func (p *User) GetUserId() (v int64) {
+	return p.UserId
 }
 
 func (p *User) GetUsername() (v string) {
@@ -66,6 +70,9 @@ func (p *User) GetThirdPartyToken() (v string) {
 	}
 	return *p.ThirdPartyToken
 }
+func (p *User) SetUserId(val int64) {
+	p.UserId = val
+}
 func (p *User) SetUsername(val string) {
 	p.Username = val
 }
@@ -92,14 +99,15 @@ func (p *User) SetThirdPartyToken(val *string) {
 }
 
 var fieldIDToName_User = map[int16]string{
-	1: "Username",
-	2: "Password",
-	3: "Birthday",
-	4: "Gender",
-	5: "RoleId",
-	6: "PhoneNumber",
-	7: "Email",
-	8: "ThirdPartyToken",
+	1: "UserId",
+	2: "Username",
+	3: "Password",
+	4: "Birthday",
+	5: "Gender",
+	6: "RoleId",
+	7: "PhoneNumber",
+	8: "Email",
+	9: "ThirdPartyToken",
 }
 
 func (p *User) IsSetThirdPartyToken() bool {
@@ -126,7 +134,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -158,7 +166,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 5:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -166,7 +174,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -189,6 +197,14 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -204,29 +220,29 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_User[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_User[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *User) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = v
 	}
-	p.Username = _field
+	p.UserId = _field
 	return nil
 }
 func (p *User) ReadField2(iprot thrift.TProtocol) error {
@@ -237,7 +253,7 @@ func (p *User) ReadField2(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Password = _field
+	p.Username = _field
 	return nil
 }
 func (p *User) ReadField3(iprot thrift.TProtocol) error {
@@ -248,7 +264,7 @@ func (p *User) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Birthday = _field
+	p.Password = _field
 	return nil
 }
 func (p *User) ReadField4(iprot thrift.TProtocol) error {
@@ -259,10 +275,21 @@ func (p *User) ReadField4(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.Gender = _field
+	p.Birthday = _field
 	return nil
 }
 func (p *User) ReadField5(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Gender = _field
+	return nil
+}
+func (p *User) ReadField6(iprot thrift.TProtocol) error {
 
 	var _field int32
 	if v, err := iprot.ReadI32(); err != nil {
@@ -273,7 +300,7 @@ func (p *User) ReadField5(iprot thrift.TProtocol) error {
 	p.RoleId = _field
 	return nil
 }
-func (p *User) ReadField6(iprot thrift.TProtocol) error {
+func (p *User) ReadField7(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -284,7 +311,7 @@ func (p *User) ReadField6(iprot thrift.TProtocol) error {
 	p.PhoneNumber = _field
 	return nil
 }
-func (p *User) ReadField7(iprot thrift.TProtocol) error {
+func (p *User) ReadField8(iprot thrift.TProtocol) error {
 
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
@@ -295,7 +322,7 @@ func (p *User) ReadField7(iprot thrift.TProtocol) error {
 	p.Email = _field
 	return nil
 }
-func (p *User) ReadField8(iprot thrift.TProtocol) error {
+func (p *User) ReadField9(iprot thrift.TProtocol) error {
 
 	var _field *string
 	if v, err := iprot.ReadString(); err != nil {
@@ -345,6 +372,10 @@ func (p *User) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 8
 			goto WriteFieldError
 		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -354,17 +385,34 @@ func (p *User) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *User) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("UserId", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *User) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Username); err != nil {
@@ -375,13 +423,13 @@ func (p *User) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *User) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 2); err != nil {
+func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Password", thrift.STRING, 3); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Password); err != nil {
@@ -392,13 +440,13 @@ func (p *User) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Birthday", thrift.STRING, 3); err != nil {
+func (p *User) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Birthday", thrift.STRING, 4); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Birthday); err != nil {
@@ -409,13 +457,13 @@ func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
-func (p *User) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Gender", thrift.STRING, 4); err != nil {
+func (p *User) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Gender", thrift.STRING, 5); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Gender); err != nil {
@@ -426,13 +474,13 @@ func (p *User) writeField4(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
-func (p *User) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("RoleId", thrift.I32, 5); err != nil {
+func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("RoleId", thrift.I32, 6); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteI32(p.RoleId); err != nil {
@@ -443,13 +491,13 @@ func (p *User) writeField5(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
-func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("PhoneNumber", thrift.STRING, 6); err != nil {
+func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("PhoneNumber", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.PhoneNumber); err != nil {
@@ -460,13 +508,13 @@ func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
-func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Email", thrift.STRING, 7); err != nil {
+func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("Email", thrift.STRING, 8); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Email); err != nil {
@@ -477,14 +525,14 @@ func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
-func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
+func (p *User) writeField9(oprot thrift.TProtocol) (err error) {
 	if p.IsSetThirdPartyToken() {
-		if err = oprot.WriteFieldBegin("ThirdPartyToken", thrift.STRING, 8); err != nil {
+		if err = oprot.WriteFieldBegin("ThirdPartyToken", thrift.STRING, 9); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.ThirdPartyToken); err != nil {
@@ -496,9 +544,9 @@ func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
 
 func (p *User) String() string {
@@ -515,83 +563,93 @@ func (p *User) DeepEqual(ano *User) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Username) {
+	if !p.Field1DeepEqual(ano.UserId) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Password) {
+	if !p.Field2DeepEqual(ano.Username) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.Birthday) {
+	if !p.Field3DeepEqual(ano.Password) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.Gender) {
+	if !p.Field4DeepEqual(ano.Birthday) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.RoleId) {
+	if !p.Field5DeepEqual(ano.Gender) {
 		return false
 	}
-	if !p.Field6DeepEqual(ano.PhoneNumber) {
+	if !p.Field6DeepEqual(ano.RoleId) {
 		return false
 	}
-	if !p.Field7DeepEqual(ano.Email) {
+	if !p.Field7DeepEqual(ano.PhoneNumber) {
 		return false
 	}
-	if !p.Field8DeepEqual(ano.ThirdPartyToken) {
+	if !p.Field8DeepEqual(ano.Email) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.ThirdPartyToken) {
 		return false
 	}
 	return true
 }
 
-func (p *User) Field1DeepEqual(src string) bool {
+func (p *User) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Username, src) != 0 {
+	if p.UserId != src {
 		return false
 	}
 	return true
 }
 func (p *User) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.Password, src) != 0 {
+	if strings.Compare(p.Username, src) != 0 {
 		return false
 	}
 	return true
 }
 func (p *User) Field3DeepEqual(src string) bool {
 
-	if strings.Compare(p.Birthday, src) != 0 {
+	if strings.Compare(p.Password, src) != 0 {
 		return false
 	}
 	return true
 }
 func (p *User) Field4DeepEqual(src string) bool {
 
+	if strings.Compare(p.Birthday, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *User) Field5DeepEqual(src string) bool {
+
 	if strings.Compare(p.Gender, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *User) Field5DeepEqual(src int32) bool {
+func (p *User) Field6DeepEqual(src int32) bool {
 
 	if p.RoleId != src {
 		return false
 	}
 	return true
 }
-func (p *User) Field6DeepEqual(src string) bool {
+func (p *User) Field7DeepEqual(src string) bool {
 
 	if strings.Compare(p.PhoneNumber, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *User) Field7DeepEqual(src string) bool {
+func (p *User) Field8DeepEqual(src string) bool {
 
 	if strings.Compare(p.Email, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *User) Field8DeepEqual(src *string) bool {
+func (p *User) Field9DeepEqual(src *string) bool {
 
 	if p.ThirdPartyToken == src {
 		return true
@@ -687,18 +745,18 @@ func (p *LoginRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_LoginRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_LoginRequest[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *LoginRequest) ReadField1(iprot thrift.TProtocol) error {
@@ -747,13 +805,13 @@ func (p *LoginRequest) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *LoginRequest) writeField1(oprot thrift.TProtocol) (err error) {
@@ -768,9 +826,9 @@ func (p *LoginRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *LoginRequest) writeField2(oprot thrift.TProtocol) (err error) {
@@ -785,9 +843,9 @@ func (p *LoginRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *LoginRequest) String() string {
@@ -971,18 +1029,18 @@ func (p *LoginResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_LoginResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_LoginResponse[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *LoginResponse) ReadField1(iprot thrift.TProtocol) error {
@@ -1058,13 +1116,13 @@ func (p *LoginResponse) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *LoginResponse) writeField1(oprot thrift.TProtocol) (err error) {
@@ -1079,9 +1137,9 @@ func (p *LoginResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *LoginResponse) writeField2(oprot thrift.TProtocol) (err error) {
@@ -1098,9 +1156,9 @@ func (p *LoginResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *LoginResponse) writeField3(oprot thrift.TProtocol) (err error) {
@@ -1117,9 +1175,9 @@ func (p *LoginResponse) writeField3(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *LoginResponse) writeField4(oprot thrift.TProtocol) (err error) {
@@ -1136,9 +1194,9 @@ func (p *LoginResponse) writeField4(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *LoginResponse) String() string {
@@ -1359,18 +1417,18 @@ func (p *RegisterRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_RegisterRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RegisterRequest[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *RegisterRequest) ReadField1(iprot thrift.TProtocol) error {
@@ -1479,13 +1537,13 @@ func (p *RegisterRequest) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField1(oprot thrift.TProtocol) (err error) {
@@ -1500,9 +1558,9 @@ func (p *RegisterRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField2(oprot thrift.TProtocol) (err error) {
@@ -1517,9 +1575,9 @@ func (p *RegisterRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField3(oprot thrift.TProtocol) (err error) {
@@ -1534,9 +1592,9 @@ func (p *RegisterRequest) writeField3(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField4(oprot thrift.TProtocol) (err error) {
@@ -1551,9 +1609,9 @@ func (p *RegisterRequest) writeField4(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField5(oprot thrift.TProtocol) (err error) {
@@ -1568,9 +1626,9 @@ func (p *RegisterRequest) writeField5(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *RegisterRequest) writeField6(oprot thrift.TProtocol) (err error) {
@@ -1585,9 +1643,9 @@ func (p *RegisterRequest) writeField6(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *RegisterRequest) String() string {
@@ -1759,18 +1817,18 @@ func (p *RegisterResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_RegisterResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RegisterResponse[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *RegisterResponse) ReadField1(iprot thrift.TProtocol) error {
@@ -1819,13 +1877,13 @@ func (p *RegisterResponse) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *RegisterResponse) writeField1(oprot thrift.TProtocol) (err error) {
@@ -1840,9 +1898,9 @@ func (p *RegisterResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *RegisterResponse) writeField2(oprot thrift.TProtocol) (err error) {
@@ -1859,9 +1917,9 @@ func (p *RegisterResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *RegisterResponse) String() string {
@@ -1990,18 +2048,18 @@ func (p *ThirdPartyLoginRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_ThirdPartyLoginRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ThirdPartyLoginRequest[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginRequest) ReadField1(iprot thrift.TProtocol) error {
@@ -2050,13 +2108,13 @@ func (p *ThirdPartyLoginRequest) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginRequest) writeField1(oprot thrift.TProtocol) (err error) {
@@ -2071,9 +2129,9 @@ func (p *ThirdPartyLoginRequest) writeField1(oprot thrift.TProtocol) (err error)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginRequest) writeField2(oprot thrift.TProtocol) (err error) {
@@ -2088,9 +2146,9 @@ func (p *ThirdPartyLoginRequest) writeField2(oprot thrift.TProtocol) (err error)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginRequest) String() string {
@@ -2274,18 +2332,18 @@ func (p *ThirdPartyLoginResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_ThirdPartyLoginResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ThirdPartyLoginResponse[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) ReadField1(iprot thrift.TProtocol) error {
@@ -2361,13 +2419,13 @@ func (p *ThirdPartyLoginResponse) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) writeField1(oprot thrift.TProtocol) (err error) {
@@ -2382,9 +2440,9 @@ func (p *ThirdPartyLoginResponse) writeField1(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) writeField2(oprot thrift.TProtocol) (err error) {
@@ -2401,9 +2459,9 @@ func (p *ThirdPartyLoginResponse) writeField2(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) writeField3(oprot thrift.TProtocol) (err error) {
@@ -2420,9 +2478,9 @@ func (p *ThirdPartyLoginResponse) writeField3(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) writeField4(oprot thrift.TProtocol) (err error) {
@@ -2439,9 +2497,9 @@ func (p *ThirdPartyLoginResponse) writeField4(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *ThirdPartyLoginResponse) String() string {
@@ -2733,18 +2791,18 @@ func (p *UpdateUserRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UpdateUserRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateUserRequest[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) ReadField1(iprot thrift.TProtocol) error {
@@ -2868,13 +2926,13 @@ func (p *UpdateUserRequest) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
@@ -2889,9 +2947,9 @@ func (p *UpdateUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField2(oprot thrift.TProtocol) (err error) {
@@ -2908,9 +2966,9 @@ func (p *UpdateUserRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField3(oprot thrift.TProtocol) (err error) {
@@ -2927,9 +2985,9 @@ func (p *UpdateUserRequest) writeField3(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField4(oprot thrift.TProtocol) (err error) {
@@ -2946,9 +3004,9 @@ func (p *UpdateUserRequest) writeField4(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField5(oprot thrift.TProtocol) (err error) {
@@ -2965,9 +3023,9 @@ func (p *UpdateUserRequest) writeField5(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField6(oprot thrift.TProtocol) (err error) {
@@ -2984,9 +3042,9 @@ func (p *UpdateUserRequest) writeField6(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) writeField7(oprot thrift.TProtocol) (err error) {
@@ -3003,9 +3061,9 @@ func (p *UpdateUserRequest) writeField7(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) String() string {
@@ -3217,18 +3275,18 @@ func (p *UpdateUserResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UpdateUserResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateUserResponse[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UpdateUserResponse) ReadField1(iprot thrift.TProtocol) error {
@@ -3277,13 +3335,13 @@ func (p *UpdateUserResponse) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UpdateUserResponse) writeField1(oprot thrift.TProtocol) (err error) {
@@ -3298,9 +3356,9 @@ func (p *UpdateUserResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UpdateUserResponse) writeField2(oprot thrift.TProtocol) (err error) {
@@ -3317,9 +3375,9 @@ func (p *UpdateUserResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *UpdateUserResponse) String() string {
@@ -3429,18 +3487,18 @@ func (p *GetUserRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_GetUserRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetUserRequest[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *GetUserRequest) ReadField1(iprot thrift.TProtocol) error {
@@ -3474,13 +3532,13 @@ func (p *GetUserRequest) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *GetUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
@@ -3495,9 +3553,9 @@ func (p *GetUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *GetUserRequest) String() string {
@@ -3644,18 +3702,18 @@ func (p *GetUserResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_GetUserResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetUserResponse[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *GetUserResponse) ReadField1(iprot thrift.TProtocol) error {
@@ -3716,13 +3774,13 @@ func (p *GetUserResponse) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *GetUserResponse) writeField1(oprot thrift.TProtocol) (err error) {
@@ -3737,9 +3795,9 @@ func (p *GetUserResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *GetUserResponse) writeField2(oprot thrift.TProtocol) (err error) {
@@ -3756,9 +3814,9 @@ func (p *GetUserResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *GetUserResponse) writeField3(oprot thrift.TProtocol) (err error) {
@@ -3775,9 +3833,9 @@ func (p *GetUserResponse) writeField3(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *GetUserResponse) String() string {
@@ -3985,7 +4043,7 @@ func (p *userServiceProcessorLogin) Process(ctx context.Context, seqId int32, ip
 	result := UserServiceLoginResult{}
 	var retval *LoginResponse
 	if retval, err2 = p.handler.Login(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error_code processing Login: "+err2.Error())
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing Login: "+err2.Error())
 		oprot.WriteMessageBegin("Login", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
@@ -4033,7 +4091,7 @@ func (p *userServiceProcessorRegister) Process(ctx context.Context, seqId int32,
 	result := UserServiceRegisterResult{}
 	var retval *RegisterResponse
 	if retval, err2 = p.handler.Register(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error_code processing Register: "+err2.Error())
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing Register: "+err2.Error())
 		oprot.WriteMessageBegin("Register", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
@@ -4081,7 +4139,7 @@ func (p *userServiceProcessorThirdPartyLogin) Process(ctx context.Context, seqId
 	result := UserServiceThirdPartyLoginResult{}
 	var retval *ThirdPartyLoginResponse
 	if retval, err2 = p.handler.ThirdPartyLogin(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error_code processing ThirdPartyLogin: "+err2.Error())
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ThirdPartyLogin: "+err2.Error())
 		oprot.WriteMessageBegin("ThirdPartyLogin", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
@@ -4129,7 +4187,7 @@ func (p *userServiceProcessorUpdateUserProfile) Process(ctx context.Context, seq
 	result := UserServiceUpdateUserProfileResult{}
 	var retval *UpdateUserResponse
 	if retval, err2 = p.handler.UpdateUserProfile(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error_code processing UpdateUserProfile: "+err2.Error())
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateUserProfile: "+err2.Error())
 		oprot.WriteMessageBegin("UpdateUserProfile", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
@@ -4177,7 +4235,7 @@ func (p *userServiceProcessorGetUser) Process(ctx context.Context, seqId int32, 
 	result := UserServiceGetUserResult{}
 	var retval *GetUserResponse
 	if retval, err2 = p.handler.GetUser(ctx, args.Request); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error_code processing GetUser: "+err2.Error())
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetUser: "+err2.Error())
 		oprot.WriteMessageBegin("GetUser", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
@@ -4277,18 +4335,18 @@ func (p *UserServiceLoginArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceLoginArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceLoginArgs[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceLoginArgs) ReadField1(iprot thrift.TProtocol) error {
@@ -4319,13 +4377,13 @@ func (p *UserServiceLoginArgs) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceLoginArgs) writeField1(oprot thrift.TProtocol) (err error) {
@@ -4340,9 +4398,9 @@ func (p *UserServiceLoginArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UserServiceLoginArgs) String() string {
@@ -4446,18 +4504,18 @@ func (p *UserServiceLoginResult) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceLoginResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceLoginResult[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceLoginResult) ReadField0(iprot thrift.TProtocol) error {
@@ -4488,13 +4546,13 @@ func (p *UserServiceLoginResult) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceLoginResult) writeField0(oprot thrift.TProtocol) (err error) {
@@ -4511,9 +4569,9 @@ func (p *UserServiceLoginResult) writeField0(oprot thrift.TProtocol) (err error)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
 func (p *UserServiceLoginResult) String() string {
@@ -4617,18 +4675,18 @@ func (p *UserServiceRegisterArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceRegisterArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceRegisterArgs[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceRegisterArgs) ReadField1(iprot thrift.TProtocol) error {
@@ -4659,13 +4717,13 @@ func (p *UserServiceRegisterArgs) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceRegisterArgs) writeField1(oprot thrift.TProtocol) (err error) {
@@ -4680,9 +4738,9 @@ func (p *UserServiceRegisterArgs) writeField1(oprot thrift.TProtocol) (err error
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UserServiceRegisterArgs) String() string {
@@ -4786,18 +4844,18 @@ func (p *UserServiceRegisterResult) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceRegisterResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceRegisterResult[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceRegisterResult) ReadField0(iprot thrift.TProtocol) error {
@@ -4828,13 +4886,13 @@ func (p *UserServiceRegisterResult) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceRegisterResult) writeField0(oprot thrift.TProtocol) (err error) {
@@ -4851,9 +4909,9 @@ func (p *UserServiceRegisterResult) writeField0(oprot thrift.TProtocol) (err err
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
 func (p *UserServiceRegisterResult) String() string {
@@ -4957,18 +5015,18 @@ func (p *UserServiceThirdPartyLoginArgs) Read(iprot thrift.TProtocol) (err error
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginArgs[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginArgs) ReadField1(iprot thrift.TProtocol) error {
@@ -4999,13 +5057,13 @@ func (p *UserServiceThirdPartyLoginArgs) Write(oprot thrift.TProtocol) (err erro
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginArgs) writeField1(oprot thrift.TProtocol) (err error) {
@@ -5020,9 +5078,9 @@ func (p *UserServiceThirdPartyLoginArgs) writeField1(oprot thrift.TProtocol) (er
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginArgs) String() string {
@@ -5126,18 +5184,18 @@ func (p *UserServiceThirdPartyLoginResult) Read(iprot thrift.TProtocol) (err err
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceThirdPartyLoginResult[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginResult) ReadField0(iprot thrift.TProtocol) error {
@@ -5168,13 +5226,13 @@ func (p *UserServiceThirdPartyLoginResult) Write(oprot thrift.TProtocol) (err er
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginResult) writeField0(oprot thrift.TProtocol) (err error) {
@@ -5191,9 +5249,9 @@ func (p *UserServiceThirdPartyLoginResult) writeField0(oprot thrift.TProtocol) (
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
 func (p *UserServiceThirdPartyLoginResult) String() string {
@@ -5297,18 +5355,18 @@ func (p *UserServiceUpdateUserProfileArgs) Read(iprot thrift.TProtocol) (err err
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileArgs[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileArgs) ReadField1(iprot thrift.TProtocol) error {
@@ -5339,13 +5397,13 @@ func (p *UserServiceUpdateUserProfileArgs) Write(oprot thrift.TProtocol) (err er
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileArgs) writeField1(oprot thrift.TProtocol) (err error) {
@@ -5360,9 +5418,9 @@ func (p *UserServiceUpdateUserProfileArgs) writeField1(oprot thrift.TProtocol) (
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileArgs) String() string {
@@ -5466,18 +5524,18 @@ func (p *UserServiceUpdateUserProfileResult) Read(iprot thrift.TProtocol) (err e
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceUpdateUserProfileResult[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileResult) ReadField0(iprot thrift.TProtocol) error {
@@ -5508,13 +5566,13 @@ func (p *UserServiceUpdateUserProfileResult) Write(oprot thrift.TProtocol) (err 
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileResult) writeField0(oprot thrift.TProtocol) (err error) {
@@ -5531,9 +5589,9 @@ func (p *UserServiceUpdateUserProfileResult) writeField0(oprot thrift.TProtocol)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
 func (p *UserServiceUpdateUserProfileResult) String() string {
@@ -5637,18 +5695,18 @@ func (p *UserServiceGetUserArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceGetUserArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserArgs[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceGetUserArgs) ReadField1(iprot thrift.TProtocol) error {
@@ -5679,13 +5737,13 @@ func (p *UserServiceGetUserArgs) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceGetUserArgs) writeField1(oprot thrift.TProtocol) (err error) {
@@ -5700,9 +5758,9 @@ func (p *UserServiceGetUserArgs) writeField1(oprot thrift.TProtocol) (err error)
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *UserServiceGetUserArgs) String() string {
@@ -5806,18 +5864,18 @@ func (p *UserServiceGetUserResult) Read(iprot thrift.TProtocol) (err error) {
 
 	return nil
 ReadStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
 ReadFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error_code: ", p, fieldId, fieldIDToName_UserServiceGetUserResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserServiceGetUserResult[fieldId]), err)
 SkipFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error_code: ", p, fieldId, fieldTypeId), err)
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
 ReadFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read field end error_code", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T read struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
 func (p *UserServiceGetUserResult) ReadField0(iprot thrift.TProtocol) error {
@@ -5848,13 +5906,13 @@ func (p *UserServiceGetUserResult) Write(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteStructBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
 WriteFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T write field %d error_code: ", p, fieldId), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
 WriteFieldStopError:
-	return thrift.PrependError(fmt.Sprintf("%T write field stop error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
 WriteStructEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write struct end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
 func (p *UserServiceGetUserResult) writeField0(oprot thrift.TProtocol) (err error) {
@@ -5871,9 +5929,9 @@ func (p *UserServiceGetUserResult) writeField0(oprot thrift.TProtocol) (err erro
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error_code: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
 func (p *UserServiceGetUserResult) String() string {

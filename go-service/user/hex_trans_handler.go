@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/AdrianWangs/nexus/go-common/middleware"
 	"net"
 	"regexp"
 
@@ -69,7 +70,12 @@ func (t *transHandler) OnRead(ctx context.Context, conn net.Conn) error {
 	return t.ServerTransHandler.OnRead(ctx, conn)
 }
 
+// 对于 Hertz 服务，需要在 Hertz 服务启动之前初始化 Hertz 引擎
 func initHertz() *route.Engine {
+
+	// 初始化中间件
+	middleware.InitJwt()
+
 	h := hertzServer.New(hertzServer.WithIdleTimeout(0))
 	// add a ping route to test
 	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {

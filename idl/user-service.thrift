@@ -3,14 +3,15 @@ namespace go user_microservice
 
 // 定义用户信息结构体
 struct User {
-    1: string Username,
-    2: string Password,
-    3: string Birthday,
-    4: string Gender,
-    5: i32 RoleId,
-    6: string PhoneNumber,
-    7: string Email,
-    8: optional string ThirdPartyToken, // 第三方登录token，可选
+    1: i64 UserId,
+    2: string Username,
+    3: string Password,
+    4: string Birthday,
+    5: string Gender,
+    6: i32 RoleId,
+    7: string PhoneNumber,
+    8: string Email,
+    9: optional string ThirdPartyToken, // 第三方登录token，可选
 }
 
 // 登录请求结构体
@@ -21,11 +22,10 @@ struct LoginRequest {
 
 // 登录响应结构体
 struct LoginResponse {
-    1:i64 UserId,
-    2: bool Success,
-    3: optional string ErrorMessage,
-    4: optional User UserProfile,
-    5: optional string Token,
+    1: bool Success,
+    2: optional string ErrorMessage,
+    3: optional User UserProfile,
+    4: optional string Token,
 }
 
 // 注册请求结构体

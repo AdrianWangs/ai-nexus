@@ -36,3 +36,8 @@ redis:
   username: ""
   password: ""
   db: 0
+
+jwt:
+  secret: "12345678"
+  timeout: 3600
+  refresh_timeout: 7200
