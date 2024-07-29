@@ -20,6 +20,9 @@ services:
             - "8848:8848"
             - "9849:9849"
             - "9849:9849"
+        volumes:
+            -   ./nacos/logs:/home/nacos/logs
+            -  ./nacos/data:/home/nacos/data
         environment:
             - PREFER_HOST_MODE=hostname
             - MODE=standalone

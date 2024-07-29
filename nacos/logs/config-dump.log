@@ -1,0 +1,12 @@
+2024-07-29 13:16:26,337 INFO [dump] md5 changed, save to disk cache ,groupKey=user-config.yaml+dev, newMd5=4026957d1421d62a1bf248200409f8a2,oldMd5=
+
+2024-07-29 13:16:26,348 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=user-config.yaml+dev, newMd5=4026957d1421d62a1bf248200409f8a2,oldMd5=,lastModifiedTs=1722229146749
+
+2024-07-29 13:16:26,349 INFO [dump-all-ok] user-config.yaml+dev, 1722229146749, length=409,md5UTF8=4026957d1421d62a1bf248200409f8a2
+
+2024-07-29 13:17:46,648 INFO [dump] md5 changed, save to disk cache ,groupKey=user-config.yaml+dev, newMd5=4026957d1421d62a1bf248200409f8a2,oldMd5=
+
+2024-07-29 13:17:46,657 INFO [dump] md5 changed, update md5 and timestamp in jvm cache ,groupKey=user-config.yaml+dev, newMd5=4026957d1421d62a1bf248200409f8a2,oldMd5=,lastModifiedTs=1722229146749
+
+2024-07-29 13:17:46,658 INFO [dump-all-ok] user-config.yaml+dev, 1722229146749, length=409,md5UTF8=4026957d1421d62a1bf248200409f8a2
+

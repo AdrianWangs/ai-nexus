@@ -1,7 +1,1 @@
-nacos/conf/*
-nacos/logs/*
-nacos/data/*
-
-redis/data/*
-
 .idea/*

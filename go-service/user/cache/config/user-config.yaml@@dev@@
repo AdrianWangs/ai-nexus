@@ -20,4 +20,4 @@ redis:
   address: "127.0.0.1:6379"
   username: ""
   password: ""
-  db: 1
+  db: 0
