@@ -5,6 +5,64 @@
 > - [ ] 编写thrift模板代码来配置自己的模板文件
 > - [ ] java demo 的编写
 
+
+# 目录结构
+```text
+.
+├── README.md
+├── api-test // 请求接口测试
+├── compose.yaml // docker-compose 配置文件
+├── go-common // 存放公共的go代码
+│   ├── conf // 配置文件
+│   ├── error_code // 错误码
+│   ├── go.mod // go 依赖包
+│   ├── middleware // 中间件
+│   │   └── jwt.go // jwt中间件
+│   ├── nacos // nacos配置，含配置中心和服务发现
+│   └── utils // 工具类
+├── go-service // 存放go的微服务
+│   ├── run.sh // 一键运行所有微服务
+│   └── user // 用户微服务
+│       ├── biz //业务逻辑相关的代码，主要修改这里
+│       │   ├── dal // 数据访问层，用于初始化数据库和数据库相关的业务逻辑
+│       │   ├── handler //（http 相关的）相当于 mvc 中的 controller，用于处理请求和返回响应
+│       │   │   └── user_microservice
+│       │   │       └── user_service.go
+│       │   ├── router //路由相关的代码，用于初始化路由和中间件
+│       │   │   ├── register.go
+│       │   │   └── user_microservice
+│       │   │       ├── middleware.go
+│       │   │       └── user-service.go // 这种文件不要修改，因为每次生成代码都会覆盖
+│       │   └── service //业务逻辑层，用于处理业务逻辑
+│       ├── build.sh // 一键编译当前微服务
+│       ├── conf // 配置文件，是单个微服务的配置文件，其中 nacos 相关配置是公共的，不在这里配置
+│       │   ├── conf.go
+│       │   ├── dev // 开发环境配置
+│       │   ├── online // 线上环境配置
+│       │   └── test // 测试环境配置
+│       ├── docker-compose.yaml // 构建当前微服务所需的docker环境
+│       ├── go.mod // go 依赖包
+│       ├── handler.go //业务逻辑入口，更新时会覆盖
+│       ├── hex_trans_handler.go // 业务逻辑入口，更新时不会覆盖
+│       ├── kitex_gen // 生成的代码，这里不要修改
+│       ├── main.go // 主函数
+│       ├── model // 数据模型
+│       ├── readme.md // 当前微服务说明文档
+│       ├── script // 脚本文件
+├── go.work  //存放go的工作目录
+├── idl //存放用于生成代码的thrift文件
+├── k8s-config //k8s的配置文件
+│   ├── auth.yaml //创建服务账号和角色
+│   ├── cluster-config.yaml //创建服务
+│   ├── database.yaml //创建数据库
+│   ├── ingress.yaml //创建ingress规则
+│   └── namespace.yaml //创建命名空间
+├── redis // redis 数据存放的目录，用于持久化
+└── some-think.md // 项目说明文档，整个项目的构思
+
+```
+
+
 # docker-compose 本地开发环境部署
 
 ## 一、部署环境
