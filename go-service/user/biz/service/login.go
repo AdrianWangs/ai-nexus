@@ -36,7 +36,6 @@ func (s *LoginService) Run(request *user_microservice.LoginRequest) (resp *user_
 	if inputPassword != user.Password {
 		resp = &user_microservice.LoginResponse{}
 		resp.Success = false
-		resp.ErrorMessage = new(string)
 		*resp.ErrorMessage = "用户名或密码错误"
 		return
 	}

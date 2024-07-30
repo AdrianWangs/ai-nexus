@@ -4,7 +4,6 @@ package user_microservice
 
 import (
 	"context"
-
 	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -13,17 +12,8 @@ import (
 // Login .
 // @router login [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req user_microservice.LoginRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
 
-	resp := new(user_microservice.LoginResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	// 使用 jwt 中间件了，所以不需要再次验证
 }
 
 // Register .

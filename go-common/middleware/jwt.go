@@ -26,12 +26,15 @@ func InitJwt() {
 
 	jwt_config := common_config.GetConf().JWT
 
+	timeout := time.Duration(jwt_config.Timeout) * time.Second
+	maxRefresh := time.Duration(jwt_config.RefreshTimeout) * time.Second
+
 	var err error
 	JwtMiddleware, err = jwt.New(&jwt.HertzJWTMiddleware{
 
 		Key:           []byte(jwt_config.Secret),
-		Timeout:       time.Duration(jwt_config.Timeout),
-		MaxRefresh:    time.Duration(jwt_config.RefreshTimeout),
+		Timeout:       timeout,
+		MaxRefresh:    maxRefresh,
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName: "Bearer",
 		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {

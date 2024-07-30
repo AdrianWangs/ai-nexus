@@ -5,8 +5,6 @@ package user_microservice
 import (
 	"github.com/AdrianWangs/nexus/go-common/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 )
 
 func rootMw() []app.HandlerFunc {
@@ -16,11 +14,8 @@ func rootMw() []app.HandlerFunc {
 
 func _getuserMw() []app.HandlerFunc {
 
-	klog.Info("getuserMw")
 	handlers := make([]app.HandlerFunc, 0)
 	handlers = append(handlers, middleware.JwtMiddleware.MiddlewareFunc())
-
-	pretty.Printf("getuserMw: %v\n", handlers[0])
 
 	return handlers
 }
