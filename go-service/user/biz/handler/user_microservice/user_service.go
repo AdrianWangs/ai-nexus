@@ -9,15 +9,21 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
-// Login .
-// @router login [POST]
+// Login 登录
+// @Summary 登录
+// @Description 登录并获取 token
+// @Tags 用户服务
+// @Accept application/json
+// @Param UsernameOrEmail body string true "账号（邮箱、手机、用户名）"
+// @Param Password body string true "密码"
+// @router /login [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
 
 	// 使用 jwt 中间件了，所以不需要再次验证
 }
 
 // Register .
-// @router register [POST]
+// @router /register [POST]
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user_microservice.RegisterRequest
@@ -33,7 +39,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 }
 
 // ThirdPartyLogin .
-// @router third_party_login [POST]
+// @router /third_party_login [POST]
 func ThirdPartyLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user_microservice.ThirdPartyLoginRequest
@@ -49,7 +55,7 @@ func ThirdPartyLogin(ctx context.Context, c *app.RequestContext) {
 }
 
 // UpdateUserProfile .
-// @router update_user_profile [POST]
+// @router /update_user_profile [POST]
 func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user_microservice.UpdateUserRequest
@@ -65,7 +71,7 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetUser .
-// @router get_user [GET]
+// @router /get_user [GET]
 func GetUser(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req user_microservice.GetUserRequest

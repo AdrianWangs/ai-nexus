@@ -1,0 +1,43 @@
+info:
+  contact: {}
+  description: 用户微服务
+  title: 用户微服务
+  version: "1.0"
+paths:
+  /get_user:
+    get:
+      responses: {}
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登录并获取 token
+      parameters:
+      - description: 账号（邮箱、手机、用户名）
+        in: body
+        name: UsernameOrEmail
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: Password
+        required: true
+        schema:
+          type: string
+      responses: {}
+      summary: 登录
+      tags:
+      - 用户服务
+  /register:
+    post:
+      responses: {}
+  /third_party_login:
+    post:
+      responses: {}
+  /update_user_profile:
+    post:
+      responses: {}
+swagger: "2.0"
+tags:
+- name: 用户服务

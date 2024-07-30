@@ -1,0 +1,69 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "用户微服务",
+        "title": "用户微服务",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/get_user": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "登录并获取 token",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户服务"
+                ],
+                "summary": "登录",
+                "parameters": [
+                    {
+                        "description": "账号（邮箱、手机、用户名）",
+                        "name": "UsernameOrEmail",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "密码",
+                        "name": "Password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/register": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/third_party_login": {
+            "post": {
+                "responses": {}
+            }
+        },
+        "/update_user_profile": {
+            "post": {
+                "responses": {}
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "用户服务"
+        }
+    ]
+}

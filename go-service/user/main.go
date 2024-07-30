@@ -19,6 +19,10 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+// @title 用户微服务
+// @version 1.0
+// @description 用户微服务
+// @tag.name 用户服务
 func main() {
 
 	// 读取环境变量
