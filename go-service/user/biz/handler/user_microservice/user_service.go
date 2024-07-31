@@ -25,7 +25,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	// 使用 jwt 中间件了，所以不需要再次验证
 }
 
-// Register .
+// Register 注册
 // @router /register [POST]
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -36,12 +36,17 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(user_microservice.RegisterResponse)
+	resp, err := service.NewRegisterService(ctx).Run(&req)
+
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
 
-// ThirdPartyLogin .
+// ThirdPartyLogin 第三方登录
 // @router /third_party_login [POST]
 func ThirdPartyLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -57,7 +62,7 @@ func ThirdPartyLogin(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-// UpdateUserProfile .
+// UpdateUserProfile 更新用户信息
 // @router /update_user_profile [POST]
 func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -73,7 +78,7 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-// GetUser .
+// GetUser 获取用户信息
 // @router /get_user [GET]
 func GetUser(ctx context.Context, c *app.RequestContext) {
 	var err error

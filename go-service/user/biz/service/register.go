@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
 	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/query"
 	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
 	"time"
 )
@@ -20,6 +21,7 @@ func (s *RegisterService) Run(request *user_microservice.RegisterRequest) (resp 
 
 	resp = &user_microservice.RegisterResponse{}
 
+	// 默认返回成功
 	resp.Success = true
 	resp.ErrorMessage = nil
 	err = nil
@@ -43,13 +45,45 @@ func (s *RegisterService) Run(request *user_microservice.RegisterRequest) (resp 
 		ThirdPartyToken: "",
 	}
 
-	err = mysql.DB.Create(&user).Error
+	// 获取用户表的查询对象
+	userQuery := query.Use(mysql.DB).User
 
-	// 如果有错误，设置错误信息
+	userExistQuery := userQuery.WithContext(s.ctx).
+		Where(userQuery.Username.Eq(user.Username))
+
+	if user.PhoneNumber != "" {
+		userExistQuery = userExistQuery.Or(userQuery.PhoneNumber.Eq(user.PhoneNumber))
+	}
+
+	if user.Email != "" {
+		userExistQuery = userExistQuery.Or(userQuery.Email.Eq(user.Email))
+	}
+
+	// 判断是否已经存在
+	userNum, err := userExistQuery.Count()
+
 	if err != nil {
 		resp.Success = false
 		resp.ErrorMessage = new(string)
 		*resp.ErrorMessage = err.Error()
+		return
+	}
+
+	if userNum > 0 {
+		resp.Success = false
+		resp.ErrorMessage = new(string)
+		*resp.ErrorMessage = "用户名或手机或邮箱已存在"
+		return
+	}
+
+	// 插入用户
+	err = userQuery.WithContext(s.ctx).Create(&user)
+
+	if err != nil {
+		resp.Success = false
+		resp.ErrorMessage = new(string)
+		*resp.ErrorMessage = err.Error()
+		return
 	}
 
 	return
