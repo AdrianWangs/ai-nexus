@@ -1,3 +1,4 @@
+
 services:
     consul:
         image: hashicorp/consul:latest
