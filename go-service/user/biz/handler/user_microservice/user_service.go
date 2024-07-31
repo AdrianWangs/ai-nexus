@@ -84,19 +84,21 @@ func GetUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
+	// 获取用户信息中的 id
+	user, exist := c.Get(middleware.IdentityKey)
+	if !exist {
+		c.String(consts.StatusNonAuthoritativeInfo, "用户未登录")
+		return
+	}
+
+	req.UserId = user.(*model.User).ID
+
 	resp, err := service.NewGetUserService(ctx).Run(&req)
 
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	user, exist := c.Get(middleware.IdentityKey)
-	if !exist {
-		c.String(consts.StatusNonAuthoritativeInfo, "用户未登录")
-	}
-
-	userId := user.(*model.User).ID
 
 	c.JSON(consts.StatusOK, resp)
 }

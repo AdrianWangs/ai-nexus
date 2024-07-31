@@ -14,4 +14,5 @@ func NewLoginService(ctx context.Context) *LoginService {
 
 // Run create note info
 func (s *LoginService) Run(request *user_microservice.LoginRequest) (resp *user_microservice.LoginResponse, err error) {
+	return nil, nil
 }
