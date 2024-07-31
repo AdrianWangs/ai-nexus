@@ -3,10 +3,9 @@ package middleware
 
 import (
 	"context"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
 	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql"
-	"github.com/AdrianWangs/nexus/go-service/user/model"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"gorm.io/gorm"
 	"net/http"
 	"time"
 
@@ -69,9 +68,7 @@ func InitJwt() {
 		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
 			claims := jwt.ExtractClaims(ctx, c)
 			return &model.User{
-				Model: gorm.Model{
-					ID: uint(claims[IdentityKey].(float64)),
-				},
+				ID: int64(claims[IdentityKey].(float64)),
 			}
 		}, // 从 token 中提取信息,主要是用户的 id
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
