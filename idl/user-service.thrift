@@ -60,13 +60,14 @@ struct ThirdPartyLoginResponse {
 
 // 修改用户信息请求结构体
 struct UpdateUserRequest {
-    1: string Username,
-    2: optional string Password,
-    3: optional string Email,
-    4: optional string PhoneNumber,
-    5: optional string Birthday,
-    6: optional string Gender,
-    7: optional string ThirdPartyToken,
+    1: i64 UserId,
+    2: string Username,
+    3: optional string Password,
+    4: optional string Email,
+    5: optional string PhoneNumber,
+    6: optional string Birthday,
+    7: optional string Gender,
+    8: optional string ThirdPartyToken,
 }
 
 // 修改用户信息响应结构体

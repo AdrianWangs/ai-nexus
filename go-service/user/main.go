@@ -44,6 +44,8 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
+	opts = append(opts, server.
+		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 
 	// 初始化数据库
 	dal.Init()

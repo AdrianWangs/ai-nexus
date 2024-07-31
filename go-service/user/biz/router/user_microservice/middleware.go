@@ -40,8 +40,9 @@ func _thirdpartyloginMw() []app.HandlerFunc {
 }
 
 func _updateuserprofileMw() []app.HandlerFunc {
-	// your code...
-	return []app.HandlerFunc{
-		middleware.JwtMiddleware.MiddlewareFunc(),
-	}
+
+	handlers := make([]app.HandlerFunc, 0)
+	handlers = append(handlers, middleware.JwtMiddleware.MiddlewareFunc())
+
+	return handlers
 }

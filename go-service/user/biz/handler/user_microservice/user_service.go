@@ -46,7 +46,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	c.JSON(consts.StatusOK, resp)
 }
 
-// ThirdPartyLogin 第三方登录
+// ThirdPartyLogin TODO 第三方登录
 // @router /third_party_login [POST]
 func ThirdPartyLogin(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -73,7 +73,21 @@ func UpdateUserProfile(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(user_microservice.UpdateUserResponse)
+	// 获取用户信息中的 id
+	user, exist := c.Get(middleware.IdentityKey)
+	if !exist {
+		c.String(consts.StatusNonAuthoritativeInfo, "用户未登录")
+		return
+	}
+
+	req.UserId = user.(*model.User).ID
+
+	resp, err := service.NewUpdateUserProfileService(ctx).Run(&req)
+
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

@@ -2572,13 +2572,14 @@ func (p *ThirdPartyLoginResponse) Field4DeepEqual(src *string) bool {
 
 // 修改用户信息请求结构体
 type UpdateUserRequest struct {
-	Username        string  `thrift:"Username,1" frugal:"1,default,string" form:"Username" json:"Username" query:"Username"`
-	Password        *string `thrift:"Password,2,optional" frugal:"2,optional,string" form:"Password" json:"Password,omitempty" query:"Password"`
-	Email           *string `thrift:"Email,3,optional" frugal:"3,optional,string" form:"Email" json:"Email,omitempty" query:"Email"`
-	PhoneNumber     *string `thrift:"PhoneNumber,4,optional" frugal:"4,optional,string" form:"PhoneNumber" json:"PhoneNumber,omitempty" query:"PhoneNumber"`
-	Birthday        *string `thrift:"Birthday,5,optional" frugal:"5,optional,string" form:"Birthday" json:"Birthday,omitempty" query:"Birthday"`
-	Gender          *string `thrift:"Gender,6,optional" frugal:"6,optional,string" form:"Gender" json:"Gender,omitempty" query:"Gender"`
-	ThirdPartyToken *string `thrift:"ThirdPartyToken,7,optional" frugal:"7,optional,string" form:"ThirdPartyToken" json:"ThirdPartyToken,omitempty" query:"ThirdPartyToken"`
+	UserId          int64   `thrift:"UserId,1" frugal:"1,default,i64" form:"UserId" json:"UserId" query:"UserId"`
+	Username        string  `thrift:"Username,2" frugal:"2,default,string" form:"Username" json:"Username" query:"Username"`
+	Password        *string `thrift:"Password,3,optional" frugal:"3,optional,string" form:"Password" json:"Password,omitempty" query:"Password"`
+	Email           *string `thrift:"Email,4,optional" frugal:"4,optional,string" form:"Email" json:"Email,omitempty" query:"Email"`
+	PhoneNumber     *string `thrift:"PhoneNumber,5,optional" frugal:"5,optional,string" form:"PhoneNumber" json:"PhoneNumber,omitempty" query:"PhoneNumber"`
+	Birthday        *string `thrift:"Birthday,6,optional" frugal:"6,optional,string" form:"Birthday" json:"Birthday,omitempty" query:"Birthday"`
+	Gender          *string `thrift:"Gender,7,optional" frugal:"7,optional,string" form:"Gender" json:"Gender,omitempty" query:"Gender"`
+	ThirdPartyToken *string `thrift:"ThirdPartyToken,8,optional" frugal:"8,optional,string" form:"ThirdPartyToken" json:"ThirdPartyToken,omitempty" query:"ThirdPartyToken"`
 }
 
 func NewUpdateUserRequest() *UpdateUserRequest {
@@ -2586,6 +2587,10 @@ func NewUpdateUserRequest() *UpdateUserRequest {
 }
 
 func (p *UpdateUserRequest) InitDefault() {
+}
+
+func (p *UpdateUserRequest) GetUserId() (v int64) {
+	return p.UserId
 }
 
 func (p *UpdateUserRequest) GetUsername() (v string) {
@@ -2645,6 +2650,9 @@ func (p *UpdateUserRequest) GetThirdPartyToken() (v string) {
 	}
 	return *p.ThirdPartyToken
 }
+func (p *UpdateUserRequest) SetUserId(val int64) {
+	p.UserId = val
+}
 func (p *UpdateUserRequest) SetUsername(val string) {
 	p.Username = val
 }
@@ -2668,13 +2676,14 @@ func (p *UpdateUserRequest) SetThirdPartyToken(val *string) {
 }
 
 var fieldIDToName_UpdateUserRequest = map[int16]string{
-	1: "Username",
-	2: "Password",
-	3: "Email",
-	4: "PhoneNumber",
-	5: "Birthday",
-	6: "Gender",
-	7: "ThirdPartyToken",
+	1: "UserId",
+	2: "Username",
+	3: "Password",
+	4: "Email",
+	5: "PhoneNumber",
+	6: "Birthday",
+	7: "Gender",
+	8: "ThirdPartyToken",
 }
 
 func (p *UpdateUserRequest) IsSetPassword() bool {
@@ -2721,7 +2730,7 @@ func (p *UpdateUserRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2776,6 +2785,14 @@ func (p *UpdateUserRequest) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -2807,6 +2824,17 @@ ReadStructEndError:
 
 func (p *UpdateUserRequest) ReadField1(iprot thrift.TProtocol) error {
 
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.UserId = _field
+	return nil
+}
+func (p *UpdateUserRequest) ReadField2(iprot thrift.TProtocol) error {
+
 	var _field string
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -2814,17 +2842,6 @@ func (p *UpdateUserRequest) ReadField1(iprot thrift.TProtocol) error {
 		_field = v
 	}
 	p.Username = _field
-	return nil
-}
-func (p *UpdateUserRequest) ReadField2(iprot thrift.TProtocol) error {
-
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		_field = &v
-	}
-	p.Password = _field
 	return nil
 }
 func (p *UpdateUserRequest) ReadField3(iprot thrift.TProtocol) error {
@@ -2835,7 +2852,7 @@ func (p *UpdateUserRequest) ReadField3(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.Email = _field
+	p.Password = _field
 	return nil
 }
 func (p *UpdateUserRequest) ReadField4(iprot thrift.TProtocol) error {
@@ -2846,7 +2863,7 @@ func (p *UpdateUserRequest) ReadField4(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.PhoneNumber = _field
+	p.Email = _field
 	return nil
 }
 func (p *UpdateUserRequest) ReadField5(iprot thrift.TProtocol) error {
@@ -2857,7 +2874,7 @@ func (p *UpdateUserRequest) ReadField5(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.Birthday = _field
+	p.PhoneNumber = _field
 	return nil
 }
 func (p *UpdateUserRequest) ReadField6(iprot thrift.TProtocol) error {
@@ -2868,10 +2885,21 @@ func (p *UpdateUserRequest) ReadField6(iprot thrift.TProtocol) error {
 	} else {
 		_field = &v
 	}
-	p.Gender = _field
+	p.Birthday = _field
 	return nil
 }
 func (p *UpdateUserRequest) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Gender = _field
+	return nil
+}
+func (p *UpdateUserRequest) ReadField8(iprot thrift.TProtocol) error {
 
 	var _field *string
 	if v, err := iprot.ReadString(); err != nil {
@@ -2917,6 +2945,10 @@ func (p *UpdateUserRequest) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 7
 			goto WriteFieldError
 		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -2936,10 +2968,10 @@ WriteStructEndError:
 }
 
 func (p *UpdateUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("UserId", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Username); err != nil {
+	if err := oprot.WriteI64(p.UserId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2953,16 +2985,14 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetPassword() {
-		if err = oprot.WriteFieldBegin("Password", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Password); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("Username", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Username); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -2972,11 +3002,11 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetEmail() {
-		if err = oprot.WriteFieldBegin("Email", thrift.STRING, 3); err != nil {
+	if p.IsSetPassword() {
+		if err = oprot.WriteFieldBegin("Password", thrift.STRING, 3); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Email); err != nil {
+		if err := oprot.WriteString(*p.Password); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2991,11 +3021,11 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetPhoneNumber() {
-		if err = oprot.WriteFieldBegin("PhoneNumber", thrift.STRING, 4); err != nil {
+	if p.IsSetEmail() {
+		if err = oprot.WriteFieldBegin("Email", thrift.STRING, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.PhoneNumber); err != nil {
+		if err := oprot.WriteString(*p.Email); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3010,11 +3040,11 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetBirthday() {
-		if err = oprot.WriteFieldBegin("Birthday", thrift.STRING, 5); err != nil {
+	if p.IsSetPhoneNumber() {
+		if err = oprot.WriteFieldBegin("PhoneNumber", thrift.STRING, 5); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Birthday); err != nil {
+		if err := oprot.WriteString(*p.PhoneNumber); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3029,11 +3059,11 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField6(oprot thrift.TProtocol) (err error) {
-	if p.IsSetGender() {
-		if err = oprot.WriteFieldBegin("Gender", thrift.STRING, 6); err != nil {
+	if p.IsSetBirthday() {
+		if err = oprot.WriteFieldBegin("Birthday", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Gender); err != nil {
+		if err := oprot.WriteString(*p.Birthday); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3048,11 +3078,11 @@ WriteFieldEndError:
 }
 
 func (p *UpdateUserRequest) writeField7(oprot thrift.TProtocol) (err error) {
-	if p.IsSetThirdPartyToken() {
-		if err = oprot.WriteFieldBegin("ThirdPartyToken", thrift.STRING, 7); err != nil {
+	if p.IsSetGender() {
+		if err = oprot.WriteFieldBegin("Gender", thrift.STRING, 7); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.ThirdPartyToken); err != nil {
+		if err := oprot.WriteString(*p.Gender); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -3064,6 +3094,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *UpdateUserRequest) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetThirdPartyToken() {
+		if err = oprot.WriteFieldBegin("ThirdPartyToken", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.ThirdPartyToken); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
 func (p *UpdateUserRequest) String() string {
@@ -3080,38 +3129,48 @@ func (p *UpdateUserRequest) DeepEqual(ano *UpdateUserRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Username) {
+	if !p.Field1DeepEqual(ano.UserId) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Password) {
+	if !p.Field2DeepEqual(ano.Username) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.Email) {
+	if !p.Field3DeepEqual(ano.Password) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.PhoneNumber) {
+	if !p.Field4DeepEqual(ano.Email) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.Birthday) {
+	if !p.Field5DeepEqual(ano.PhoneNumber) {
 		return false
 	}
-	if !p.Field6DeepEqual(ano.Gender) {
+	if !p.Field6DeepEqual(ano.Birthday) {
 		return false
 	}
-	if !p.Field7DeepEqual(ano.ThirdPartyToken) {
+	if !p.Field7DeepEqual(ano.Gender) {
+		return false
+	}
+	if !p.Field8DeepEqual(ano.ThirdPartyToken) {
 		return false
 	}
 	return true
 }
 
-func (p *UpdateUserRequest) Field1DeepEqual(src string) bool {
+func (p *UpdateUserRequest) Field1DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+func (p *UpdateUserRequest) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Username, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field2DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field3DeepEqual(src *string) bool {
 
 	if p.Password == src {
 		return true
@@ -3123,7 +3182,7 @@ func (p *UpdateUserRequest) Field2DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field3DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field4DeepEqual(src *string) bool {
 
 	if p.Email == src {
 		return true
@@ -3135,7 +3194,7 @@ func (p *UpdateUserRequest) Field3DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field4DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field5DeepEqual(src *string) bool {
 
 	if p.PhoneNumber == src {
 		return true
@@ -3147,7 +3206,7 @@ func (p *UpdateUserRequest) Field4DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field5DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field6DeepEqual(src *string) bool {
 
 	if p.Birthday == src {
 		return true
@@ -3159,7 +3218,7 @@ func (p *UpdateUserRequest) Field5DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field6DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field7DeepEqual(src *string) bool {
 
 	if p.Gender == src {
 		return true
@@ -3171,7 +3230,7 @@ func (p *UpdateUserRequest) Field6DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateUserRequest) Field7DeepEqual(src *string) bool {
+func (p *UpdateUserRequest) Field8DeepEqual(src *string) bool {
 
 	if p.ThirdPartyToken == src {
 		return true
