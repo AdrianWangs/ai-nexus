@@ -1,8 +1,4 @@
 services:
-    consul:
-        image: hashicorp/consul:latest
-        ports:
-            - 8500:8500
     etcd:
         image: bitnami/etcd:3.5.14
         container_name: etcd
@@ -14,7 +10,7 @@ services:
             - TZ=Asia/Shanghai
             - ALLOW_NONE_AUTHENTICATION=yes
     nacos:
-        image: nacos/nacos-server:v2.3.2
+        image: nacos/nacos-server:v2.1.2-slim
         container_name: nacos
         ports:
             - "8848:8848"
