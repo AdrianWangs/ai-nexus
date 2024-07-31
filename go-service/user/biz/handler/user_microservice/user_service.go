@@ -4,6 +4,9 @@ package user_microservice
 
 import (
 	"context"
+	"github.com/AdrianWangs/nexus/go-common/middleware"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/service"
 	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -81,7 +84,19 @@ func GetUser(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(user_microservice.GetUserResponse)
+	resp, err := service.NewGetUserService(ctx).Run(&req)
+
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	user, exist := c.Get(middleware.IdentityKey)
+	if !exist {
+		c.String(consts.StatusNonAuthoritativeInfo, "用户未登录")
+	}
+
+	userId := user.(*model.User).ID
 
 	c.JSON(consts.StatusOK, resp)
 }

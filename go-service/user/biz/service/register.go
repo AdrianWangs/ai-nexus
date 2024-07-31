@@ -2,9 +2,10 @@ package service
 
 import (
 	"context"
+	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
 	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql"
 	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
-	"github.com/AdrianWangs/nexus/go-service/user/model"
+	"time"
 )
 
 type RegisterService struct {
@@ -23,12 +24,20 @@ func (s *RegisterService) Run(request *user_microservice.RegisterRequest) (resp 
 	resp.ErrorMessage = nil
 	err = nil
 
+	// 将 birthday 字符串转化为时间
+	birthday, err := time.Parse("2006-01-02", request.Birthday)
+	if err != nil {
+		resp.Success = false
+		resp.ErrorMessage = new(string)
+		*resp.ErrorMessage = err.Error()
+		return
+	}
 	user := model.User{
 		Username:        request.Username,
 		Password:        request.Password,
-		Birthday:        request.Birthday,
+		Birthday:        birthday,
 		Gender:          request.Gender,
-		RoleId:          0, // 普通用户
+		RoleID:          0, // 普通用户
 		PhoneNumber:     request.PhoneNumber,
 		Email:           request.Email,
 		ThirdPartyToken: "",

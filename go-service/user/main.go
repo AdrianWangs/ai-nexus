@@ -4,8 +4,10 @@ import (
 	"github.com/AdrianWangs/nexus/go-common/nacos"
 	"github.com/AdrianWangs/nexus/go-service/user/biz/dal"
 	"github.com/joho/godotenv"
+	"io"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"github.com/AdrianWangs/nexus/go-service/user/conf"
@@ -81,7 +83,11 @@ func kitexInit() (opts []server.Option) {
 		}),
 		FlushInterval: time.Minute,
 	}
-	klog.SetOutput(asyncWriter)
+
+	// 创建一个 MultiWriter，同时写入文件和控制台
+	multiWriter := io.MultiWriter(asyncWriter, os.Stdout)
+
+	klog.SetOutput(multiWriter)
 	server.RegisterShutdownHook(func() {
 		asyncWriter.Sync()
 	})
