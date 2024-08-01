@@ -2,7 +2,7 @@
 package userservice
 
 import (
-	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
+	user_microservice "github.com/AdrianWangs/ai-nexus/go-service/user/kitex_gen/user_microservice"
 	server "github.com/cloudwego/kitex/server"
 )
 

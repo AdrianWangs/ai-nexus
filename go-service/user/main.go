@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/AdrianWangs/nexus/go-common/nacos"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal"
+	"github.com/AdrianWangs/ai-nexus/go-common/nacos"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal"
 	"github.com/joho/godotenv"
 	"io"
 	"log"
@@ -10,8 +10,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/AdrianWangs/nexus/go-service/user/conf"
-	"github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice/userservice"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/conf"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/kitex_gen/user_microservice/userservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
@@ -44,6 +44,9 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
+	opts = append(opts, server.
+		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
+
 	opts = append(opts, server.
 		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 

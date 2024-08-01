@@ -3,7 +3,7 @@
 package router
 
 import (
-	user_microservice "github.com/AdrianWangs/nexus/go-service/user/biz/router/user_microservice"
+	user_microservice "github.com/AdrianWangs/ai-nexus/go-service/user/biz/router/user_microservice"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

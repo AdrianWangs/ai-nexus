@@ -3,13 +3,13 @@ package middleware
 
 import (
 	"context"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/model"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/mysql"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
 	"time"
 
-	common_config "github.com/AdrianWangs/nexus/go-common/conf"
+	common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/common/utils"

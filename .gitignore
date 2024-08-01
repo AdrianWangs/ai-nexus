@@ -1,3 +1,13 @@
 .idea/*
 
 nacos/logs/*
+
+nacos/data/connection
+nacos/data/derby-data
+nacos/data/naming
+nacos/data/protocol
+nacos/data/tps
+
+redis
+
+go-service/*/tmp

@@ -2,7 +2,7 @@
 package nacos
 
 import (
-	"github.com/AdrianWangs/nexus/go-common/conf"
+	"github.com/AdrianWangs/ai-nexus/go-common/conf"
 	register "github.com/cloudwego/kitex/pkg/registry"
 	"github.com/kitex-contrib/registry-nacos/registry"
 	"github.com/nacos-group/nacos-sdk-go/clients"

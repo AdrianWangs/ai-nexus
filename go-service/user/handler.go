@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/service"
-	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/service"
+	user_microservice "github.com/AdrianWangs/ai-nexus/go-service/user/kitex_gen/user_microservice"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.

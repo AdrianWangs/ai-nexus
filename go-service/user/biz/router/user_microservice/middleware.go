@@ -3,7 +3,7 @@
 package user_microservice
 
 import (
-	"github.com/AdrianWangs/nexus/go-common/middleware"
+	"github.com/AdrianWangs/ai-nexus/go-common/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
