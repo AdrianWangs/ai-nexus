@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql"
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/query"
-	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/model"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/mysql"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/query"
+	user_microservice "github.com/AdrianWangs/ai-nexus/go-service/user/kitex_gen/user_microservice"
 	"time"
 )
 

@@ -7,7 +7,7 @@ import (
 	"os"
 	"sync"
 
-	common_config "github.com/AdrianWangs/nexus/go-common/conf"
+	common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"gopkg.in/yaml.v2"
 )

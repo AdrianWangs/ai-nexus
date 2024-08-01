@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/AdrianWangs/nexus/go-common/middleware"
+	"github.com/AdrianWangs/ai-nexus/go-common/middleware"
 	"net"
 	"regexp"
 
-	"github.com/AdrianWangs/nexus/go-service/user/biz/router"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/router"
 	"github.com/cloudwego/hertz/pkg/app"
 	hertzServer "github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/utils"

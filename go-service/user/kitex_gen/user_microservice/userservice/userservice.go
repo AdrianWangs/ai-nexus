@@ -5,7 +5,7 @@ package userservice
 import (
 	"context"
 	"errors"
-	user_microservice "github.com/AdrianWangs/nexus/go-service/user/kitex_gen/user_microservice"
+	user_microservice "github.com/AdrianWangs/ai-nexus/go-service/user/kitex_gen/user_microservice"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )

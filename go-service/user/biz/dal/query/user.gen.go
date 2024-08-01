@@ -16,7 +16,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {

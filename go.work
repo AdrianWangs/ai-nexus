@@ -4,3 +4,9 @@ use (
 	./go-common
 	./go-service/user
 )
+
+replace (
+	github.com/AdrianWangs/nexus => ./
+	github.com/AdrianWangs/nexus/go-service/user/biz/dal/model => ./go-service/user/biz/dal/model
+	github.com/AdrianWangs/nexus/go-service/user/biz/dal/mysql => ./go-service/user/biz/dal/mysql
+)
