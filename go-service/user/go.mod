@@ -26,6 +26,7 @@ require (
 )
 
 require (
+	github.com/AdrianWangs/ai-nexus v0.0.0-20240801102059-2b84c2b00ce7 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.18 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
