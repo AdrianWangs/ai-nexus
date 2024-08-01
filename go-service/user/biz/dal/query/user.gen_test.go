@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/AdrianWangs/nexus/go-service/user/biz/dal/model"
+	"github.com/AdrianWangs/ai-nexus/go-service/user/biz/dal/model"
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 	"gorm.io/gorm/clause"
