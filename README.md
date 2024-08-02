@@ -209,7 +209,7 @@ opts = append(opts, server.WithRegistry(r))
 5. 在 conf/conf.go 中添加如下代码以使用注册中心配置:
 ```golang
 import (
-common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
+    common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
 )
 // 获取当前环境配置
 	env := GetEnv()
