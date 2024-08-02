@@ -44,17 +44,12 @@ func main() {
 }
 
 func kitexInit() (opts []server.Option) {
-	opts = append(opts, server.
-		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 
 	opts = append(opts, server.
 		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 
 	// 初始化数据库
 	dal.Init()
-
-	opts = append(opts, server.
-		WithTransHandlerFactory(&mixTransHandlerFactory{nil}))
 
 	// address
 	addr, err := net.ResolveTCPAddr("tcp", conf.GetConf().Kitex.Address)

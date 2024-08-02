@@ -2,6 +2,6 @@ go 1.22.5
 
 use (
 	./go-common
+	./go-service/test
 	./go-service/user
 )
-
