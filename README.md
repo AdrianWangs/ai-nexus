@@ -250,13 +250,13 @@ import (
 		klog.Info("配置加载成功")
 	}, 100)
 ```
-5. 修改 go.mod 文件，添加一个替换
+6. 修改 go.mod 文件，添加一个替换
 ```text
 replace github.com/AdrianWangs/ai-nexus/go-common => ../../go-common
 ```
 > 如果该微服务还依赖其他微服务，需要添加其他微服务的替换
 
-6. 运行如下命令下载依赖包
+7. 运行如下命令下载依赖包
 ```bash
 go mod tidy
 ```
