@@ -14,6 +14,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kitex-contrib/config-nacos v0.4.0
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20240515092919-1f776656cb66
+	github.com/kitex-contrib/registry-nacos v0.1.2
 	github.com/kr/pretty v0.3.1
 	github.com/nacos-group/nacos-sdk-go v1.1.4
 	github.com/redis/go-redis/v9 v9.6.0
@@ -71,7 +72,6 @@ require (
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/kitex-contrib/registry-nacos v0.1.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
