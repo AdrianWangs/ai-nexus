@@ -89,19 +89,19 @@ struct GetUserResponse {
 // 定义用户服务接口
 service UserService {
     // 用户登录
-    LoginResponse Login(1: LoginRequest request)(api.post="login");
+    LoginResponse Login(1: LoginRequest request)(api.post="/login");
 
     // 用户注册
-    RegisterResponse Register(1: RegisterRequest request)(api.post="register");
+    RegisterResponse Register(1: RegisterRequest request)(api.post="/register");
 
     // 第三方登录
-    ThirdPartyLoginResponse ThirdPartyLogin(1: ThirdPartyLoginRequest request)(api.post="third_party_login");
+    ThirdPartyLoginResponse ThirdPartyLogin(1: ThirdPartyLoginRequest request)(api.post="/third_party_login");
 
     // 修改用户信息
-    UpdateUserResponse UpdateUserProfile(1: UpdateUserRequest request)(api.post="update_user_profile");
+    UpdateUserResponse UpdateUserProfile(1: UpdateUserRequest request)(api.post="/update_user_profile");
 
     // 获取用户信息
-    GetUserResponse GetUser(1: GetUserRequest request)(api.get="get_user");
+    GetUserResponse GetUser(1: GetUserRequest request)(api.get="/get_user");
 
 }(
     api.path="/user",

@@ -169,3 +169,94 @@ kubectl get pods --all-namespaces
 ```bash
 minikube tunnel
 ```
+
+# 使用自定义代码生成来生成代码（尚不完善）
+1.  安装 cwgo，教程：[cwgo](https://cloudwego.cn/zh/docs/cwgo/)
+2. 在 go-service 目录下创建一个新的目录存放新的微服务代码
+3. 进入到新的目录下，运行如下命令生成一个新的 RPC 相关微服务
+```bash
+cwgo server --type RPC --module github.com/AdrianWangs/ai-nexus/go-service/{微服务名称} --server_name {微服务名称} --idl ../../idl/{相关 idl 文件} --template ../../idl/tpl/kitex/server/standard
+```
+4. 运行如下命令生成一个新的 HTTP 相关微服务
+```bash
+cwgo server --type HTTP --module github.com/AdrianWangs/ai-nexus/go-service/{微服务名称} --server_name {微服务名称} --idl ../../idl/{相关 idl 文件}
+```
+5. 修改 go.mod 文件，添加一个替换
+```text
+replace github.com/AdrianWangs/ai-nexus/go-common => ../../go-common
+```
+> 如果该微服务还依赖其他微服务，需要添加其他微服务的替换
+
+6. 运行如下命令下载依赖包
+```bash
+go mod tidy
+```
+
+# 使用官方代码生成来生成代码
+1.  安装 cwgo，教程：[cwgo](https://cloudwego.cn/zh/docs/cwgo/)
+2. 在 go-service 目录下创建一个新的目录存放新的微服务代码
+3. 进入到新的目录下，运行如下命令生成一个新的微服务(同时在一个端口开启 RPC 和 HTTP 服务)
+```bash
+cwgo server --type RPC --module github.com/AdrianWangs/ai-nexus/go-service/{微服务名称} --server_name {微服务名称} --idl ../../idl/{相关 idl 文件} --hex
+```
+4. 在 main.go 中添加如下代码:
+```golang
+// nacos 注册中心
+r := nacos.GetNacosRegistry()
+opts = append(opts, server.WithRegistry(r))
+```
+> 上述代码用于向 nacos 注册中心注册服务
+5. 在 conf/conf.go 中添加如下代码以使用注册中心配置:
+```golang
+import (
+    common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
+)
+// 获取当前环境配置
+	env := GetEnv()
+	klog.Infof("当前环境: %s", env)
+
+	conf = new(Config)
+
+	// 从公共配置中加载 Nacos 配置
+	nacos_config := common_config.GetConf().Nacos
+	client, err := nacos.NewClient(nacos.Options{
+		Address:     nacos_config.Address,
+		Port:        nacos_config.Port,
+		NamespaceID: nacos_config.Namespace,
+		Group:       nacos_config.Group,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+	client.RegisterConfigCallback(vo.ConfigParam{
+		DataId:   "{配置文件名称}.yaml",
+		Group:    env,
+		Type:     "yaml",
+		OnChange: nil,
+	}, func(s string, parser nacos.ConfigParser) {
+		err = yaml.Unmarshal([]byte(s), conf)
+		if err != nil {
+			klog.Error("转换配置失败 - %v", err)
+			panic(err)
+		}
+		klog.Info("重启配置")
+
+		// 打印配置
+		klog.Infof("配置:")
+
+		pretty.Printf("%# v\n", conf)
+
+		klog.Info("配置加载成功")
+	}, 100)
+```
+6. 修改 go.mod 文件，添加一个替换
+```text
+replace github.com/AdrianWangs/ai-nexus/go-common => ../../go-common
+```
+> 如果该微服务还依赖其他微服务，需要添加其他微服务的替换
+
+7. 运行如下命令下载依赖包
+```bash
+go mod tidy
+```
