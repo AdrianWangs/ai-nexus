@@ -33,16 +33,49 @@ func main() {
 	fmt.Println("serviceDescriptor.Name:", serviceDescriptor.Name)
 	functions := serviceDescriptor.Functions
 
-	for name, function := range functions {
-		fmt.Println("name:", name)
-		fmt.Println("function.Name:", function.Name)
-		request := function.Request
+	go func() {
+		for name, function := range functions {
+			println("************************" + name + "************************")
+			fmt.Println("function.Name:", function.Name)
+			request := function.Request
+			requestStruct := request.Struct
+			fieldsByName := requestStruct.FieldsByName
 
-		fmt.Println("request",request.)
+			for _, field := range fieldsByName {
 
-		fmt.Println("function.Response:", function.Response)
+				fieldType := field.Type
+				println("%%%%%%%%%%%%%" + fieldType.Name + "%%%%%%%%%%%%%%%")
 
-	}
+				fieldStruct := fieldType.Struct
+
+				fmt.Println("请求结构体名：", fieldStruct.Name)
+
+				queryFields := fieldStruct.FieldsByName
+
+				for name, field := range queryFields {
+
+					fmt.Println("名称:", name)
+					fmt.Println("字段名称（可能有别名）:", field.FieldName())
+					fmt.Println("类型", field.Type.Name)
+					fmt.Println("field.HTTPMapping:", field.HTTPMapping)
+					fmt.Println("field.ValueMapping:", field.ValueMapping)
+
+				}
+
+				fmt.Println("fieldStruct.RequiredFields:", fieldStruct.RequiredFields)
+				fmt.Println("fieldStruct.DefaultFields:", fieldStruct.DefaultFields)
+
+				fmt.Println("fieldType.IsRequestBase:", fieldType.IsRequestBase)
+
+				println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+			}
+
+			fmt.Println("function.Response:", function.Response)
+
+			println("************************" + name + "************************")
+
+		}
+	}()
 
 	if err != nil {
 		fmt.Println("err:", err)
