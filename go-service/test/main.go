@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-common/genericCall"
 	"github.com/AdrianWangs/ai-nexus/go-common/nacos"
 	"github.com/cloudwego/hertz/pkg/common/json"
 	"github.com/cloudwego/kitex/client"
@@ -15,6 +16,34 @@ import (
 
 func main() {
 
+	idlPath := "./../../idl/user-service.thrift"
+
+	p, err := generic.NewThriftFileProvider(idlPath)
+
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+
+	descriptior, err := genericCall.ParseGeneralFunction(p)
+
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+	fmt.Println("解析 idl 文件得到的rpc 调用:")
+	// 将 descriptior 转化为 json 字符串
+	descriptiorJson, err := json.Marshal(descriptior)
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+
+	fmt.Println("descriptior:", string(descriptiorJson))
+
+	p, err = generic.NewThriftFileProvider(idlPath)
+
+	// 获取 nacos 配置中心的客户端
 	configClient, err := nacos.GetNacosConfigClient()
 
 	if err != nil {
@@ -22,72 +51,17 @@ func main() {
 		return
 	}
 
+	// 创建 nacos 的服务发现客户端
 	r := resolver.NewNacosResolver(configClient)
 
-	p, err := generic.NewThriftFileProvider("./../../idl/user-service.thrift")
-
-	// 从 provide 中获取到的是一个 channel，从 channel 中获取到的是一个 ServiceDescriptor
-	serviceDescriptor := <-p.Provide()
-
-	fmt.Println("serviceDescriptor:", serviceDescriptor)
-	fmt.Println("serviceDescriptor.Name:", serviceDescriptor.Name)
-	functions := serviceDescriptor.Functions
-
-	go func() {
-		for name, function := range functions {
-			println("************************" + name + "************************")
-			fmt.Println("function.Name:", function.Name)
-			request := function.Request
-			requestStruct := request.Struct
-			fieldsByName := requestStruct.FieldsByName
-
-			for _, field := range fieldsByName {
-
-				fieldType := field.Type
-				println("%%%%%%%%%%%%%" + fieldType.Name + "%%%%%%%%%%%%%%%")
-
-				fieldStruct := fieldType.Struct
-
-				fmt.Println("请求结构体名：", fieldStruct.Name)
-
-				queryFields := fieldStruct.FieldsByName
-
-				for name, field := range queryFields {
-
-					fmt.Println("名称:", name)
-					fmt.Println("字段名称（可能有别名）:", field.FieldName())
-					fmt.Println("类型", field.Type.Name)
-					fmt.Println("field.HTTPMapping:", field.HTTPMapping)
-					fmt.Println("field.ValueMapping:", field.ValueMapping)
-
-				}
-
-				fmt.Println("fieldStruct.RequiredFields:", fieldStruct.RequiredFields)
-				fmt.Println("fieldStruct.DefaultFields:", fieldStruct.DefaultFields)
-
-				fmt.Println("fieldType.IsRequestBase:", fieldType.IsRequestBase)
-
-				println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-			}
-
-			fmt.Println("function.Response:", function.Response)
-
-			println("************************" + name + "************************")
-
-		}
-	}()
-
-	if err != nil {
-		fmt.Println("err:", err)
-		return
-	}
-
+	// 生成泛化调用的参数
 	thriftGeneric, err := generic.JSONThriftGeneric(p)
 
 	if err != nil {
 		fmt.Println("err:", err)
 	}
 
+	// 创建泛化调用的客户端
 	cli, err := genericclient.NewClient(
 		"user-service",
 		thriftGeneric,
