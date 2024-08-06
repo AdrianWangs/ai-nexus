@@ -25,7 +25,10 @@ func main() {
 		return
 	}
 
-	descriptior, err := genericCall.ParseGeneralFunction(p)
+	var parser genericCall.IdlParser
+	parser = &genericCall.ThriftIdlParser{}
+
+	descriptior, err := parser.ParseGeneralFunction(p)
 
 	if err != nil {
 		fmt.Println("err:", err)
