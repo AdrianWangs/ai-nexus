@@ -28,21 +28,21 @@ func main() {
 	var parser genericCall.IdlParser
 	parser = &genericCall.ThriftIdlParser{}
 
-	descriptior, err := parser.ParseGeneralFunction(p)
+	descriptor, err := parser.ParseGeneralFunction(p)
 
 	if err != nil {
 		fmt.Println("err:", err)
 		return
 	}
 	fmt.Println("解析 idl 文件得到的rpc 调用:")
-	// 将 descriptior 转化为 json 字符串
-	descriptiorJson, err := json.Marshal(descriptior)
+	// 将 descriptor 转化为 json 字符串
+	descriptorJson, err := json.Marshal(descriptor)
 	if err != nil {
 		fmt.Println("err:", err)
 		return
 	}
 
-	fmt.Println("descriptior:", string(descriptiorJson))
+	fmt.Println("descriptor:", string(descriptorJson))
 
 	p, err = generic.NewThriftFileProvider(idlPath)
 

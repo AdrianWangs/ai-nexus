@@ -14,18 +14,18 @@ const TableNameUser = "user"
 
 // User mapped from table <user>
 type User struct {
-	ID              int64          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	CreatedAt       time.Time      `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt       time.Time      `gorm:"column:updated_at" json:"updated_at"`
-	DeletedAt       gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
-	Username        string         `gorm:"column:username;not null" json:"username"`
-	Password        string         `gorm:"column:password;not null" json:"password"`
-	Birthday        time.Time      `gorm:"column:birthday" json:"birthday"`
-	Gender          string         `gorm:"column:gender" json:"gender"`
-	RoleID          int32          `gorm:"column:role_id" json:"role_id"`
-	PhoneNumber     string         `gorm:"column:phone_number" json:"phone_number"`
-	Email           string         `gorm:"column:email" json:"email"`
-	ThirdPartyToken string         `gorm:"column:third_party_token" json:"third_party_token"`
+	ID              int64          `gorm:"column:id;type:bigint unsigned;primaryKey;autoIncrement:true" json:"id"`
+	CreatedAt       time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
+	UpdatedAt       time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
+	DeletedAt       gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3)" json:"deleted_at"`
+	Username        string         `gorm:"column:username;type:varchar(20);not null" json:"username"`
+	Password        string         `gorm:"column:password;type:varchar(20);not null" json:"password"`
+	Birthday        time.Time      `gorm:"column:birthday;type:date" json:"birthday"`
+	Gender          string         `gorm:"column:gender;type:varchar(10)" json:"gender"`
+	RoleID          int32          `gorm:"column:role_id;type:int" json:"role_id"`
+	PhoneNumber     string         `gorm:"column:phone_number;type:varchar(20)" json:"phone_number"`
+	Email           string         `gorm:"column:email;type:varchar(50)" json:"email"`
+	ThirdPartyToken string         `gorm:"column:third_party_token;type:varchar(100)" json:"third_party_token"`
 }
 
 // TableName User's table name
