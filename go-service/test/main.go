@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-common/genericCall"
 	"github.com/AdrianWangs/ai-nexus/go-common/nacos"
 	"github.com/cloudwego/hertz/pkg/common/json"
 	"github.com/cloudwego/kitex/client"
@@ -15,6 +16,37 @@ import (
 
 func main() {
 
+	idlPath := "./../../idl/user-service.thrift"
+
+	p, err := generic.NewThriftFileProvider(idlPath)
+
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+
+	var parser genericCall.IdlParser
+	parser = &genericCall.ThriftIdlParser{}
+
+	descriptor, err := parser.ParseGeneralFunction(p)
+
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+	fmt.Println("解析 idl 文件得到的rpc 调用:")
+	// 将 descriptor 转化为 json 字符串
+	descriptorJson, err := json.Marshal(descriptor)
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+
+	fmt.Println("descriptor:", string(descriptorJson))
+
+	p, err = generic.NewThriftFileProvider(idlPath)
+
+	// 获取 nacos 配置中心的客户端
 	configClient, err := nacos.GetNacosConfigClient()
 
 	if err != nil {
@@ -22,39 +54,17 @@ func main() {
 		return
 	}
 
+	// 创建 nacos 的服务发现客户端
 	r := resolver.NewNacosResolver(configClient)
 
-	p, err := generic.NewThriftFileProvider("./../../idl/user-service.thrift")
-
-	// 从 provide 中获取到的是一个 channel，从 channel 中获取到的是一个 ServiceDescriptor
-	serviceDescriptor := <-p.Provide()
-
-	fmt.Println("serviceDescriptor:", serviceDescriptor)
-	fmt.Println("serviceDescriptor.Name:", serviceDescriptor.Name)
-	functions := serviceDescriptor.Functions
-
-	for name, function := range functions {
-		fmt.Println("name:", name)
-		fmt.Println("function.Name:", function.Name)
-		request := function.Request
-
-		fmt.Println("request",request.)
-
-		fmt.Println("function.Response:", function.Response)
-
-	}
-
-	if err != nil {
-		fmt.Println("err:", err)
-		return
-	}
-
+	// 生成泛化调用的参数
 	thriftGeneric, err := generic.JSONThriftGeneric(p)
 
 	if err != nil {
 		fmt.Println("err:", err)
 	}
 
+	// 创建泛化调用的客户端
 	cli, err := genericclient.NewClient(
 		"user-service",
 		thriftGeneric,
