@@ -109,7 +109,16 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 			event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
 			res := CallByJson(function_name, arguments)
 
-			messages = append(messages, openai.FunctionMessage(function_name, res))
+			tool_message := openai.ChatCompletionMessage{
+				Content:      res,
+				Role:         "tool",
+				FunctionCall: openai.ChatCompletionMessageFunctionCall{},
+				ToolCalls:    []openai.ChatCompletionMessageToolCall{},
+			}
+
+			fmt.Println(tool_message.JSON.RawJSON())
+
+			messages = append(messages, tool_message)
 
 			function_name = ""
 			arguments = ""
