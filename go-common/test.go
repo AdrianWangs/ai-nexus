@@ -1,43 +1,27 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/AdrianWangs/ai-nexus/go-common/nacos"
-	"reflect"
-	"runtime"
+	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 )
 
-// printFunctionName prints the name of the function passed as an argument.
-func printFunctionName(i interface{}) {
-	f := reflect.ValueOf(i).Pointer()
-	fn := runtime.FuncForPC(f)
-
-	if fn == nil {
-		fmt.Println("Function name not found")
-		return
-	}
-	fmt.Println("Function name:", fn.Name())
-}
-
-// printFunctionPackage prints the package of the function passed as an argument.
-func printFunctionPackage() {
-	pc, _, _, _ := runtime.Caller(1)
-	fn := runtime.FuncForPC(pc)
-
-	if fn == nil {
-		fmt.Println("Function package not found")
-		return
-	}
-	fmt.Println("Function package:", fn.Name())
-}
-
-func exampleFunction() {
-	// This is an example function.
-}
-
 func main() {
-	printFunctionName(nacos.GetNacosRegistry)
+	client := openai.NewClient(
+		option.WithBaseURL("https://dashscope.aliyuncs.com/compatible-mode/v1/"),
+		option.WithAPIKey("sk-8285fe317edc44ef95f029be9b7cfe94"), // defaults to os.LookupEnv("OPENAI_API_KEY")
+	)
+	chatCompletion, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
+		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
+			openai.UserMessage("Say this is a test"),
+		}),
+		Model: openai.F("qwen-plus-0806"),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
 
-	//注册一个 rpc 客户端
+	fmt.Println(chatCompletion)
 
 }
