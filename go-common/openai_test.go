@@ -8,49 +8,34 @@ import (
 	"testing"
 )
 
+var baseUrl string
+var model string
+var apiKey string
+
+func init() {
+
+	//// 本地 ollama
+	//baseUrl = "http://localhost:11434/v1/"
+	//apiKey = "ollama"
+	//model = "llama3.1:8b"
+
+	// 通义大模型
+	baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
+	apiKey = "" // 自行去官网申请 apiKey
+	model = "qwen-max"
+}
+
 // 将json格式的参数解析一下并且调用工具
 func CallByJson(functionName string, params string) string {
 	fmt.Println(functionName, params)
 	return "金山寺"
 }
 
-// TestStreaming 测试openai 流式调用
-func TestStreaming(t *testing.T) {
-	client := openai.NewClient(
-		option.WithBaseURL("https://dashscope.aliyuncs.com/compatible-mode/v1/"),
-		option.WithAPIKey("sk-8285fe317edc44ef95f029be9b7cfe94"), // defaults to os.LookupEnv("OPENAI_API_KEY")
-	)
-
-	chatStreaming := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
-		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-			openai.UserMessage("帮我写一篇文章，题目是《如何写一篇优秀的文章》"),
-		}),
-		Model: openai.F("qwen-plus-0806"),
-	})
-
-	for chatStreaming.Next() {
-		event := chatStreaming.Current()
-		if len(event.Choices) > 0 {
-			print(event.Choices[0].Delta.Content)
-		}
-
-	}
-
-	println()
-
-	if err := chatStreaming.Err(); err != nil {
-
-		panic(err)
-
-	}
-
-}
-
 func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParamUnion, ctx context.Context) (bool, []openai.ChatCompletionMessageParamUnion) {
 
 	// 接口传入的参数
 	params := openai.ChatCompletionNewParams{
-		Model:    openai.F("qwen-plus-0806"),
+		Model:    openai.F(model),
 		Messages: openai.F(messages),
 		Tools: openai.F([]openai.ChatCompletionToolParam{
 			{
@@ -95,9 +80,11 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 
 	chatStream := client.Chat.Completions.NewStreaming(ctx, params)
 
-	var tool_call_id string
 	var function_name string
-	var arguments string
+	var function_arguments string
+	var _type string
+	var id string
+	var content string
 
 	for chatStream.Next() {
 		event := chatStream.Current()
@@ -107,7 +94,7 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 
 		if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
 			event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
-			res := CallByJson(function_name, arguments)
+			res := CallByJson(function_name, function_arguments)
 
 			tool_message := openai.ChatCompletionMessage{
 				Content:      res,
@@ -116,13 +103,27 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 				ToolCalls:    []openai.ChatCompletionMessageToolCall{},
 			}
 
-			fmt.Println(tool_message.JSON.RawJSON())
-
+			assisant_messages := openai.ChatCompletionMessage{
+				Content:      content,
+				Role:         openai.ChatCompletionMessageRoleAssistant,
+				FunctionCall: openai.ChatCompletionMessageFunctionCall{},
+				ToolCalls: []openai.ChatCompletionMessageToolCall{
+					{
+						ID:   id,
+						Type: openai.ChatCompletionMessageToolCallType(_type),
+						Function: openai.ChatCompletionMessageToolCallFunction{
+							Arguments: function_arguments,
+							Name:      function_name,
+						},
+					},
+				},
+			}
+			messages = append(messages, assisant_messages)
+			fmt.Println("函数调用结果：", res)
 			messages = append(messages, tool_message)
 
 			function_name = ""
-			arguments = ""
-			fmt.Println(tool_call_id)
+			function_arguments = ""
 
 			return false, messages
 		}
@@ -130,7 +131,10 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 		delta := event.Choices[0].Delta
 
 		if delta.Content != "" {
-			fmt.Println(delta.Content)
+
+			fmt.Print(delta.Content)
+
+			content += delta.Content
 		}
 
 		// 没有调用
@@ -144,38 +148,59 @@ func callGpt(client *openai.Client, messages []openai.ChatCompletionMessageParam
 			continue
 		}
 
+		_type = string(toolCall.Type)
+
 		if toolCall.ID != "" {
-			tool_call_id = toolCall.ID
+			id = toolCall.ID
 		}
 
 		function := toolCall.Function
 
 		if function.Name != "" {
-			function_name = function.Name
+			function_name += function.Name
 		}
 
 		if function.Arguments != "" {
-			arguments += function.Arguments
+			function_arguments += function.Arguments
 		}
 
 	}
 
-	println()
 	if err := chatStream.Err(); err != nil {
 
 		println(err.Error())
 
 	}
 
-	return true, nil
+	println()
+
+	assisant_messages := openai.ChatCompletionMessage{
+		Content:      content,
+		Role:         openai.ChatCompletionMessageRoleAssistant,
+		FunctionCall: openai.ChatCompletionMessageFunctionCall{},
+		ToolCalls: []openai.ChatCompletionMessageToolCall{
+			{
+				ID:   id,
+				Type: openai.ChatCompletionMessageToolCallType(_type),
+				Function: openai.ChatCompletionMessageToolCallFunction{
+					Arguments: function_arguments,
+					Name:      function_name,
+				},
+			},
+		},
+	}
+
+	messages = append(messages, assisant_messages)
+
+	return true, messages
 
 }
 
 // TestFunctionCall
 func TestFunctionCall(t *testing.T) {
 	client := openai.NewClient(
-		option.WithBaseURL("https://dashscope.aliyuncs.com/compatible-mode/v1/"),
-		option.WithAPIKey("sk-8285fe317edc44ef95f029be9b7cfe94"), // defaults to os.LookupEnv("OPENAI_API_KEY")
+		option.WithBaseURL(baseUrl),
+		option.WithAPIKey(apiKey), // defaults to os.LookupEnv("OPENAI_API_KEY")
 	)
 
 	ctx := context.Background()
@@ -220,9 +245,43 @@ func TestFunctionCall(t *testing.T) {
 
 	for !isEnd {
 		isEnd, messages = callGpt(client, messages, ctx)
-		for _, message := range messages {
-			fmt.Println(message)
+		if len(messages) > 0 {
+			fmt.Println(messages[len(messages)-1].(openai.ChatCompletionMessage).Content)
 		}
+
+	}
+
+}
+
+// TestStreaming 测试openai 流式调用
+func TestStreaming(t *testing.T) {
+	client := openai.NewClient(
+		option.WithBaseURL(baseUrl),
+		option.WithAPIKey(apiKey), // defaults to os.LookupEnv("OPENAI_API_KEY")
+	)
+
+	chatStreaming := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
+		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
+			openai.UserMessage("帮我写一篇文章，题目是《如何写一篇优秀的文章》"),
+		}),
+		//Model: openai.F("qwen-plus-0806"),
+		Model: openai.F(model),
+	})
+
+	for chatStreaming.Next() {
+		event := chatStreaming.Current()
+		if len(event.Choices) > 0 {
+			print(event.Choices[0].Delta.Content)
+		}
+
+	}
+
+	println()
+
+	if err := chatStreaming.Err(); err != nil {
+
+		panic(err)
+
 	}
 
 }
