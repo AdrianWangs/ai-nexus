@@ -3,9 +3,9 @@
 nacos/logs/*
 
 nacos/data/connection/*
-nacos/data/derby-data/*
+nacos/data/derby-data/*/log
 nacos/data/naming/*
-nacos/data/protocol/*/log
+nacos/data/protocol/*/log/*
 nacos/data/tps/*
 
 redis/*
