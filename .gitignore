@@ -5,7 +5,7 @@ nacos/logs/*
 nacos/data/connection/*
 nacos/data/derby-data/*
 nacos/data/naming/*
-nacos/data/protocol/*
+nacos/data/protocol/*/log
 nacos/data/tps/*
 
 redis/*
