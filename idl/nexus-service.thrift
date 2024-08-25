@@ -35,5 +35,5 @@ struct AskResponse{
 }
 
 service NexusService {
-    AskResponse EchoServer (1: AskRequest req) (streaming.mode="server"),
+    AskResponse AskServer (1: AskRequest req) (streaming.mode="server"),
 }

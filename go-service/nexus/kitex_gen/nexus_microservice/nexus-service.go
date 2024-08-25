@@ -1695,47 +1695,47 @@ func (p *AskResponse) Field3DeepEqual(src []*Choice) bool {
 }
 
 type NexusService interface {
-	EchoServer(req *AskRequest, stream NexusService_EchoServerServer) (err error)
+	AskServer(req *AskRequest, stream NexusService_AskServerServer) (err error)
 }
 
-type NexusService_EchoServerServer interface {
+type NexusService_AskServerServer interface {
 	streaming.Stream
 
 	Send(*AskResponse) error
 }
 
-type NexusServiceEchoServerArgs struct {
+type NexusServiceAskServerArgs struct {
 	Req *AskRequest `thrift:"req,1" frugal:"1,default,AskRequest" json:"req"`
 }
 
-func NewNexusServiceEchoServerArgs() *NexusServiceEchoServerArgs {
-	return &NexusServiceEchoServerArgs{}
+func NewNexusServiceAskServerArgs() *NexusServiceAskServerArgs {
+	return &NexusServiceAskServerArgs{}
 }
 
-func (p *NexusServiceEchoServerArgs) InitDefault() {
+func (p *NexusServiceAskServerArgs) InitDefault() {
 }
 
-var NexusServiceEchoServerArgs_Req_DEFAULT *AskRequest
+var NexusServiceAskServerArgs_Req_DEFAULT *AskRequest
 
-func (p *NexusServiceEchoServerArgs) GetReq() (v *AskRequest) {
+func (p *NexusServiceAskServerArgs) GetReq() (v *AskRequest) {
 	if !p.IsSetReq() {
-		return NexusServiceEchoServerArgs_Req_DEFAULT
+		return NexusServiceAskServerArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *NexusServiceEchoServerArgs) SetReq(val *AskRequest) {
+func (p *NexusServiceAskServerArgs) SetReq(val *AskRequest) {
 	p.Req = val
 }
 
-var fieldIDToName_NexusServiceEchoServerArgs = map[int16]string{
+var fieldIDToName_NexusServiceAskServerArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *NexusServiceEchoServerArgs) IsSetReq() bool {
+func (p *NexusServiceAskServerArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *NexusServiceEchoServerArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1781,7 +1781,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceEchoServerArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceAskServerArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1791,7 +1791,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerArgs) ReadField1(iprot thrift.TProtocol) error {
+func (p *NexusServiceAskServerArgs) ReadField1(iprot thrift.TProtocol) error {
 	_field := NewAskRequest()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -1800,9 +1800,9 @@ func (p *NexusServiceEchoServerArgs) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *NexusServiceEchoServerArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("EchoServer_args"); err != nil {
+	if err = oprot.WriteStructBegin("AskServer_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1828,7 +1828,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1845,15 +1845,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerArgs) String() string {
+func (p *NexusServiceAskServerArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("NexusServiceEchoServerArgs(%+v)", *p)
+	return fmt.Sprintf("NexusServiceAskServerArgs(%+v)", *p)
 
 }
 
-func (p *NexusServiceEchoServerArgs) DeepEqual(ano *NexusServiceEchoServerArgs) bool {
+func (p *NexusServiceAskServerArgs) DeepEqual(ano *NexusServiceAskServerArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1865,7 +1865,7 @@ func (p *NexusServiceEchoServerArgs) DeepEqual(ano *NexusServiceEchoServerArgs) 
 	return true
 }
 
-func (p *NexusServiceEchoServerArgs) Field1DeepEqual(src *AskRequest) bool {
+func (p *NexusServiceAskServerArgs) Field1DeepEqual(src *AskRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1873,38 +1873,38 @@ func (p *NexusServiceEchoServerArgs) Field1DeepEqual(src *AskRequest) bool {
 	return true
 }
 
-type NexusServiceEchoServerResult struct {
+type NexusServiceAskServerResult struct {
 	Success *AskResponse `thrift:"success,0,optional" frugal:"0,optional,AskResponse" json:"success,omitempty"`
 }
 
-func NewNexusServiceEchoServerResult() *NexusServiceEchoServerResult {
-	return &NexusServiceEchoServerResult{}
+func NewNexusServiceAskServerResult() *NexusServiceAskServerResult {
+	return &NexusServiceAskServerResult{}
 }
 
-func (p *NexusServiceEchoServerResult) InitDefault() {
+func (p *NexusServiceAskServerResult) InitDefault() {
 }
 
-var NexusServiceEchoServerResult_Success_DEFAULT *AskResponse
+var NexusServiceAskServerResult_Success_DEFAULT *AskResponse
 
-func (p *NexusServiceEchoServerResult) GetSuccess() (v *AskResponse) {
+func (p *NexusServiceAskServerResult) GetSuccess() (v *AskResponse) {
 	if !p.IsSetSuccess() {
-		return NexusServiceEchoServerResult_Success_DEFAULT
+		return NexusServiceAskServerResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *NexusServiceEchoServerResult) SetSuccess(x interface{}) {
+func (p *NexusServiceAskServerResult) SetSuccess(x interface{}) {
 	p.Success = x.(*AskResponse)
 }
 
-var fieldIDToName_NexusServiceEchoServerResult = map[int16]string{
+var fieldIDToName_NexusServiceAskServerResult = map[int16]string{
 	0: "success",
 }
 
-func (p *NexusServiceEchoServerResult) IsSetSuccess() bool {
+func (p *NexusServiceAskServerResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *NexusServiceEchoServerResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1950,7 +1950,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceEchoServerResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceAskServerResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1960,7 +1960,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerResult) ReadField0(iprot thrift.TProtocol) error {
+func (p *NexusServiceAskServerResult) ReadField0(iprot thrift.TProtocol) error {
 	_field := NewAskResponse()
 	if err := _field.Read(iprot); err != nil {
 		return err
@@ -1969,9 +1969,9 @@ func (p *NexusServiceEchoServerResult) ReadField0(iprot thrift.TProtocol) error 
 	return nil
 }
 
-func (p *NexusServiceEchoServerResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("EchoServer_result"); err != nil {
+	if err = oprot.WriteStructBegin("AskServer_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1997,7 +1997,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *NexusServiceAskServerResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -2016,15 +2016,15 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerResult) String() string {
+func (p *NexusServiceAskServerResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("NexusServiceEchoServerResult(%+v)", *p)
+	return fmt.Sprintf("NexusServiceAskServerResult(%+v)", *p)
 
 }
 
-func (p *NexusServiceEchoServerResult) DeepEqual(ano *NexusServiceEchoServerResult) bool {
+func (p *NexusServiceAskServerResult) DeepEqual(ano *NexusServiceAskServerResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -2036,7 +2036,7 @@ func (p *NexusServiceEchoServerResult) DeepEqual(ano *NexusServiceEchoServerResu
 	return true
 }
 
-func (p *NexusServiceEchoServerResult) Field0DeepEqual(src *AskResponse) bool {
+func (p *NexusServiceAskServerResult) Field0DeepEqual(src *AskResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

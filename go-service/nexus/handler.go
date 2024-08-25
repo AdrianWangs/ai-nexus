@@ -8,8 +8,7 @@ import (
 // NexusServiceImpl implements the last service interface defined in the IDL.
 type NexusServiceImpl struct{}
 
-func (s *NexusServiceImpl) EchoServer(req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_EchoServerServer) (err error) {
-
+func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer) (err error) {
 	fmt.Print("EchoServer")
 
 	fmt.Println(req)

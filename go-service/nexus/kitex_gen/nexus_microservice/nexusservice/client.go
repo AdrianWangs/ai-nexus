@@ -18,10 +18,10 @@ type Client interface {
 
 // StreamClient is designed to provide Interface for Streaming APIs.
 type StreamClient interface {
-	EchoServer(ctx context.Context, req *nexus_microservice.AskRequest, callOptions ...streamcall.Option) (stream NexusService_EchoServerClient, err error)
+	AskServer(ctx context.Context, req *nexus_microservice.AskRequest, callOptions ...streamcall.Option) (stream NexusService_AskServerClient, err error)
 }
 
-type NexusService_EchoServerClient interface {
+type NexusService_AskServerClient interface {
 	streaming.Stream
 	Recv() (*nexus_microservice.AskResponse, error)
 }
@@ -85,7 +85,7 @@ type kNexusServiceStreamClient struct {
 	*kClient
 }
 
-func (p *kNexusServiceStreamClient) EchoServer(ctx context.Context, req *nexus_microservice.AskRequest, callOptions ...streamcall.Option) (stream NexusService_EchoServerClient, err error) {
+func (p *kNexusServiceStreamClient) AskServer(ctx context.Context, req *nexus_microservice.AskRequest, callOptions ...streamcall.Option) (stream NexusService_AskServerClient, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, streamcall.GetCallOptions(callOptions))
-	return p.kClient.EchoServer(ctx, req)
+	return p.kClient.AskServer(ctx, req)
 }

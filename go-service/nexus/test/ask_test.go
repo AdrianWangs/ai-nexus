@@ -33,7 +33,7 @@ func TestAsk(t *testing.T) {
 		EnableSearch:    nil,
 		Messages:        []*nexus_microservice.Message{message},
 	}
-	stream, err := streamClient.EchoServer(ctx, askRequest)
+	stream, err := streamClient.AskServer(ctx, askRequest)
 
 	if err != nil {
 		t.Errorf("EchoServer failed: %v", err)

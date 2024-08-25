@@ -1322,7 +1322,7 @@ func (p *AskResponse) field3Length() int {
 	return l
 }
 
-func (p *NexusServiceEchoServerArgs) FastRead(buf []byte) (int, error) {
+func (p *NexusServiceAskServerArgs) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -1384,7 +1384,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceEchoServerArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceAskServerArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -1393,7 +1393,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerArgs) FastReadField1(buf []byte) (int, error) {
+func (p *NexusServiceAskServerArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := NewAskRequest()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1406,13 +1406,13 @@ func (p *NexusServiceEchoServerArgs) FastReadField1(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *NexusServiceEchoServerArgs) FastWrite(buf []byte) int {
+func (p *NexusServiceAskServerArgs) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *NexusServiceEchoServerArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NexusServiceAskServerArgs) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "EchoServer_args")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "AskServer_args")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
@@ -1421,9 +1421,9 @@ func (p *NexusServiceEchoServerArgs) FastWriteNocopy(buf []byte, binaryWriter bt
 	return offset
 }
 
-func (p *NexusServiceEchoServerArgs) BLength() int {
+func (p *NexusServiceAskServerArgs) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("EchoServer_args")
+	l += bthrift.Binary.StructBeginLength("AskServer_args")
 	if p != nil {
 		l += p.field1Length()
 	}
@@ -1432,7 +1432,7 @@ func (p *NexusServiceEchoServerArgs) BLength() int {
 	return l
 }
 
-func (p *NexusServiceEchoServerArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NexusServiceAskServerArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "req", thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], binaryWriter)
@@ -1440,7 +1440,7 @@ func (p *NexusServiceEchoServerArgs) fastWriteField1(buf []byte, binaryWriter bt
 	return offset
 }
 
-func (p *NexusServiceEchoServerArgs) field1Length() int {
+func (p *NexusServiceAskServerArgs) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("req", thrift.STRUCT, 1)
 	l += p.Req.BLength()
@@ -1448,7 +1448,7 @@ func (p *NexusServiceEchoServerArgs) field1Length() int {
 	return l
 }
 
-func (p *NexusServiceEchoServerResult) FastRead(buf []byte) (int, error) {
+func (p *NexusServiceAskServerResult) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
 	var l int
@@ -1510,7 +1510,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceEchoServerResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_NexusServiceAskServerResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 ReadFieldEndError:
@@ -1519,7 +1519,7 @@ ReadStructEndError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *NexusServiceEchoServerResult) FastReadField0(buf []byte) (int, error) {
+func (p *NexusServiceAskServerResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
 	_field := NewAskResponse()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1532,13 +1532,13 @@ func (p *NexusServiceEchoServerResult) FastReadField0(buf []byte) (int, error) {
 }
 
 // for compatibility
-func (p *NexusServiceEchoServerResult) FastWrite(buf []byte) int {
+func (p *NexusServiceAskServerResult) FastWrite(buf []byte) int {
 	return 0
 }
 
-func (p *NexusServiceEchoServerResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NexusServiceAskServerResult) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "EchoServer_result")
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "AskServer_result")
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], binaryWriter)
 	}
@@ -1547,9 +1547,9 @@ func (p *NexusServiceEchoServerResult) FastWriteNocopy(buf []byte, binaryWriter 
 	return offset
 }
 
-func (p *NexusServiceEchoServerResult) BLength() int {
+func (p *NexusServiceAskServerResult) BLength() int {
 	l := 0
-	l += bthrift.Binary.StructBeginLength("EchoServer_result")
+	l += bthrift.Binary.StructBeginLength("AskServer_result")
 	if p != nil {
 		l += p.field0Length()
 	}
@@ -1558,7 +1558,7 @@ func (p *NexusServiceEchoServerResult) BLength() int {
 	return l
 }
 
-func (p *NexusServiceEchoServerResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+func (p *NexusServiceAskServerResult) fastWriteField0(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.STRUCT, 0)
@@ -1568,7 +1568,7 @@ func (p *NexusServiceEchoServerResult) fastWriteField0(buf []byte, binaryWriter 
 	return offset
 }
 
-func (p *NexusServiceEchoServerResult) field0Length() int {
+func (p *NexusServiceAskServerResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += bthrift.Binary.FieldBeginLength("success", thrift.STRUCT, 0)
@@ -1578,10 +1578,10 @@ func (p *NexusServiceEchoServerResult) field0Length() int {
 	return l
 }
 
-func (p *NexusServiceEchoServerArgs) GetFirstArgument() interface{} {
+func (p *NexusServiceAskServerArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *NexusServiceEchoServerResult) GetResult() interface{} {
+func (p *NexusServiceAskServerResult) GetResult() interface{} {
 	return p.Success
 }

@@ -15,10 +15,10 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
-	"EchoServer": kitex.NewMethodInfo(
-		echoServerHandler,
-		newNexusServiceEchoServerArgs,
-		newNexusServiceEchoServerResult,
+	"AskServer": kitex.NewMethodInfo(
+		askServerHandler,
+		newNexusServiceAskServerArgs,
+		newNexusServiceAskServerResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingServer),
 	),
@@ -88,49 +88,49 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
-func echoServerHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func askServerHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	st, ok := arg.(*streaming.Args)
 	if !ok {
-		return errors.New("NexusService.EchoServer is a thrift streaming method, please call with Kitex StreamClient")
+		return errors.New("NexusService.AskServer is a thrift streaming method, please call with Kitex StreamClient")
 	}
-	stream := &nexusServiceEchoServerServer{st.Stream}
+	stream := &nexusServiceAskServerServer{st.Stream}
 	req := new(nexus_microservice.AskRequest)
 	if err := st.Stream.RecvMsg(req); err != nil {
 		return err
 	}
-	return handler.(nexus_microservice.NexusService).EchoServer(req, stream)
+	return handler.(nexus_microservice.NexusService).AskServer(req, stream)
 }
 
-type nexusServiceEchoServerClient struct {
+type nexusServiceAskServerClient struct {
 	streaming.Stream
 }
 
-func (x *nexusServiceEchoServerClient) DoFinish(err error) {
+func (x *nexusServiceAskServerClient) DoFinish(err error) {
 	if finisher, ok := x.Stream.(streaming.WithDoFinish); ok {
 		finisher.DoFinish(err)
 	} else {
 		panic(fmt.Sprintf("streaming.WithDoFinish is not implemented by %T", x.Stream))
 	}
 }
-func (x *nexusServiceEchoServerClient) Recv() (*nexus_microservice.AskResponse, error) {
+func (x *nexusServiceAskServerClient) Recv() (*nexus_microservice.AskResponse, error) {
 	m := new(nexus_microservice.AskResponse)
 	return m, x.Stream.RecvMsg(m)
 }
 
-type nexusServiceEchoServerServer struct {
+type nexusServiceAskServerServer struct {
 	streaming.Stream
 }
 
-func (x *nexusServiceEchoServerServer) Send(m *nexus_microservice.AskResponse) error {
+func (x *nexusServiceAskServerServer) Send(m *nexus_microservice.AskResponse) error {
 	return x.Stream.SendMsg(m)
 }
 
-func newNexusServiceEchoServerArgs() interface{} {
-	return nexus_microservice.NewNexusServiceEchoServerArgs()
+func newNexusServiceAskServerArgs() interface{} {
+	return nexus_microservice.NewNexusServiceAskServerArgs()
 }
 
-func newNexusServiceEchoServerResult() interface{} {
-	return nexus_microservice.NewNexusServiceEchoServerResult()
+func newNexusServiceAskServerResult() interface{} {
+	return nexus_microservice.NewNexusServiceAskServerResult()
 }
 
 type kClient struct {
@@ -143,17 +143,17 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) EchoServer(ctx context.Context, req *nexus_microservice.AskRequest) (NexusService_EchoServerClient, error) {
+func (p *kClient) AskServer(ctx context.Context, req *nexus_microservice.AskRequest) (NexusService_AskServerClient, error) {
 	streamClient, ok := p.c.(client.Streaming)
 	if !ok {
 		return nil, fmt.Errorf("client not support streaming")
 	}
 	res := new(streaming.Result)
-	err := streamClient.Stream(ctx, "EchoServer", nil, res)
+	err := streamClient.Stream(ctx, "AskServer", nil, res)
 	if err != nil {
 		return nil, err
 	}
-	stream := &nexusServiceEchoServerClient{res.Stream}
+	stream := &nexusServiceAskServerClient{res.Stream}
 
 	if err := stream.Stream.SendMsg(req); err != nil {
 		return nil, err
