@@ -13,7 +13,7 @@ import (
 func TestAsk(t *testing.T) {
 	var streamClient = nexusservice.MustNewStreamClient(
 		"nexus-service", // Service Name
-		streamclient.WithHostPorts("127.0.0.1:8888"), // streamclient.Option...
+		streamclient.WithHostPorts("127.0.0.1:8888"), // Service Address
 	)
 
 	message := &nexus_microservice.Message{

@@ -21,7 +21,7 @@ func init() {
 
 	// 通义大模型
 	baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
-	apiKey = "" // 自行去官网申请 apiKey
+	apiKey = "sk-8285fe317edc44ef95f029be9b7cfe94" // 自行去官网申请 apiKey
 	model = "qwen-max"
 }
 
@@ -264,7 +264,7 @@ func TestStreaming(t *testing.T) {
 		Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
 			openai.UserMessage("帮我写一篇文章，题目是《如何写一篇优秀的文章》"),
 		}),
-		//Model: openai.F("qwen-plus-0806"),
+		//Model: nexus.F("qwen-plus-0806"),
 		Model: openai.F(model),
 	})
 

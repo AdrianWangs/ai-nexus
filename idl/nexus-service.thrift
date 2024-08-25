@@ -1,7 +1,6 @@
 // 智核微服务
 namespace go nexus_microservice
 
-
 // 定义消息格式
 struct Message{
     1: required string role, // 消息角色
