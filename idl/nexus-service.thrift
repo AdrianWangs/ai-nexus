@@ -1,10 +1,27 @@
 // 智核微服务
 namespace go nexus_microservice
 
+// 函数调用参数
+struct FunctionCall{
+    1: required string name, // 函数名称
+    2: optional string arguments, // 函数参数, json格式
+}
+
+struct ToolCall{
+    1: required i64 index, // 工具索引
+    2: required string id, // 工具ID
+    3: required string type, // 默认为function
+    4: optional FunctionCall function_call, // 函数调用
+}
+
+
 // 定义消息格式
 struct Message{
     1: required string role, // 消息角色
     2: required string content, // 消息内容
+    3: optional string name, // 消息工具名称
+    4: optional FunctionCall function_call, // 函数调用
+    5: optional list<ToolCall> tool_calls, // 工具调用
 }
 
 // 定义请求结构体，要接收用户的输入，可能包含文件列表、
