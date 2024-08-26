@@ -16,10 +16,15 @@ func TestAsk(t *testing.T) {
 		streamclient.WithHostPorts("127.0.0.1:8888"), // Service Address
 	)
 
-	message := &nexus_microservice.Message{
-		Role:    "System",
+	messages := []*nexus_microservice.Message{{
+		Role:    "system",
 		Content: "你好，我是AI助手，有什么可以帮助你的吗？",
-	}
+	}}
+
+	messages = append(messages, &nexus_microservice.Message{
+		Role:    "user",
+		Content: "今天晚上我有什么安排？",
+	})
 
 	ctx := context.Background()
 	askRequest := &nexus_microservice.AskRequest{
@@ -31,7 +36,7 @@ func TestAsk(t *testing.T) {
 		Seed:            nil,
 		Stop:            nil,
 		EnableSearch:    nil,
-		Messages:        []*nexus_microservice.Message{message},
+		Messages:        messages,
 	}
 	stream, err := streamClient.AskServer(ctx, askRequest)
 
