@@ -15,5 +15,6 @@ type Nexus interface {
 	AddMessages(message openai.ChatCompletionMessageParamUnion)
 	Messages()
 	SetTools(tools []openai.ChatCompletionToolParam)
+	AddTools(tools openai.ChatCompletionToolParam)
 	Tools()
 }
