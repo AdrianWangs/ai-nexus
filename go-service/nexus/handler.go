@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/nexus"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
+	"os"
 )
 
 // NexusServiceImpl implements the last service interface defined in the IDL.
@@ -13,7 +13,7 @@ type NexusServiceImpl struct {
 
 // 通义大模型
 var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
-var apiKey = "sk-8285fe317edc44ef95f029be9b7cfe94" // 自行去官网申请 apiKey
+var apiKey = "" // 自行去官网申请 apiKey
 var model = "qwen-max"
 var prompt = `
 # 角色
@@ -45,7 +45,8 @@ var prompt = `
 
 // AskServer 是一个流式接口，接收用户的请求并调用函数和工具进行处理
 func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer) (err error) {
-	klog.Info("Received AskServer request:", req)
+
+	apiKey = os.Getenv("API_KEY")
 
 	// 初始化通义千问大模型
 	nexus.QwenInstance.Init(baseUrl, apiKey)
@@ -57,15 +58,17 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	// 注册流代理，用于转发流
 	streamAgent := nexus.NewStreamAgent()
 
-	pretty.Print(nexus.Request2openai(req.Messages))
-	// 初始化流
-	chatStream := nexus.QwenInstance.NewStream()
-
-	//pretty.Print(getParamsFromThrift())
-
 	// 使用代理转发流，并在转发过程中自动执行函数调用
+	for !streamAgent.IsStop() {
 
-	streamAgent.ForwardResponse(chatStream, stream)
+		// 初始化流
+		chatStream := nexus.QwenInstance.NewStream()
+		streamAgent.ForwardResponse(chatStream, stream)
+		fmt.Println(streamAgent.Messages())
+		// 将消息添加到消息列表中
+		nexus.QwenInstance.AddMessages(streamAgent.Messages())
+		streamAgent.ClearMessages()
+	}
 
 	return
 }

@@ -18,10 +18,21 @@ type StreamAgent struct {
 	id                string
 	content           string
 	messages          []openai.ChatCompletionMessageParamUnion
+	isStop            bool //多轮对话控制结束对话
+}
+
+func (sa *StreamAgent) IsStop() bool {
+	return sa.isStop
+}
+
+func (sa *StreamAgent) SetIsStop(isStop bool) {
+	sa.isStop = isStop
 }
 
 func NewStreamAgent() *StreamAgent {
-	return &StreamAgent{}
+	return &StreamAgent{
+		isStop: false,
+	}
 }
 
 func (sa *StreamAgent) Init() {
@@ -35,6 +46,42 @@ func (sa *StreamAgent) CallFunction() string {
 
 // Monitor 监控流的请求,并执行相关函数调用
 func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk) {
+
+	// 结束对话
+	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonStop {
+
+		// 返回机器人的消息，插入到消息队列中
+		assisant_messages := openai.ChatCompletionMessage{
+			Content:      sa.content,
+			Role:         openai.ChatCompletionMessageRoleAssistant,
+			FunctionCall: openai.ChatCompletionMessageFunctionCall{},
+			ToolCalls: []openai.ChatCompletionMessageToolCall{
+				{
+					ID:   sa.id,
+					Type: openai.ChatCompletionMessageToolCallType(sa._type),
+					Function: openai.ChatCompletionMessageToolCallFunction{
+						Arguments: sa.functionArguments,
+						Name:      sa.functionName,
+					},
+				},
+			},
+		}
+
+		fmt.Println("==========")
+		fmt.Println("结束对话：", sa.content)
+		fmt.Println("==========")
+
+		// 添加消息到消息队列中
+		sa.messages = append(sa.messages, assisant_messages)
+
+		sa.isStop = true
+		sa.id = ""
+		sa.functionArguments = ""
+		sa.functionName = ""
+		sa._type = ""
+		sa.content = ""
+		return
+	}
 
 	// 当函数调用相关的参数生成完毕后，进行函数调用
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
@@ -71,6 +118,10 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk) {
 				},
 			},
 		}
+
+		fmt.Println("==========")
+		fmt.Println("调用函数:", sa.functionName, sa.functionArguments, res)
+		fmt.Println("==========")
 
 		// 添加消息到消息队列中
 		sa.messages = append(sa.messages, assisant_messages, tool_message)
@@ -128,8 +179,14 @@ func (sa *StreamAgent) Messages() []openai.ChatCompletionMessageParamUnion {
 	return sa.messages
 }
 
+// Messages 获取本次对话的消息
+func (sa *StreamAgent) ClearMessages() {
+	sa.messages = []openai.ChatCompletionMessageParamUnion{}
+}
+
 // ForwardResponse  转发响应请求并进行中间处理
 func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompletionChunk], target nexus_microservice.NexusService_AskServerServer) {
+
 	// 开始对话,使用代理模式进行对话
 	for source.Next() {
 		event := source.Current()
@@ -149,10 +206,9 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		}
 	}
 
-	//TODO 想办法解决，函数调用+消息发送的混合消息流中，如何判断对话结束
-
 	if err := source.Err(); err != nil {
-		klog.Info("StreamAgent ForwardResponse error:", err)
+		klog.Error("StreamAgent ForwardResponse error:", err)
+		sa.isStop = true
 	}
 
 }

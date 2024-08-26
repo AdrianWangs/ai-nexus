@@ -16,14 +16,11 @@ func TestAsk(t *testing.T) {
 		streamclient.WithHostPorts("127.0.0.1:8888"), // Service Address
 	)
 
-	messages := []*nexus_microservice.Message{{
-		Role:    "system",
-		Content: "你好，我是AI助手，有什么可以帮助你的吗？",
-	}}
+	messages := []*nexus_microservice.Message{}
 
 	messages = append(messages, &nexus_microservice.Message{
 		Role:    "user",
-		Content: "今天晚上我有什么安排？",
+		Content: "我想去苏州玩，帮我安排一下行程",
 	})
 
 	ctx := context.Background()
