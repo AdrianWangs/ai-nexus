@@ -6,6 +6,7 @@ import (
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	"github.com/openai/openai-go/packages/ssestream"
+	"reflect"
 )
 
 var QwenInstance Qwen
@@ -21,6 +22,7 @@ type Qwen struct {
 	params   openai.ChatCompletionNewParams
 }
 
+// Init 初始化
 func (nexus *Qwen) Init(baseUrl string, apiKey string) {
 
 	//// 本地 ollama
@@ -40,10 +42,12 @@ func (nexus *Qwen) Init(baseUrl string, apiKey string) {
 
 }
 
+// SetModel 设置模型
 func (nexus *Qwen) SetModel(model string) {
 	nexus.model = model
 }
 
+// SetPrompt 设置系统提示词
 func (nexus *Qwen) SetPrompt(prompt string) {
 	nexus.prompt = prompt
 	nexus.messages = []openai.ChatCompletionMessageParamUnion{
@@ -51,26 +55,50 @@ func (nexus *Qwen) SetPrompt(prompt string) {
 	}
 }
 
+// Messages 获取消息
 func (nexus *Qwen) Messages() []openai.ChatCompletionMessageParamUnion {
 	return nexus.messages
 }
 
+// SetMessages 设置消息
 func (nexus *Qwen) SetMessages(messages []openai.ChatCompletionMessageParamUnion) {
-	nexus.messages = messages
+
+	systemMessage := []openai.ChatCompletionMessageParamUnion{}
+
+	// 判断第一条消息的类型是不是系统消息，注意 messages 切片是一个接口数组，要用反射判断
+	if len(messages) > 0 {
+		// 获取结构体的类型
+		t := reflect.TypeOf(messages[0])
+		// 判断是否是系统消息
+		if t.Name() != "SystemMessage" {
+			systemMessage = append(systemMessage, openai.SystemMessage(nexus.prompt))
+		}
+	}
+
+	nexus.messages = append(systemMessage, messages...)
 }
 
+// AddMessages 添加消息
 func (nexus *Qwen) AddMessages(message openai.ChatCompletionMessageParamUnion) {
 	nexus.messages = append(nexus.messages, message)
 }
 
+// Tools 获取工具
 func (nexus *Qwen) Tools() []openai.ChatCompletionToolParam {
 	return nexus.tools
 }
 
+// SetTools 设置工具
 func (nexus *Qwen) SetTools(tools []openai.ChatCompletionToolParam) {
 	nexus.tools = tools
 }
 
+// AddTools 添加工具
+func (nexus *Qwen) AddTools(tool openai.ChatCompletionToolParam) {
+	nexus.tools = append(nexus.tools, tool)
+}
+
+// NewStream 创建流并返回
 func (nexus *Qwen) NewStream() *ssestream.Stream[openai.ChatCompletionChunk] {
 
 	ctx := context.Background()
@@ -81,4 +109,5 @@ func (nexus *Qwen) NewStream() *ssestream.Stream[openai.ChatCompletionChunk] {
 		Tools:    openai.F(nexus.tools),
 	}
 	return nexus.client.Chat.Completions.NewStreaming(ctx, nexus.params)
+
 }
