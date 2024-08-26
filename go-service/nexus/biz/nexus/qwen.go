@@ -78,9 +78,14 @@ func (nexus *Qwen) SetMessages(messages []openai.ChatCompletionMessageParamUnion
 	nexus.messages = append(systemMessage, messages...)
 }
 
-// AddMessages 添加消息
-func (nexus *Qwen) AddMessages(message openai.ChatCompletionMessageParamUnion) {
+// AddMessage 添加消息
+func (nexus *Qwen) AddMessage(message openai.ChatCompletionMessageParamUnion) {
 	nexus.messages = append(nexus.messages, message)
+}
+
+// AddMessages 添加多个消息
+func (nexus *Qwen) AddMessages(message []openai.ChatCompletionMessageParamUnion) {
+	nexus.messages = append(nexus.messages, message...)
 }
 
 // Tools 获取工具

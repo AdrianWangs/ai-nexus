@@ -76,8 +76,8 @@ func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 				},
 			}
 
-			QwenInstance.AddMessages(assisant_messages)
-			QwenInstance.AddMessages(tool_message)
+			QwenInstance.AddMessage(assisant_messages)
+			QwenInstance.AddMessage(tool_message)
 
 			fmt.Println("函数调用结果：", res)
 
@@ -149,7 +149,7 @@ func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 		},
 	}
 
-	QwenInstance.AddMessages(assisant_messages)
+	QwenInstance.AddMessage(assisant_messages)
 
 	return true, QwenInstance.Messages()
 

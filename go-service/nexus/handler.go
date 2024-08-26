@@ -54,14 +54,17 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	nexus.QwenInstance.SetMessages(nexus.Request2openai(req.Messages))
 	nexus.QwenInstance.SetTools(nexus.GetParamsFromThrift())
 
+	// 注册流代理，用于转发流
+	streamAgent := nexus.NewStreamAgent()
+
+	pretty.Print(nexus.Request2openai(req.Messages))
 	// 初始化流
 	chatStream := nexus.QwenInstance.NewStream()
 
-	pretty.Print(nexus.Request2openai(req.Messages))
 	//pretty.Print(getParamsFromThrift())
 
 	// 使用代理转发流，并在转发过程中自动执行函数调用
-	streamAgent := nexus.StreamAgent{}
+
 	streamAgent.ForwardResponse(chatStream, stream)
 
 	return
