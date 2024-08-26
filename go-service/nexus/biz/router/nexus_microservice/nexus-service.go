@@ -3,7 +3,6 @@
 package nexus_microservice
 
 import (
-	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus_microservice"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

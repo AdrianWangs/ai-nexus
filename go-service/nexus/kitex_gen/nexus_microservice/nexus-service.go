@@ -9,9 +9,628 @@ import (
 	"strings"
 )
 
+type FunctionCall struct {
+	Name      string  `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
+	Arguments *string `thrift:"arguments,2,optional" frugal:"2,optional,string" json:"arguments,omitempty"`
+}
+
+func NewFunctionCall() *FunctionCall {
+	return &FunctionCall{}
+}
+
+func (p *FunctionCall) InitDefault() {
+}
+
+func (p *FunctionCall) GetName() (v string) {
+	return p.Name
+}
+
+var FunctionCall_Arguments_DEFAULT string
+
+func (p *FunctionCall) GetArguments() (v string) {
+	if !p.IsSetArguments() {
+		return FunctionCall_Arguments_DEFAULT
+	}
+	return *p.Arguments
+}
+func (p *FunctionCall) SetName(val string) {
+	p.Name = val
+}
+func (p *FunctionCall) SetArguments(val *string) {
+	p.Arguments = val
+}
+
+var fieldIDToName_FunctionCall = map[int16]string{
+	1: "name",
+	2: "arguments",
+}
+
+func (p *FunctionCall) IsSetArguments() bool {
+	return p.Arguments != nil
+}
+
+func (p *FunctionCall) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetName bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetName = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetName {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_FunctionCall[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_FunctionCall[fieldId]))
+}
+
+func (p *FunctionCall) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Name = _field
+	return nil
+}
+func (p *FunctionCall) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Arguments = _field
+	return nil
+}
+
+func (p *FunctionCall) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("FunctionCall"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *FunctionCall) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Name); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *FunctionCall) writeField2(oprot thrift.TProtocol) (err error) {
+	if p.IsSetArguments() {
+		if err = oprot.WriteFieldBegin("arguments", thrift.STRING, 2); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Arguments); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *FunctionCall) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("FunctionCall(%+v)", *p)
+
+}
+
+func (p *FunctionCall) DeepEqual(ano *FunctionCall) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Name) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Arguments) {
+		return false
+	}
+	return true
+}
+
+func (p *FunctionCall) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Name, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *FunctionCall) Field2DeepEqual(src *string) bool {
+
+	if p.Arguments == src {
+		return true
+	} else if p.Arguments == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Arguments, *src) != 0 {
+		return false
+	}
+	return true
+}
+
+type ToolCall struct {
+	Index        int64         `thrift:"index,1,required" frugal:"1,required,i64" json:"index"`
+	Id           string        `thrift:"id,2,required" frugal:"2,required,string" json:"id"`
+	Type         string        `thrift:"type,3,required" frugal:"3,required,string" json:"type"`
+	FunctionCall *FunctionCall `thrift:"function_call,4,optional" frugal:"4,optional,FunctionCall" json:"function_call,omitempty"`
+}
+
+func NewToolCall() *ToolCall {
+	return &ToolCall{}
+}
+
+func (p *ToolCall) InitDefault() {
+}
+
+func (p *ToolCall) GetIndex() (v int64) {
+	return p.Index
+}
+
+func (p *ToolCall) GetId() (v string) {
+	return p.Id
+}
+
+func (p *ToolCall) GetType() (v string) {
+	return p.Type
+}
+
+var ToolCall_FunctionCall_DEFAULT *FunctionCall
+
+func (p *ToolCall) GetFunctionCall() (v *FunctionCall) {
+	if !p.IsSetFunctionCall() {
+		return ToolCall_FunctionCall_DEFAULT
+	}
+	return p.FunctionCall
+}
+func (p *ToolCall) SetIndex(val int64) {
+	p.Index = val
+}
+func (p *ToolCall) SetId(val string) {
+	p.Id = val
+}
+func (p *ToolCall) SetType(val string) {
+	p.Type = val
+}
+func (p *ToolCall) SetFunctionCall(val *FunctionCall) {
+	p.FunctionCall = val
+}
+
+var fieldIDToName_ToolCall = map[int16]string{
+	1: "index",
+	2: "id",
+	3: "type",
+	4: "function_call",
+}
+
+func (p *ToolCall) IsSetFunctionCall() bool {
+	return p.FunctionCall != nil
+}
+
+func (p *ToolCall) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetIndex bool = false
+	var issetId bool = false
+	var issetType bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetIndex = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetId = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetType = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetIndex {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetId {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetType {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ToolCall[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_ToolCall[fieldId]))
+}
+
+func (p *ToolCall) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Index = _field
+	return nil
+}
+func (p *ToolCall) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Id = _field
+	return nil
+}
+func (p *ToolCall) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Type = _field
+	return nil
+}
+func (p *ToolCall) ReadField4(iprot thrift.TProtocol) error {
+	_field := NewFunctionCall()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.FunctionCall = _field
+	return nil
+}
+
+func (p *ToolCall) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ToolCall"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ToolCall) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("index", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Index); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ToolCall) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ToolCall) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("type", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Type); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *ToolCall) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFunctionCall() {
+		if err = oprot.WriteFieldBegin("function_call", thrift.STRUCT, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.FunctionCall.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *ToolCall) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ToolCall(%+v)", *p)
+
+}
+
+func (p *ToolCall) DeepEqual(ano *ToolCall) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Index) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Type) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.FunctionCall) {
+		return false
+	}
+	return true
+}
+
+func (p *ToolCall) Field1DeepEqual(src int64) bool {
+
+	if p.Index != src {
+		return false
+	}
+	return true
+}
+func (p *ToolCall) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Id, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *ToolCall) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.Type, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *ToolCall) Field4DeepEqual(src *FunctionCall) bool {
+
+	if !p.FunctionCall.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type Message struct {
-	Role    string `thrift:"role,1,required" frugal:"1,required,string" json:"role"`
-	Content string `thrift:"content,2,required" frugal:"2,required,string" json:"content"`
+	Role         string        `thrift:"role,1,required" frugal:"1,required,string" json:"role"`
+	Content      string        `thrift:"content,2,required" frugal:"2,required,string" json:"content"`
+	Name         *string       `thrift:"name,3,optional" frugal:"3,optional,string" json:"name,omitempty"`
+	FunctionCall *FunctionCall `thrift:"function_call,4,optional" frugal:"4,optional,FunctionCall" json:"function_call,omitempty"`
+	ToolCalls    []*ToolCall   `thrift:"tool_calls,5,optional" frugal:"5,optional,list<ToolCall>" json:"tool_calls,omitempty"`
 }
 
 func NewMessage() *Message {
@@ -28,16 +647,67 @@ func (p *Message) GetRole() (v string) {
 func (p *Message) GetContent() (v string) {
 	return p.Content
 }
+
+var Message_Name_DEFAULT string
+
+func (p *Message) GetName() (v string) {
+	if !p.IsSetName() {
+		return Message_Name_DEFAULT
+	}
+	return *p.Name
+}
+
+var Message_FunctionCall_DEFAULT *FunctionCall
+
+func (p *Message) GetFunctionCall() (v *FunctionCall) {
+	if !p.IsSetFunctionCall() {
+		return Message_FunctionCall_DEFAULT
+	}
+	return p.FunctionCall
+}
+
+var Message_ToolCalls_DEFAULT []*ToolCall
+
+func (p *Message) GetToolCalls() (v []*ToolCall) {
+	if !p.IsSetToolCalls() {
+		return Message_ToolCalls_DEFAULT
+	}
+	return p.ToolCalls
+}
 func (p *Message) SetRole(val string) {
 	p.Role = val
 }
 func (p *Message) SetContent(val string) {
 	p.Content = val
 }
+func (p *Message) SetName(val *string) {
+	p.Name = val
+}
+func (p *Message) SetFunctionCall(val *FunctionCall) {
+	p.FunctionCall = val
+}
+func (p *Message) SetToolCalls(val []*ToolCall) {
+	p.ToolCalls = val
+}
 
 var fieldIDToName_Message = map[int16]string{
 	1: "role",
 	2: "content",
+	3: "name",
+	4: "function_call",
+	5: "tool_calls",
+}
+
+func (p *Message) IsSetName() bool {
+	return p.Name != nil
+}
+
+func (p *Message) IsSetFunctionCall() bool {
+	return p.FunctionCall != nil
+}
+
+func (p *Message) IsSetToolCalls() bool {
+	return p.ToolCalls != nil
 }
 
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
@@ -76,6 +746,30 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetContent = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -141,6 +835,48 @@ func (p *Message) ReadField2(iprot thrift.TProtocol) error {
 	p.Content = _field
 	return nil
 }
+func (p *Message) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Name = _field
+	return nil
+}
+func (p *Message) ReadField4(iprot thrift.TProtocol) error {
+	_field := NewFunctionCall()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.FunctionCall = _field
+	return nil
+}
+func (p *Message) ReadField5(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]*ToolCall, 0, size)
+	values := make([]ToolCall, size)
+	for i := 0; i < size; i++ {
+		_elem := &values[i]
+		_elem.InitDefault()
+
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	p.ToolCalls = _field
+	return nil
+}
 
 func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -154,6 +890,18 @@ func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -208,6 +956,71 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
+func (p *Message) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetName() {
+		if err = oprot.WriteFieldBegin("name", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Name); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *Message) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFunctionCall() {
+		if err = oprot.WriteFieldBegin("function_call", thrift.STRUCT, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.FunctionCall.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *Message) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetToolCalls() {
+		if err = oprot.WriteFieldBegin("tool_calls", thrift.LIST, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.ToolCalls)); err != nil {
+			return err
+		}
+		for _, v := range p.ToolCalls {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
 func (p *Message) String() string {
 	if p == nil {
 		return "<nil>"
@@ -228,6 +1041,15 @@ func (p *Message) DeepEqual(ano *Message) bool {
 	if !p.Field2DeepEqual(ano.Content) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.Name) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.FunctionCall) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.ToolCalls) {
+		return false
+	}
 	return true
 }
 
@@ -242,6 +1064,38 @@ func (p *Message) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Content, src) != 0 {
 		return false
+	}
+	return true
+}
+func (p *Message) Field3DeepEqual(src *string) bool {
+
+	if p.Name == src {
+		return true
+	} else if p.Name == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Name, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Message) Field4DeepEqual(src *FunctionCall) bool {
+
+	if !p.FunctionCall.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *Message) Field5DeepEqual(src []*ToolCall) bool {
+
+	if len(p.ToolCalls) != len(src) {
+		return false
+	}
+	for i, v := range p.ToolCalls {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
 	}
 	return true
 }
