@@ -2,7 +2,6 @@
 package genericCall
 
 import (
-	"fmt"
 	"github.com/cloudwego/kitex/pkg/generic"
 	"github.com/cloudwego/kitex/pkg/generic/descriptor"
 )
@@ -24,11 +23,6 @@ func (tp *ThriftIdlParser) ParseGeneralFunction(idlProvider generic.DescriptorPr
 		// 解析函数的参数，得到 rpc 调用的出入参数
 		functionMap[name] = tp.getParams(function)
 
-	}
-
-	if err != nil {
-		fmt.Println("err:", err)
-		return
 	}
 
 	_ = idlProvider.Close()
