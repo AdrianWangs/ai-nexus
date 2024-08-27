@@ -27,12 +27,6 @@ func init() {
 
 }
 
-// 将json格式的参数解析一下并且调用工具
-func CallByJson(functionName string, params string) string {
-	fmt.Println(functionName, params)
-	return "金山寺"
-}
-
 func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 
 	chatStream := QwenInstance.NewStream()
