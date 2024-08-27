@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/nexus"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"os"
 )
