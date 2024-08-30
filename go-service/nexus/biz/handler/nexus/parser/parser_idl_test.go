@@ -8,7 +8,7 @@ import (
 func TestThriftParser(t *testing.T) {
 
 	// 测试解析 thrift 文件
-	res, err := parseThriftIdlFromPath("./../../../resources/idl/user-service.thrift")
+	res, err := parseThriftIdlFromPath("./../../../resources/idl/nexus-service.thrift")
 	if err != nil {
 		t.Error(err)
 		t.Error("解析 thrift 文件失败")
