@@ -61,9 +61,6 @@ import (
 */
 func parseIdlFromThrift(thrift *parser.Thrift) (res []openai.ChatCompletionToolParam) {
 
-	//TODO 使用 map 存储解析结果，如果 map 没有这个结构体就创建，如果有就添加字段
-	//TODO a := res[0].Function.Raw.(*openai.FunctionDefinitionParam).Name
-
 	// 结构体字典，因为结构体之间有相互引用关系，所以存放在字典里方便解析结构体类型
 	structsMap := struct2Map(thrift.Structs)
 
