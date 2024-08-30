@@ -383,6 +383,7 @@ func parseIdlFromPath(idlPath string, includeDirs ...string) (res []openai.ChatC
 
 }
 
+// Deprecated: 默认的 description  不包含解释(无法解释注释和注解)，属于一个不完整的 thrift 解析方法，因此废弃
 // parseIdlFromDescription 从描述中解析 idl 文件
 func parseIdlFromDescription(description interface{}) (res []openai.ChatCompletionToolParam) {
 	pretty.Println(description)
