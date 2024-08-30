@@ -12,3 +12,9 @@ func ParseThriftIdlFromPath(idlPath string) (res []openai.ChatCompletionToolPara
 	// 调用通用解析方法来解析 idl 文件
 	return parseIdlFromPath(idlPath), nil
 }
+
+// ParseThriftServiceFromPaths 从路径解析获得某个路径下 thrift 文件所包含的所有 service 集合
+func ParseThriftServiceFromPaths(dir []string) (res []openai.ChatCompletionToolParam, err error) {
+	// 调用通用解析方法来解析 idl 文件
+	return parseServiceFromPath(dir), nil
+}

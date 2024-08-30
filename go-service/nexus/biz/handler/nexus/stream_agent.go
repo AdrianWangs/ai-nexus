@@ -200,7 +200,7 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		sa.Monitor(event)
 		err := target.Send(askResponse)
 		if err != nil {
-			fmt.Println("EchoServer failed: %v", err)
+			fmt.Println("EchoServer failed: ", err)
 		}
 	}
 

@@ -1,4 +1,4 @@
-// 旅游计划微服务Thrift定义
+// 旅游计划，可以制定计划、查找景点等旅游相关的功能
 
 namespace go nexus_microservice
 

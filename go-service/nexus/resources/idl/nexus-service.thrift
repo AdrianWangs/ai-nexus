@@ -1,5 +1,6 @@
-// 智核微服务
+// 智核微服务，主要负责 ai 相关的微服务
 namespace go nexus_microservice
+
 
 // 函数调用参数
 struct FunctionCall{

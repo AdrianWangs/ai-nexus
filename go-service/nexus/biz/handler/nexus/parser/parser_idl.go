@@ -10,6 +10,24 @@ import (
 	"github.com/openai/openai-go"
 )
 
+// parseIdlFromPath 使用路径解析 idl 文件
+func parseIdlFromPath(idlPath string, includeDirs ...string) (res []openai.ChatCompletionToolParam) {
+
+	var p idlParser.IdlParser
+	p = idlParser.NewThriftIdlParser()
+
+	thrift, err := p.ParseIdlFromPath(idlPath, includeDirs...)
+
+	if err != nil {
+		klog.Info("err:", err)
+		res = nil
+		return
+	}
+
+	return parseIdlFromThrift(thrift)
+
+}
+
 // parseIdlFromThrift 使用 thrift 解析 idl 文件
 /**
 返回结构大概如下：
@@ -363,24 +381,6 @@ func argumentType2openaiType(argumentType string) (openaiType string) {
 	}
 
 	return
-}
-
-// parseIdlFromPath 使用路径解析 idl 文件
-func parseIdlFromPath(idlPath string, includeDirs ...string) (res []openai.ChatCompletionToolParam) {
-
-	var p idlParser.IdlParser
-	p = idlParser.NewThriftIdlParser()
-
-	thrift, err := p.ParseIdlFromPath(idlPath, includeDirs...)
-
-	if err != nil {
-		klog.Info("err:", err)
-		res = nil
-		return
-	}
-
-	return parseIdlFromThrift(thrift)
-
 }
 
 // Deprecated: 默认的 description  不包含解释(无法解释注释和注解)，属于一个不完整的 thrift 解析方法，因此废弃

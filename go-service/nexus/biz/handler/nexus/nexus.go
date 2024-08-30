@@ -8,6 +8,8 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
+	"os"
+	"path/filepath"
 )
 
 // Request2openai 将通用的消息格式转换为openai的消息格式
@@ -66,6 +68,22 @@ func Request2openai(messages []*nexus_microservice.Message) (openaiMessages []op
 	}
 
 	return
+}
+
+// GetServicesFromThrift 从thrift中获取服务
+func GetServicesFromThrift() []openai.ChatCompletionToolParam {
+
+	filenames, err := filepath.Glob("./resources/idl/*.thrift")
+
+	if err != nil {
+		klog.Error("解析 thrift 文件失败")
+		os.Exit(1)
+	}
+
+	toolServices, err := parser.ParseThriftServiceFromPaths(filenames)
+
+	return toolServices
+
 }
 
 // GetParamsFromThrift 从thrift中获取参数

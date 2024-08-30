@@ -52,6 +52,8 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	nexus.QwenInstance.SetModel(model)
 	nexus.QwenInstance.SetPrompt(prompt)
 	nexus.QwenInstance.SetMessages(nexus.Request2openai(req.Messages))
+
+	// TODO 最顶级的应该是先将微服务列表传入，然后让ai选择使用哪一个微服务
 	nexus.QwenInstance.SetTools(nexus.GetParamsFromThrift())
 
 	// 注册流代理，用于转发流
