@@ -198,8 +198,6 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 
 		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
 		sa.Monitor(event)
-
-		fmt.Println("resp:", askResponse)
 		err := target.Send(askResponse)
 		if err != nil {
 			fmt.Println("EchoServer failed: %v", err)
