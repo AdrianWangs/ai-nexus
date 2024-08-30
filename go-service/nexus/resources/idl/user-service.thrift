@@ -3,7 +3,7 @@ namespace go user_microservice
 
 // 定义用户信息结构体
 struct User {
-    1: i64 UserId (demo="demo"),
+    1: i64 UserId,
     2: string Username,
     3: string Password,
     4: string Birthday,
