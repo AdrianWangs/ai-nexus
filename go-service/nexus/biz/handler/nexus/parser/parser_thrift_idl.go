@@ -6,8 +6,8 @@ import (
 	"github.com/openai/openai-go"
 )
 
-// parseThriftIdlFromPath 从路径解析 thrift 文件
-func parseThriftIdlFromPath(idlPath string) (res []openai.ChatCompletionToolParam, err error) {
+// ParseThriftIdlFromPath 从路径解析 thrift 文件
+func ParseThriftIdlFromPath(idlPath string) (res []openai.ChatCompletionToolParam, err error) {
 
 	// 调用通用解析方法来解析 idl 文件
 	return parseIdlFromPath(idlPath), nil
