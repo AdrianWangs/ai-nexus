@@ -2,6 +2,7 @@
 package parser
 
 import (
+	"github.com/kr/pretty"
 	"testing"
 )
 
@@ -16,5 +17,8 @@ func TestThriftParser(t *testing.T) {
 	if res == nil {
 		t.Error("解析结果为空")
 	}
-	t.Log("解析结果:", res)
+
+	t.Log("解析结果:\n")
+	pretty.Println(res)
+
 }
