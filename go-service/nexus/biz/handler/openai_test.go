@@ -1,7 +1,8 @@
-package nexus
+package handler
 
 import (
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	"github.com/openai/openai-go"
 	"testing"
 )
@@ -22,14 +23,14 @@ func init() {
 	apiKey = "sk-8285fe317edc44ef95f029be9b7cfe94" // 自行去官网申请 apiKey
 	model = "qwen-max"
 
-	QwenInstance.Init(baseUrl, apiKey)
-	QwenInstance.SetModel(model)
+	nexus.QwenInstance.Init(baseUrl, apiKey)
+	nexus.QwenInstance.SetModel(model)
 
 }
 
 func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 
-	chatStream := QwenInstance.NewStream()
+	chatStream := nexus.QwenInstance.NewStream()
 
 	var function_name string
 	var function_arguments string
@@ -45,7 +46,7 @@ func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 
 		if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
 			event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
-			res := CallByJson(function_name, function_arguments)
+			res := nexus.CallByJson(function_name, function_arguments)
 
 			tool_message := openai.ChatCompletionMessage{
 				Content:      res,
@@ -70,15 +71,15 @@ func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 				},
 			}
 
-			QwenInstance.AddMessage(assisant_messages)
-			QwenInstance.AddMessage(tool_message)
+			nexus.QwenInstance.AddMessage(assisant_messages)
+			nexus.QwenInstance.AddMessage(tool_message)
 
 			fmt.Println("函数调用结果：", res)
 
 			function_name = ""
 			function_arguments = ""
 
-			return false, QwenInstance.Messages()
+			return false, nexus.QwenInstance.Messages()
 		}
 
 		delta := event.Choices[0].Delta
@@ -143,16 +144,16 @@ func callGpt() (bool, []openai.ChatCompletionMessageParamUnion) {
 		},
 	}
 
-	QwenInstance.AddMessage(assisant_messages)
+	nexus.QwenInstance.AddMessage(assisant_messages)
 
-	return true, QwenInstance.Messages()
+	return true, nexus.QwenInstance.Messages()
 
 }
 
 // TestFunctionCall
 func TestFunctionCall(t *testing.T) {
 
-	QwenInstance.SetPrompt(`
+	nexus.QwenInstance.SetPrompt(`
 	# 角色
 			你是一个资深的日程规划师，能够熟练调用外部函数和工具，全方位搜集相关信息，为用户精心定制各类计划。
 			
@@ -182,13 +183,13 @@ func TestFunctionCall(t *testing.T) {
 
 	question := "我周末想要去苏州玩，你有什么意见？"
 
-	messages := QwenInstance.Messages()
+	messages := nexus.QwenInstance.Messages()
 
 	messages = append(messages, openai.UserMessage(question))
 
-	QwenInstance.SetMessages(messages)
+	nexus.QwenInstance.SetMessages(messages)
 
-	QwenInstance.SetTools([]openai.ChatCompletionToolParam{
+	nexus.QwenInstance.SetTools([]openai.ChatCompletionToolParam{
 		{
 			Type: openai.F(openai.ChatCompletionToolTypeFunction),
 			Function: openai.F(openai.FunctionDefinitionParam{
