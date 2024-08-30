@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/nexus"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"os"
 )
@@ -64,7 +63,6 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		// 初始化流
 		chatStream := nexus.QwenInstance.NewStream()
 		streamAgent.ForwardResponse(chatStream, stream)
-		fmt.Println(streamAgent.Messages())
 		// 将消息添加到消息列表中
 		nexus.QwenInstance.AddMessages(streamAgent.Messages())
 		streamAgent.ClearMessages()
