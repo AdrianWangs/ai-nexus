@@ -3,6 +3,7 @@ package nexus
 
 import (
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/parser"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
@@ -11,10 +12,6 @@ import (
 
 // Request2openai 将通用的消息格式转换为openai的消息格式
 func Request2openai(messages []*nexus_microservice.Message) (openaiMessages []openai.ChatCompletionMessageParamUnion) {
-
-	klog.Info("Received request2openai request:")
-	pretty.Println(messages)
-	fmt.Println("=======================")
 
 	for _, message := range messages {
 
@@ -73,45 +70,16 @@ func Request2openai(messages []*nexus_microservice.Message) (openaiMessages []op
 
 // GetParamsFromThrift 从thrift中获取参数
 func GetParamsFromThrift() []openai.ChatCompletionToolParam {
-	return []openai.ChatCompletionToolParam{
-		{
-			Type: openai.F(openai.ChatCompletionToolTypeFunction),
-			Function: openai.F(openai.FunctionDefinitionParam{
-				Name:        openai.String("get_travel_location"),
-				Description: openai.String("用于获取值得推荐的旅游景点"),
-				Parameters: openai.F(openai.FunctionParameters{
-					"type": "object",
-					"properties": map[string]interface{}{
-						"location": map[string]string{
-							"type":        "string",
-							"description": "城市名字：比如浙江、昆山、杭州、北京",
-						},
-					},
-					"required": []string{"location"},
-				}),
-			}),
-		},
-		{
-			Type: openai.F(openai.ChatCompletionToolTypeFunction),
-			Function: openai.F(openai.FunctionDefinitionParam{
-				Name:        openai.String("make_plan"),
-				Description: openai.String("用于安排计划清单"),
-				Parameters: openai.F(openai.FunctionParameters{
-					"type": "object",
-					"properties": map[string]interface{}{
-						"todos": map[string]interface{}{
-							"type": "array",
-							"items": map[string]string{
-								"type": "string",
-							},
-							"description": "任务清单：比如'买菜'、'逛街等'",
-						},
-					},
-					"required": []string{"location"},
-				}),
-			}),
-		},
+	toolParams, err := parser.ParseThriftIdlFromPath("./resources/idl/test.thrift")
+	if err != nil {
+		klog.Error("解析 thrift 文件失败")
+		return []openai.ChatCompletionToolParam{}
 	}
+
+	klog.Info("从thrift中获取参数:")
+	pretty.Println(toolParams)
+
+	return toolParams
 }
 
 // CallByJson 将json格式的参数解析一下并且调用工具
