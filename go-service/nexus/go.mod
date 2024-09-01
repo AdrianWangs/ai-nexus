@@ -12,11 +12,13 @@ require (
 	github.com/apache/thrift v0.16.0
 	github.com/cloudwego/hertz v0.9.2
 	github.com/cloudwego/kitex v0.10.3
+	github.com/cloudwego/thriftgo v0.3.15
 	github.com/joho/godotenv v1.5.1
 	github.com/kitex-contrib/config-nacos v0.4.0
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20240515092919-1f776656cb66
 	github.com/kr/pretty v0.3.1
 	github.com/nacos-group/nacos-sdk-go v1.1.4
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
 	github.com/openai/openai-go v0.1.0-alpha.12
 	github.com/redis/go-redis/v9 v9.6.1
 	go.uber.org/zap v1.27.0
@@ -43,7 +45,6 @@ require (
 	github.com/cloudwego/localsession v0.0.2 // indirect
 	github.com/cloudwego/netpoll v0.6.3 // indirect
 	github.com/cloudwego/runtimex v0.1.0 // indirect
-	github.com/cloudwego/thriftgo v0.3.15 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/structtag v1.2.0 // indirect

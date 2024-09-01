@@ -9,7 +9,7 @@ import (
 	"reflect"
 )
 
-var QwenInstance Qwen
+var DefaultQwenInstance Qwen
 
 type Qwen struct {
 	baseUrl  string
@@ -22,6 +22,10 @@ type Qwen struct {
 	params   openai.ChatCompletionNewParams
 }
 
+func NewQwen() *Qwen {
+	return &Qwen{}
+}
+
 // Init 初始化
 func (nexus *Qwen) Init(baseUrl string, apiKey string) {
 
@@ -31,8 +35,8 @@ func (nexus *Qwen) Init(baseUrl string, apiKey string) {
 	//model = "llama3.1:8b"
 
 	// 通义大模型
-	nexus.baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
-	nexus.apiKey = "" // 自行去官网申请 apiKey
+	nexus.baseUrl = baseUrl
+	nexus.apiKey = apiKey // 自行去官网申请 apiKey
 	nexus.SetModel("qwen-max")
 
 	nexus.client = openai.NewClient(

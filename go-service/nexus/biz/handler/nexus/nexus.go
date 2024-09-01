@@ -1,4 +1,4 @@
-// @Author Adrian.Wang 2024/8/26 下午8:01:00
+// Package nexus @Author Adrian.Wang 2024/8/26 下午8:01:00
 package nexus
 
 import (
@@ -87,8 +87,8 @@ func GetServicesFromThrift() []openai.ChatCompletionToolParam {
 }
 
 // GetParamsFromThrift 从thrift中获取参数
-func GetParamsFromThrift() []openai.ChatCompletionToolParam {
-	toolParams, err := parser.ParseThriftIdlFromPath("./resources/idl/test.thrift")
+func GetParamsFromThrift(idlPath string) []openai.ChatCompletionToolParam {
+	toolParams, err := parser.ParseThriftIdlFromPath(idlPath)
 	if err != nil {
 		klog.Error("解析 thrift 文件失败")
 		return []openai.ChatCompletionToolParam{}

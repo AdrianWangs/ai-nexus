@@ -59,7 +59,16 @@ func parseServiceFromPath(dir []string) (res []openai.ChatCompletionToolParam) {
 	res = make([]openai.ChatCompletionToolParam, 0)
 
 	// 只有服务所以是空参数，直接实例化一个就行了
-	params := make(openai.FunctionParameters)
+	params := openai.FunctionParameters{
+		"type": "object",
+		"properties": map[string]interface{}{
+			"prompt": map[string]string{
+				"type":        "string",
+				"description": "要让函数执行的操作，用自然语言描述即可",
+			},
+		},
+		"required": []string{" prompt"},
+	}
 
 	for _, thriftFile := range dir {
 
