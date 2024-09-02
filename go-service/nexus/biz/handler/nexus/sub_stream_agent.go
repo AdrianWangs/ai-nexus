@@ -18,7 +18,6 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 	for source.Next() {
 
 		event := source.Current()
-
 		// 如果本轮对话没有任何回复就不需要进行其他额外的操作了
 		if len(event.Choices) <= 0 {
 			klog.Info("好像没对话内容...")
@@ -35,12 +34,12 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		// 监控完以后不出意外就该转发刚刚的对话了
 		err := target.Send(askResponse)
 		if err != nil {
-			fmt.Println("EchoServer failed: ", err)
+			fmt.Println("次级 ai：ForwardResponseForSubNexus--> 发送流给用户: ", err)
 		}
 	}
 
 	if err := source.Err(); err != nil {
-		klog.Error("StreamAgent ForwardResponse error:", err)
+		klog.Error("次级 ai：ForwardResponseForSubNexus error:", err)
 		sa.isStop = true
 	}
 }
@@ -50,31 +49,24 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 
 	// 结束对话
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonStop {
-
 		// 结束本轮对话
 		sa.EndConversation()
-
 		return
 	}
 
 	// 当函数调用相关的参数生成完毕后，进行函数调用
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
-
 		// 调用函数，可能涉及子 ai 调用，所以要把流对象一起传入
 		sa.CallFunctionForSubNexus(target, mainStreamAgent)
-
 		return
 	}
 
 	delta := event.Choices[0].Delta
-
 	if delta.Content != "" {
-
 		// 打印对话内容
 		fmt.Print(delta.Content)
 		sa.content += delta.Content
-
 	}
 
 	// 没有调用,直接返回
@@ -83,7 +75,6 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 	}
 
 	toolCall := delta.ToolCalls[0]
-
 	// 判断是否是函数调用
 	if toolCall.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
 		return
@@ -98,7 +89,6 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 
 	// 执行函数
 	res, err := sa.DoFunctionForSubNexus(target)
-
 	if err != nil {
 		klog.Error("函数调用失败:", err)
 		// 清空上下文，防止前面流影响后面的操作
@@ -113,16 +103,8 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 
 	// 返回工具调用结果作为工具调用消息，插入到消息队列中
 	toolMessage := sa.GenerateToolMessage(res)
-
 	// 返回机器人的消息，插入到消息队列中
 	assistantMessages := sa.GenerateAssistantMessage()
-
-	fmt.Println("==========")
-	fmt.Println("调用函数:", sa.functionName)
-	fmt.Println("调用参数:", sa.functionArguments)
-	fmt.Println("调用结果:", res)
-	fmt.Println("==========")
-
 	// 将消息添加到消息列表中
 	sa.messages = append(sa.messages, assistantMessages, toolMessage)
 
@@ -137,6 +119,12 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 
 // DoFunctionForSubNexus 执行函数
 func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (string, error) {
+
+	fmt.Println("==========")
+	fmt.Println("调用函数:", sa.functionName)
+	fmt.Println("调用参数:", sa.functionArguments)
+	fmt.Println("调用结果:", "")
+	fmt.Println("==========")
 
 	// 将方法转化给次级 ai 进行调用
 	return "", nil
