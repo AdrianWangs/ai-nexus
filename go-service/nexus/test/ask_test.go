@@ -54,7 +54,20 @@ func TestAsk(t *testing.T) {
 			break
 		}
 
-		t.Log("resp:", resp)
+		if resp == nil {
+			continue
+		}
+
+		t.Log("resp:", resp.Choices[0].Message[0].Content)
+		toolCalls := resp.Choices[0].Message[0].ToolCalls
+
+		for _, toolCall := range toolCalls {
+			functionCall := toolCall.FunctionCall
+			t.Log("type:", toolCall.Type)
+			t.Log("toolCall:", functionCall.Name, "(", *functionCall.Arguments, ")")
+		}
+
+		t.Log("====================================")
 
 	}
 
