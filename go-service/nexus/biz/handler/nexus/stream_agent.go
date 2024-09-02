@@ -52,15 +52,18 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		}
 
 		// 将 openai 传过来的数据转化成我们网站对应的 response 格式
+
 		askResponse := Event2response(event)
 
 		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
 		sa.Monitor(event, target, req)
 
 		// 监控完以后不出意外就该转发刚刚的对话了
+		// TODO 这里判断一下需不需要输出函数相关的内容？
+
 		err := target.Send(askResponse)
 		if err != nil {
-			fmt.Println("EchoServer failed: ", err)
+			fmt.Println("ForwardResponse--> 发送给用户的响应 :    执行错误: ", err)
 		}
 	}
 
@@ -98,7 +101,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 	if delta.Content != "" {
 
 		// 打印对话内容
-		fmt.Print(delta.Content)
+		fmt.Println("stream_agent.go-->Monitor: ", delta.Content)
 		sa.content += delta.Content
 
 	}
@@ -124,7 +127,8 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskServerServer, req *nexus_microservice.AskRequest) {
 
 	// 调用次级 ai
-	res, err := sa.DoService(target, req)
+	//  TODO 这边记得要接收一下返回的服务结果
+	_, err := sa.DoService(target, req)
 
 	if err != nil {
 		klog.Error("服务调用失败:", err)
@@ -138,28 +142,22 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 		sa._type = "tool"
 	}
 
-	// TODO: 应该是知道服务名称，然后将消息转发给新的拥有
-	//  对应服务的函数清单的 ai 服务去选择并且调用函数，这样可以确保函数调用的准确性
+	//  应该是知道服务名称，然后将消息转发给新的拥有对应服务的
+	//  函数清单的 ai 服务去选择并且调用函数，这样可以确保函数调用的准确性
 	//  TODO: 想一下这里的函数还需不需要调用流？
-	fmt.Println("==========")
-	fmt.Println("调用服务:", sa.functionName)
-	fmt.Println("请求的提示词：", sa.functionArguments)
-	fmt.Println("调用结果:", res)
-	fmt.Println("==========")
 
 	// 主 ai 不负责 ai 调用方面的逻辑，只负责将消息转发给 ai 服务，真正的调用应该交付给次级 ai
-	// 因此下面的代码不再需要了
-	// TODO 确认到底是主 ai 处理函数调用逻辑还是次级 ai 处理函数调用逻辑
-	if false {
-		// 返回微服务调用结果作为工具调用消息，插入到消息队列中
-		toolMessage := sa.GenerateToolMessage(res)
+	// 因此下面的代码不再需要了,次级ai 会将流主动加入到 当前代理的消息列表中
+	/**
+	// 返回微服务调用结果作为工具调用消息，插入到消息队列中
+	toolMessage := sa.GenerateToolMessage(res)
 
-		// 返回机器人的消息，插入到消息队列中
-		assistantMessages := sa.GenerateAssistantMessage()
+	// 返回机器人的消息，插入到消息队列中
+	assistantMessages := sa.GenerateAssistantMessage()
 
-		// 添加消息到消息队列中
-		sa.messages = append(sa.messages, assistantMessages, toolMessage)
-	}
+	// 添加消息到消息队列中
+	sa.messages = append(sa.messages, assistantMessages, toolMessage)
+	**/
 
 	// 清空上下文，防止前面流影响后面的操作
 	sa.ClearContext()
@@ -167,7 +165,7 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 }
 
 // DoService 执行相关服务，调用服务相关的流，交由下一级ai 进行函数调用
-func (sa *StreamAgent) DoService(target nexus_microservice.NexusService_AskServerServer, req *nexus_microservice.AskRequest) (string, error) {
+func (sa *StreamAgent) DoService(target nexus_microservice.NexusService_AskServerServer, req *nexus_microservice.AskRequest) (res string, er error) {
 
 	// 需要调用的服务名称
 	serviceName := sa.functionName
@@ -199,7 +197,7 @@ func (sa *StreamAgent) DoService(target nexus_microservice.NexusService_AskServe
 	}
 
 	// 将方法转化给次级 ai 进行调用
-	return CallService(serviceName, nexusPrompt, req, target, sa)
+	return AskService(serviceName, nexusPrompt, req, target, sa)
 }
 
 // CompleteFunctionCall 完善函数调用相关的信息，主要负责拼接流分片中的函数调用相关的信息
