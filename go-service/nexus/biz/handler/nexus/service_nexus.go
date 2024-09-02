@@ -4,9 +4,9 @@ package nexus
 
 import (
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"os"
 )
@@ -35,10 +35,15 @@ var prompt = `
 - 确保参数填写正确，符合用户请求。
 `
 
-// CallService 是一个流式接口，接收主 ai 的需求并指导次级 ai 进行函数调用
+// AskService 是一个流式接口，接收主 ai 的需求并指导次级 ai 进行函数调用
 // [mainStreamAgent] 是主 ai 的流代理对象，毕竟我们当前调用还是在主 ai 中，所以需要将消息加入到主 ai 的消息列表中
-func CallService(service string, nexusPrompt string, req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer, mainStreamAgent *StreamAgent) (res string, err error) {
+func AskService(service string, nexusPrompt string, req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer, mainStreamAgent *StreamAgent) (res string, err error) {
 
+	fmt.Println("==========")
+	fmt.Println("调用服务:", service)
+	fmt.Println("请求的提示词：", nexusPrompt)
+	fmt.Println("调用结果:")
+	fmt.Println("==========")
 	// 从环境变量中获取 API_KEY
 	apiKey = os.Getenv("API_KEY")
 
@@ -89,8 +94,8 @@ func CallService(service string, nexusPrompt string, req *nexus_microservice.Ask
 
 	}
 
-	klog.Info("次级 ai：")
-	pretty.Println(qwenInstance.Messages())
+	klog.Info("次级对话结果:")
+	printer.PrintMessages(qwenInstance.Messages())
 
 	return
 }
