@@ -5,7 +5,6 @@ package nexus
 import (
 	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/packages/ssestream"
@@ -20,7 +19,7 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		event := source.Current()
 		// 如果本轮对话没有任何回复就不需要进行其他额外的操作了
 		if len(event.Choices) <= 0 {
-			klog.Info("好像没对话内容...")
+			fmt.Println("好像没对话内容...")
 			pretty.Println(event)
 			continue
 		}
@@ -28,13 +27,13 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		// 将 openai 传过来的数据转化成我们网站对应的 response 格式
 		askResponse := Event2response(event)
 
+		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
+		sa.MonitorForSubNexus(event, target, mainStreamAgent)
+
 		// 不输出函数相关的内容，等函数生成完毕，才开始调用
 		if len(askResponse.Choices[0].Message[0].ToolCalls) > 0 {
 			continue
 		}
-
-		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
-		sa.MonitorForSubNexus(event, target, mainStreamAgent)
 
 		// 监控完以后不出意外就该转发刚刚的对话了
 		err := target.Send(askResponse)
@@ -44,7 +43,7 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 	}
 
 	if err := source.Err(); err != nil {
-		klog.Error("次级 ai：ForwardResponseForSubNexus error:", err)
+		fmt.Println("次级 ai：ForwardResponseForSubNexus error:", err)
 		sa.isStop = true
 	}
 }
@@ -104,7 +103,7 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 	// 执行函数
 	res, err := sa.DoFunctionForSubNexus(target)
 	if err != nil {
-		klog.Error("函数调用失败:", err)
+		fmt.Println("函数调用失败:", err)
 		// 清空上下文，防止前面流影响后面的操作
 		sa.ClearContext()
 		return
