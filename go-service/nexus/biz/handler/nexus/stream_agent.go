@@ -50,7 +50,7 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 
 		// 如果本轮对话没有任何回复就不需要进行其他额外的操作了
 		if len(event.Choices) <= 0 {
-			klog.Info("好像没对话内容...")
+			fmt.Println("好像没对话内容...")
 			pretty.Println(event)
 			continue
 		}
@@ -147,7 +147,7 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 	_, err := sa.DoService(target, req)
 
 	if err != nil {
-		klog.Error("服务调用失败:", err)
+		fmt.Println("服务调用失败:", err)
 		// 清空上下文，防止前面流影响后面的操作
 		sa.ClearContext()
 		return
