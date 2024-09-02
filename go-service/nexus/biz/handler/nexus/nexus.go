@@ -6,7 +6,6 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/parser"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"os"
 	"path/filepath"
@@ -93,9 +92,6 @@ func GetParamsFromThrift(idlPath string) []openai.ChatCompletionToolParam {
 		klog.Error("解析 thrift 文件失败")
 		return []openai.ChatCompletionToolParam{}
 	}
-
-	klog.Info("从thrift中获取参数:")
-	pretty.Println(toolParams)
 
 	return toolParams
 }
