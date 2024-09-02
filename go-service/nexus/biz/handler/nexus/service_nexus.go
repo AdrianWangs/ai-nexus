@@ -7,7 +7,6 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/openai/openai-go"
 	"os"
 )
@@ -67,6 +66,7 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 	}
 
 	idlPath := fmt.Sprintf("./resources/idl/%s.thrift", service)
+
 	qwenInstance.SetTools(GetParamsFromThrift(idlPath))
 
 	// 注册流代理，用于转发流，也就是将 openai 返回的流消息转发给 kitex 的流对象
@@ -95,7 +95,7 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 
 	}
 
-	klog.Info("次级对话结果:")
+	fmt.Println("次级对话结果:")
 	printer.PrintMessages(qwenInstance.Messages())
 
 	return
