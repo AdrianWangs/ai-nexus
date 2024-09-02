@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 	"os"
 )
 
@@ -68,7 +68,7 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		qwenInstance.SetModel(*req.Model)
 	}
 
-	// TODO 最顶级的应该是先将微服务列表传入，然后让ai选择使用哪一个微服务
+	// 最顶级的应该是先将微服务列表传入，然后让ai选择使用哪一个微服务
 	//nexus.QwenInstance.SetTools(nexus.GetParamsFromThrift())
 	qwenInstance.SetTools(nexus.GetServicesFromThrift())
 
@@ -97,7 +97,7 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		streamAgent.ClearMessages()
 
 		klog.Info("本轮对话结果:")
-		pretty.Println(qwenInstance.Messages())
+		printer.PrintMessages(qwenInstance.Messages())
 
 	}
 
