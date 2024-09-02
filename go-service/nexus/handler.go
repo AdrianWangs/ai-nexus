@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -52,7 +53,7 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	// 从环境变量中获取 API_KEY
 	apiKey = os.Getenv("API_KEY")
 
-	qwenInstance := nexus.NewQwen()
+	qwenInstance := models.NewQwen()
 
 	qwenInstance.Init(baseUrl, apiKey)
 	qwenInstance.SetModel(model)
