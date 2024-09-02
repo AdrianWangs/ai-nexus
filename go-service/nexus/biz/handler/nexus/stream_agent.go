@@ -21,7 +21,8 @@ type StreamAgent struct {
 	id                string
 	content           string
 	messages          []openai.ChatCompletionMessageParamUnion
-	isStop            bool //多轮对话控制结束对话
+	isStop            bool                                            //多轮对话控制结束对话
+	outputStream      nexus_microservice.NexusService_AskServerServer //用于输出的流对象
 }
 
 // NewStreamAgent 用于生成一个新的流代理对象
@@ -37,7 +38,10 @@ func (sa *StreamAgent) Init() {
 }
 
 // ForwardResponse  转发响应请求并进行中间处理
+// 相当于中间件+流转发器
 func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompletionChunk], target nexus_microservice.NexusService_AskServerServer, req *nexus_microservice.AskRequest) {
+
+	sa.outputStream = target
 
 	// 开始对话,使用代理模式进行对话
 	for source.Next() {
@@ -58,9 +62,12 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
 		sa.Monitor(event, target, req)
 
-		// 监控完以后不出意外就该转发刚刚的对话了
-		// TODO 这里判断一下需不需要输出函数相关的内容？
+		// 不输出函数相关的内容，等函数生成完毕，才开始调用
+		if len(askResponse.Choices[0].Message[0].ToolCalls) > 0 {
+			continue
+		}
 
+		// 监控完以后该转发刚刚的对话了
 		err := target.Send(askResponse)
 		if err != nil {
 			fmt.Println("ForwardResponse--> 发送给用户的响应 :    执行错误: ", err)
@@ -89,6 +96,15 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 	// 当函数调用相关的参数生成完毕后，进行函数调用
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
+
+		finishReason := string(event.Choices[0].FinishReason)
+		// 生成响应
+		functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
+		// 监控完以后该转发刚刚的对话了
+		err := target.Send(functionCallResponse)
+		if err != nil {
+			fmt.Println("Monitor--> 发送给用户的响应 :    执行错误: ", err)
+		}
 
 		// 调用服务，可能涉及子 ai 调用，所以要把流对象和相关请求一起传入
 		sa.CallService(target, req)
@@ -306,4 +322,33 @@ func (sa *StreamAgent) AddMessage(message openai.ChatCompletionMessageParamUnion
 // ClearMessages 获取本次对话的消息
 func (sa *StreamAgent) ClearMessages() {
 	sa.messages = []openai.ChatCompletionMessageParamUnion{}
+}
+
+// GenerateToolMessageResponse 生成用于响应流的 FunctionCall 消息
+func (sa *StreamAgent) GenerateToolMessageResponse(reason string) *nexus_microservice.AskResponse {
+	return &nexus_microservice.AskResponse{
+		Id:    "",
+		Model: "",
+		Choices: []*nexus_microservice.Choice{
+			{
+				FinishReason: &reason,
+				Message: []*nexus_microservice.Message{
+					{
+						Role:    "assistant",
+						Content: "正在调用函数...",
+						ToolCalls: []*nexus_microservice.ToolCall{
+							{
+								Id:   sa.id,
+								Type: sa._type,
+								FunctionCall: &nexus_microservice.FunctionCall{
+									Name:      sa.functionName,
+									Arguments: &sa.functionArguments,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
 }

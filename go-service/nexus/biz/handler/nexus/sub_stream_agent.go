@@ -28,6 +28,11 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		// 将 openai 传过来的数据转化成我们网站对应的 response 格式
 		askResponse := Event2response(event)
 
+		// 不输出函数相关的内容，等函数生成完毕，才开始调用
+		if len(askResponse.Choices[0].Message[0].ToolCalls) > 0 {
+			continue
+		}
+
 		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
 		sa.MonitorForSubNexus(event, target, mainStreamAgent)
 
@@ -57,7 +62,16 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 	// 当函数调用相关的参数生成完毕后，进行函数调用
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonFunctionCall ||
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
-		// 调用函数，可能涉及子 ai 调用，所以要把流对象一起传入
+
+		finishReason := string(event.Choices[0].FinishReason)
+		functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
+		// 监控完以后该转发刚刚的对话了
+		err := target.Send(functionCallResponse)
+		if err != nil {
+			fmt.Println("MonitorForSubNexus--> 发送给用户的响应 :    执行错误: ", err)
+		}
+
+		// 调用函数
 		sa.CallFunctionForSubNexus(target, mainStreamAgent)
 		return
 	}
