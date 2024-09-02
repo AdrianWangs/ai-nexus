@@ -1,5 +1,4 @@
-// 旅游计划，可以制定计划、查找景点等旅游相关的功能
-
+// 旅游相关的服务，可以查找景点、查询票价等旅游相关的功能
 namespace go nexus_microservice
 
 // 旅游景点信息
@@ -58,14 +57,32 @@ struct QueryTouristSpotResponse {
     3: list<TouristSpot> spots,
 }
 
-// 旅游计划服务接口
+// 旅游景点票价信息
+struct TicketPrice {
+    1: string spotId,
+    2: i32 adultPrice,
+    3: i32 childPrice,
+    4: string currency,
+    5: optional string note, // 可选的备注信息，比如学生票、团体票说明等
+}
+
+// 查询旅游景点票价请求
+struct QueryTicketPriceRequest {
+    1: string spotId,
+}
+
+// 查询旅游景点票价响应
+struct QueryTicketPriceResponse {
+    1: bool success,
+    2: string message,
+    3: optional TicketPrice price, // 如果没有查到价格，则此字段为null
+}
+
+// 旅游服务接口
 service TravelPlanService {
-    // 制定旅游计划
-    CreateTravelPlanResponse createTravelPlan(1: CreateTravelPlanRequest request),
 
-    // 执行旅游计划（如开始、完成等）
-    ExecuteTravelPlanResponse executeTravelPlan(1: ExecuteTravelPlanRequest request),
-
+    // 查询旅游景点票价
+    QueryTicketPriceResponse queryTicketPrice(1: QueryTicketPriceRequest request),
     // 查询旅游景点
     QueryTouristSpotResponse queryTouristSpot(1: QueryTouristSpotRequest request),
 }
