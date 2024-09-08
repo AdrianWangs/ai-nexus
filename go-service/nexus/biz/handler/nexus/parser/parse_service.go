@@ -64,7 +64,7 @@ func parseServiceFromPath(dir []string) (res []openai.ChatCompletionToolParam) {
 		"properties": map[string]interface{}{
 			"prompt": map[string]string{
 				"type":        "string",
-				"description": "要让函数执行的操作，用自然语言描述即可",
+				"description": "要让微服务执行的操作，用自然语言描述即可",
 			},
 		},
 		"required": []string{" prompt"},
