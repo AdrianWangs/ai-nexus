@@ -9,7 +9,7 @@ import (
 
 func PrintMessages(messages []openai.ChatCompletionMessageParamUnion) {
 
-	fmt.Print("=========================================")
+	fmt.Println("=========================================")
 
 	for _, message := range messages {
 		openai_message, ok := message.(openai.ChatCompletionMessage)
@@ -21,5 +21,5 @@ func PrintMessages(messages []openai.ChatCompletionMessageParamUnion) {
 		}
 	}
 
-	fmt.Print("=========================================")
+	fmt.Println("=========================================")
 }
