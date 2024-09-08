@@ -26,6 +26,6 @@ func TestThriftParser(t *testing.T) {
 }
 
 func TestParseThrift2Openai(r *testing.T) {
-	res := nexus.GetParamsFromThrift("../resources/idl/test.thrift")
+	res := nexus.GetParamsFromThrift("test", "../resources/idl/test.thrift")
 	pretty.Println(res)
 }
