@@ -46,6 +46,7 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		fmt.Println("次级 ai：ForwardResponseForSubNexus error:", err)
 		sa.isStop = true
 	}
+
 }
 
 // MonitorForSubNexus 监控流的请求,并执行相关函数调用
@@ -131,7 +132,7 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 }
 
 // DoFunctionForSubNexus 执行函数
-func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (string, error) {
+func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (res string, err error) {
 
 	fmt.Println("==========")
 	fmt.Println("调用函数:", sa.functionName)
@@ -139,6 +140,12 @@ func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusServ
 	fmt.Println("调用结果:", "")
 	fmt.Println("==========")
 
+	if sa.functionName == " test.TravelPlanService.queryTouristSpot" {
+		res = `金鸡湖:票价：100元，开放时间：8:00-18:00苏州博物馆:票价：50元，开放时间：9:00-17:00`
+	} else {
+		res = "运行成功，无返回结果"
+	}
+
 	// 将方法转化给次级 ai 进行调用
-	return "", nil
+	return
 }

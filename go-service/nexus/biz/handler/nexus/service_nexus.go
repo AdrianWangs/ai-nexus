@@ -5,8 +5,8 @@ package nexus
 import (
 	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
-	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
+	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"os"
 )
@@ -67,7 +67,7 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 
 	idlPath := fmt.Sprintf("./resources/idl/%s.thrift", service)
 
-	qwenInstance.SetTools(GetParamsFromThrift(idlPath))
+	qwenInstance.SetTools(GetParamsFromThrift(service, idlPath))
 
 	// 注册流代理，用于转发流，也就是将 openai 返回的流消息转发给 kitex 的流对象
 	streamAgent := NewStreamAgent()
@@ -95,8 +95,14 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 
 	}
 
-	fmt.Println("次级对话结果:")
-	printer.PrintMessages(qwenInstance.Messages())
+	// 返回结果，要告知主 ai已经调用完毕
+	mainStreamAgent.messages = append([]openai.ChatCompletionMessageParamUnion{
+		streamAgent.GenerateToolMessage(res)},
+		mainStreamAgent.messages...)
 
+	fmt.Println("************************************************")
+	fmt.Println("次级对话结果:")
+	pretty.Println(qwenInstance.Messages())
+	fmt.Println("************************************************")
 	return
 }
