@@ -86,11 +86,17 @@ func GetServicesFromThrift() []openai.ChatCompletionToolParam {
 }
 
 // GetParamsFromThrift 从thrift中获取参数
-func GetParamsFromThrift(idlPath string) []openai.ChatCompletionToolParam {
+func GetParamsFromThrift(serviceName string, idlPath string) []openai.ChatCompletionToolParam {
 	toolParams, err := parser.ParseThriftIdlFromPath(idlPath)
 	if err != nil {
 		klog.Error("解析 thrift 文件失败")
 		return []openai.ChatCompletionToolParam{}
+	}
+
+	for index, _ := range toolParams {
+		// 服务名称
+		toolParams[index].Function.Value.Name = openai.String(
+			serviceName + "." + toolParams[index].Function.Value.Name.String())
 	}
 
 	return toolParams
