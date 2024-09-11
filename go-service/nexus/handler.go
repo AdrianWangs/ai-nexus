@@ -4,7 +4,6 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"os"
 )
 
@@ -49,6 +48,7 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	apiKey = os.Getenv("API_KEY")
 
 	qwenInstance := models.NewQwen()
+	models.DefaultQwenInstance = *qwenInstance
 
 	qwenInstance.Init(baseUrl, apiKey)
 	qwenInstance.SetModel(model)
@@ -80,7 +80,6 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		// 使用代理可以在转发流的过程中进行额外操作，比如进行函数调用
 		streamAgent.ForwardResponse(chatStream, stream, req)
 
-		// TODO 主函数的调用结果没能返回，所以出现了一些问题，这时候需要把主函数的调用结果传到消息列表才能解决一些问题
 		// 将消息添加到消息列表中
 		qwenInstance.AddMessages(streamAgent.Messages())
 
@@ -92,16 +91,7 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		// 但是正常来说最终对话列表应该是[A,B,C]
 		streamAgent.ClearMessages()
 
-		klog.Info("000000000000000000000000000000000000000000")
-		klog.Info("本轮对话结果:")
-		klog.Info(qwenInstance.Messages())
-		klog.Info("000000000000000000000000000000000000000000")
-
 	}
-
-	klog.Info("111111111111111111111111111111111111111111111111111111111111")
-	klog.Info(qwenInstance.Messages())
-	klog.Info("111111111111111111111111111111111111111111111111111111111111")
 
 	return
 }

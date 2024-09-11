@@ -3,6 +3,7 @@ package nexus
 
 import (
 	"errors"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/hertz/pkg/common/json"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -55,10 +56,10 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		}
 
 		// 将 openai 传过来的数据转化成我们网站对应的 response 格式
-
 		askResponse := Event2response(event)
 
 		// 监控流，在监控过程中函数生成成功的那一刻进行函数调用
+		// Monitor中会执行消息插入操作
 		sa.Monitor(event, target, req)
 
 		// 不输出函数相关的内容，等函数生成完毕，才开始调用
@@ -75,6 +76,9 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 
 	if err := source.Err(); err != nil {
 		klog.Error("StreamAgent ForwardResponse error:", err)
+		klog.Error("最终暂停处主模型 messages:")
+		pretty.Println(models.DefaultQwenInstance.Messages())
+		pretty.Println(sa.messages)
 		sa.isStop = true
 	}
 
@@ -99,7 +103,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
 
 		finishReason := string(event.Choices[0].FinishReason)
-		// 生成响应
+		// 生成响应，告诉前端当前正在调用函数
 		functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
 		// 监控完以后该转发刚刚的对话了
 		err := target.Send(functionCallResponse)
@@ -128,57 +132,43 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 		return
 	}
 
-	toolCall := delta.ToolCalls[0]
+	toolCallChunk := delta.ToolCalls[0]
 
 	// 判断是否是函数调用
-	if toolCall.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
+	if toolCallChunk.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
 		return
 	}
 
 	// 完善函数调用相关的信息，也就是切片组合成完整信息
-	sa.CompleteFunctionCall(toolCall)
+	sa.MergeFunctionCallChunks(toolCallChunk)
 
 }
 
 // CallService 调用服务
 func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskServerServer, req *nexus_microservice.AskRequest) {
 
-	// 调用次级 ai
-	//  TODO 这边记得要接收一下返回的服务结果
-	_, err := sa.DoService(target, req)
-
-	if err != nil {
-		klog.Error("服务调用失败:", err)
-		// 清空上下文，防止前面流影响后面的操作
-		sa.ClearContext()
-		return
-	}
-
 	// 这里应该是固定的 openai 格式（目前）
 	if sa._type == "" {
 		sa._type = "tool"
 	}
 
-	//  应该是知道服务名称，然后将消息转发给新的拥有对应服务的
-	//  函数清单的 ai 服务去选择并且调用函数，这样可以确保函数调用的准确性
-	//  TODO: 想一下这里的函数还需不需要调用流？
-
-	// 主 ai 不负责 ai 调用方面的逻辑，只负责将消息转发给 ai 服务，真正的调用应该交付给次级 ai
-	// 因此下面的代码不再需要了,次级ai 会将流主动加入到 当前代理的消息列表中
-	/**
-	// 返回微服务调用结果作为工具调用消息，插入到消息队列中
-	toolMessage := sa.GenerateToolMessage(res)
-
-	// 返回机器人的消息，插入到消息队列中
+	// 返回机器人的消息，插入到消息队列中,一般是指明一个函数调用操作
 	assistantMessages := sa.GenerateAssistantMessage()
 
-	// 添加消息到消息队列中
-	sa.messages = append(sa.messages, assistantMessages, toolMessage)
-	**/
+	// 将消息添加到消息列表中
+	sa.messages = append(sa.messages, assistantMessages)
+
+	// 调用次级 ai
+	//  TODO 这边记得要接收一下返回的服务结果
+	// 次级ai 会进行额外的信息插入的操作
+	_, err := sa.DoService(target, req)
+
+	if err != nil {
+		klog.Error("服务调用失败:", err)
+	}
 
 	// 清空上下文，防止前面流影响后面的操作
 	sa.ClearContext()
-
 }
 
 // DoService 执行相关服务，调用服务相关的流，交由下一级ai 进行函数调用
@@ -217,18 +207,19 @@ func (sa *StreamAgent) DoService(target nexus_microservice.NexusService_AskServe
 	return AskService(serviceName, nexusPrompt, req, target, sa)
 }
 
-// CompleteFunctionCall 完善函数调用相关的信息，主要负责拼接流分片中的函数调用相关的信息
-func (sa *StreamAgent) CompleteFunctionCall(toolCall openai.ChatCompletionChunkChoicesDeltaToolCall) {
+// MergeFunctionCallChunks 拼接各个函数调用相关的流切片以
+// 完善函数调用相关的信息，主要负责拼接流分片中的函数调用相关的信息
+func (sa *StreamAgent) MergeFunctionCallChunks(toolCallChunk openai.ChatCompletionChunkChoicesDeltaToolCall) {
 	// 函数调用类型（不知道有啥用）
-	sa._type = string(toolCall.Type)
+	sa._type = string(toolCallChunk.Type)
 
 	// 函数调用 id（不知道有啥用）
-	if toolCall.ID != "" {
-		sa.id = toolCall.ID
+	if toolCallChunk.ID != "" {
+		sa.id = toolCallChunk.ID
 	}
 
 	// 函数调用名称
-	function := toolCall.Function
+	function := toolCallChunk.Function
 	if function.Name != "" {
 		sa.functionName += function.Name
 	}
@@ -317,7 +308,6 @@ func (sa *StreamAgent) AddMessages(messages []openai.ChatCompletionMessageParamU
 // AddMessage 添加消息到消息队列中
 func (sa *StreamAgent) AddMessage(message openai.ChatCompletionMessageParamUnion) {
 	sa.messages = append(sa.messages, message)
-
 }
 
 // ClearMessages 获取本次对话的消息

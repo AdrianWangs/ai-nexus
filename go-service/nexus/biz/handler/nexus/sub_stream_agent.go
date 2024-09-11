@@ -3,6 +3,7 @@
 package nexus
 
 import (
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
@@ -44,6 +45,8 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 
 	if err := source.Err(); err != nil {
 		klog.Error("次级 ai：ForwardResponseForSubNexus error:", err)
+		klog.Error("最终暂停处次级 ai 模型 messages")
+		pretty.Println(models.DefaultQwenInstance.Messages())
 		sa.isStop = true
 	}
 
@@ -88,14 +91,14 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 		return
 	}
 
-	toolCall := delta.ToolCalls[0]
+	toolCallChunk := delta.ToolCalls[0]
 	// 判断是否是函数调用
-	if toolCall.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
+	if toolCallChunk.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
 		return
 	}
 
 	// 完善函数调用相关的信息，也就是切片组合成完整信息
-	sa.CompleteFunctionCall(toolCall)
+	sa.MergeFunctionCallChunks(toolCallChunk)
 }
 
 // CallFunctionForSubNexus 调用函数

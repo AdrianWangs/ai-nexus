@@ -7,6 +7,7 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"os"
 )
@@ -72,6 +73,9 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 	// 注册流代理，用于转发流，也就是将 openai 返回的流消息转发给 kitex 的流对象
 	streamAgent := NewStreamAgent()
 
+	// 返回结果，要告知主 ai已经调用完毕
+	mainStreamAgent.messages = append(mainStreamAgent.messages, streamAgent.GenerateToolMessage("进行服务调用"))
+
 	// 使用代理转发流，并在转发过程中自动执行函数调用
 	for !streamAgent.IsStop() {
 
@@ -95,14 +99,9 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 
 	}
 
-	// 返回结果，要告知主 ai已经调用完毕
-	mainStreamAgent.messages = append([]openai.ChatCompletionMessageParamUnion{
-		streamAgent.GenerateToolMessage(res)},
-		mainStreamAgent.messages...)
-
 	klog.Info("************************************************")
 	klog.Info("次级对话结果:")
-	klog.Info(qwenInstance.Messages())
+	pretty.Println(qwenInstance.Messages())
 	klog.Info("************************************************")
 	return
 }
