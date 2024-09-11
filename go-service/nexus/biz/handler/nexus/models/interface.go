@@ -1,5 +1,5 @@
 // @Author Adrian.Wang 2024/8/25 下午11:59:00
-package nexus
+package models
 
 import (
 	"github.com/openai/openai-go"

@@ -5,7 +5,6 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/dal"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/conf"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice/nexusservice"
-
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
@@ -68,8 +67,13 @@ func kitexInit() (opts []server.Option) {
 
 	// klog
 	logger := kitexlogrus.NewLogger()
+
+	logger.Logger().SetReportCaller(true)
+	logger.Logger().SetFormatter(&MyFormatter{})
+
 	klog.SetLogger(logger)
 	klog.SetLevel(conf.LogLevel())
+
 	asyncWriter := &zapcore.BufferedWriteSyncer{
 		WS: zapcore.AddSync(&lumberjack.Logger{
 			Filename:   conf.GetConf().Kitex.LogFileName,
@@ -87,5 +91,6 @@ func kitexInit() (opts []server.Option) {
 	server.RegisterShutdownHook(func() {
 		asyncWriter.Sync()
 	})
+
 	return
 }

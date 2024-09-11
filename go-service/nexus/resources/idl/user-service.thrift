@@ -1,4 +1,5 @@
 // user_service.thrift
+// 这个文件主要用户微服务
 namespace go user_microservice
 
 // 定义用户信息结构体

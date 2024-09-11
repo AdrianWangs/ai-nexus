@@ -1,4 +1,4 @@
-// @Author Adrian.Wang 2024/8/26 下午8:01:00
+// Package nexus @Author Adrian.Wang 2024/8/26 下午8:01:00
 package nexus
 
 import (
@@ -6,8 +6,9 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/parser"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
+	"os"
+	"path/filepath"
 )
 
 // Request2openai 将通用的消息格式转换为openai的消息格式
@@ -68,16 +69,35 @@ func Request2openai(messages []*nexus_microservice.Message) (openaiMessages []op
 	return
 }
 
+// GetServicesFromThrift 从thrift中获取服务
+func GetServicesFromThrift() []openai.ChatCompletionToolParam {
+
+	filenames, err := filepath.Glob("./resources/idl/*.thrift")
+
+	if err != nil {
+		klog.Error("解析 thrift 文件失败")
+		os.Exit(1)
+	}
+
+	toolServices, err := parser.ParseThriftServiceFromPaths(filenames)
+
+	return toolServices
+
+}
+
 // GetParamsFromThrift 从thrift中获取参数
-func GetParamsFromThrift() []openai.ChatCompletionToolParam {
-	toolParams, err := parser.ParseThriftIdlFromPath("./resources/idl/test.thrift")
+func GetParamsFromThrift(serviceName string, idlPath string) []openai.ChatCompletionToolParam {
+	toolParams, err := parser.ParseThriftIdlFromPath(idlPath)
 	if err != nil {
 		klog.Error("解析 thrift 文件失败")
 		return []openai.ChatCompletionToolParam{}
 	}
 
-	klog.Info("从thrift中获取参数:")
-	pretty.Println(toolParams)
+	for index, _ := range toolParams {
+		// 服务名称
+		toolParams[index].Function.Value.Name = openai.String(
+			serviceName + "." + toolParams[index].Function.Value.Name.String())
+	}
 
 	return toolParams
 }
