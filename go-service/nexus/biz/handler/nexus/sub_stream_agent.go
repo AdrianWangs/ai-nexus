@@ -3,8 +3,8 @@
 package nexus
 
 import (
-	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kr/pretty"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/packages/ssestream"
@@ -19,7 +19,7 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		event := source.Current()
 		// 如果本轮对话没有任何回复就不需要进行其他额外的操作了
 		if len(event.Choices) <= 0 {
-			fmt.Println("好像没对话内容...")
+			klog.Error("好像没对话内容...")
 			pretty.Println(event)
 			continue
 		}
@@ -38,12 +38,12 @@ func (sa *StreamAgent) ForwardResponseForSubNexus(source *ssestream.Stream[opena
 		// 监控完以后不出意外就该转发刚刚的对话了
 		err := target.Send(askResponse)
 		if err != nil {
-			fmt.Println("次级 ai：ForwardResponseForSubNexus--> 发送流给用户: ", err)
+			klog.Error("次级 ai：ForwardResponseForSubNexus--> 发送流给用户: ", err)
 		}
 	}
 
 	if err := source.Err(); err != nil {
-		fmt.Println("次级 ai：ForwardResponseForSubNexus error:", err)
+		klog.Error("次级 ai：ForwardResponseForSubNexus error:", err)
 		sa.isStop = true
 	}
 
@@ -68,7 +68,7 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 		// 监控完以后该转发刚刚的对话了
 		err := target.Send(functionCallResponse)
 		if err != nil {
-			fmt.Println("MonitorForSubNexus--> 发送给用户的响应 :    执行错误: ", err)
+			klog.Error("MonitorForSubNexus--> 发送给用户的响应 :    执行错误: ", err)
 		}
 
 		// 调用函数
@@ -79,7 +79,7 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 	delta := event.Choices[0].Delta
 	if delta.Content != "" {
 		// 打印对话内容
-		fmt.Print(delta.Content)
+		klog.Info(delta.Content)
 		sa.content += delta.Content
 	}
 
@@ -104,7 +104,7 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 	// 执行函数
 	res, err := sa.DoFunctionForSubNexus(target)
 	if err != nil {
-		fmt.Println("函数调用失败:", err)
+		klog.Error("函数调用失败:", err)
 		// 清空上下文，防止前面流影响后面的操作
 		sa.ClearContext()
 		return
@@ -134,11 +134,11 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 // DoFunctionForSubNexus 执行函数
 func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (res string, err error) {
 
-	fmt.Println("==========")
-	fmt.Println("调用函数:", sa.functionName)
-	fmt.Println("调用参数:", sa.functionArguments)
-	fmt.Println("调用结果:", "")
-	fmt.Println("==========")
+	klog.Info("==========")
+	klog.Info("调用函数:", sa.functionName)
+	klog.Info("调用参数:", sa.functionArguments)
+	klog.Info("调用结果:", "")
+	klog.Info("==========")
 
 	if sa.functionName == " test.TravelPlanService.queryTouristSpot" {
 		res = `金鸡湖:票价：100元，开放时间：8:00-18:00苏州博物馆:票价：50元，开放时间：9:00-17:00`

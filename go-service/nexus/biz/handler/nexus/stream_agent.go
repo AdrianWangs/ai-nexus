@@ -3,7 +3,6 @@ package nexus
 
 import (
 	"errors"
-	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/hertz/pkg/common/json"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -50,7 +49,7 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 
 		// 如果本轮对话没有任何回复就不需要进行其他额外的操作了
 		if len(event.Choices) <= 0 {
-			fmt.Println("好像没对话内容...")
+			klog.Error("好像没对话内容...")
 			pretty.Println(event)
 			continue
 		}
@@ -70,7 +69,7 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		// 监控完以后该转发刚刚的对话了
 		err := target.Send(askResponse)
 		if err != nil {
-			fmt.Println("ForwardResponse--> 发送给用户的响应 :    执行错误: ", err)
+			klog.Error("ForwardResponse--> 发送给用户的响应 :    执行错误: ", err)
 		}
 	}
 
@@ -78,6 +77,8 @@ func (sa *StreamAgent) ForwardResponse(source *ssestream.Stream[openai.ChatCompl
 		klog.Error("StreamAgent ForwardResponse error:", err)
 		sa.isStop = true
 	}
+
+	// 创建一个消息添加到消息列表中
 
 }
 
@@ -103,7 +104,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 		// 监控完以后该转发刚刚的对话了
 		err := target.Send(functionCallResponse)
 		if err != nil {
-			fmt.Println("Monitor--> 发送给用户的响应 :    执行错误: ", err)
+			klog.Error("Monitor--> 发送给用户的响应 :    执行错误: ", err)
 		}
 
 		// 调用服务，可能涉及子 ai 调用，所以要把流对象和相关请求一起传入
@@ -117,7 +118,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 	if delta.Content != "" {
 
 		// 打印对话内容
-		fmt.Println("stream_agent.go-->Monitor: ", delta.Content)
+		klog.Info("stream_agent.go-->Monitor: ", delta.Content)
 		sa.content += delta.Content
 
 	}
@@ -147,7 +148,7 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 	_, err := sa.DoService(target, req)
 
 	if err != nil {
-		fmt.Println("服务调用失败:", err)
+		klog.Error("服务调用失败:", err)
 		// 清空上下文，防止前面流影响后面的操作
 		sa.ClearContext()
 		return
@@ -281,9 +282,9 @@ func (sa *StreamAgent) EndConversation() {
 	// 返回机器人的消息，插入到消息队列中
 	assistantMessages := sa.GenerateAssistantMessage()
 
-	fmt.Println("==========")
-	fmt.Println("结束对话,最终本轮对话：\n", sa.content)
-	fmt.Println("==========")
+	klog.Info("==========")
+	klog.Info("结束对话,最终本轮对话：\n", sa.content)
+	klog.Info("==========")
 
 	// 添加消息到消息队列中
 	sa.messages = append(sa.messages, assistantMessages)

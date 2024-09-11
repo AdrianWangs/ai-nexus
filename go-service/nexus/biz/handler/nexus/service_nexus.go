@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
-	"github.com/kr/pretty"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/openai/openai-go"
 	"os"
 )
@@ -39,11 +39,11 @@ var prompt = `
 // [mainStreamAgent] 是主 ai 的流代理对象，毕竟我们当前调用还是在主 ai 中，所以需要将消息加入到主 ai 的消息列表中
 func AskService(service string, nexusPrompt string, req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer, mainStreamAgent *StreamAgent) (res string, err error) {
 
-	fmt.Println("==========")
-	fmt.Println("调用服务:", service)
-	fmt.Println("请求的提示词：", nexusPrompt)
-	fmt.Println("调用结果:")
-	fmt.Println("==========")
+	klog.Info("==========")
+	klog.Info("调用服务:", service)
+	klog.Info("请求的提示词：", nexusPrompt)
+	klog.Info("调用结果:")
+	klog.Info("==========")
 	// 从环境变量中获取 API_KEY
 	apiKey = os.Getenv("API_KEY")
 
@@ -100,9 +100,9 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 		streamAgent.GenerateToolMessage(res)},
 		mainStreamAgent.messages...)
 
-	fmt.Println("************************************************")
-	fmt.Println("次级对话结果:")
-	pretty.Println(qwenInstance.Messages())
-	fmt.Println("************************************************")
+	klog.Info("************************************************")
+	klog.Info("次级对话结果:")
+	klog.Info(qwenInstance.Messages())
+	klog.Info("************************************************")
 	return
 }

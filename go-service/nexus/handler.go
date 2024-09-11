@@ -1,13 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
-	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/printer"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kr/pretty"
 	"os"
 )
 
@@ -95,16 +92,16 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 		// 但是正常来说最终对话列表应该是[A,B,C]
 		streamAgent.ClearMessages()
 
-		fmt.Println("000000000000000000000000000000000000000000")
+		klog.Info("000000000000000000000000000000000000000000")
 		klog.Info("本轮对话结果:")
-		printer.PrintMessages(qwenInstance.Messages())
-		fmt.Println("000000000000000000000000000000000000000000")
+		klog.Info(qwenInstance.Messages())
+		klog.Info("000000000000000000000000000000000000000000")
 
 	}
 
-	fmt.Println("111111111111111111111111111111111111111111111111111111111111")
-	pretty.Println(qwenInstance.Messages())
-	fmt.Println("111111111111111111111111111111111111111111111111111111111111")
+	klog.Info("111111111111111111111111111111111111111111111111111111111111")
+	klog.Info(qwenInstance.Messages())
+	klog.Info("111111111111111111111111111111111111111111111111111111111111")
 
 	return
 }
