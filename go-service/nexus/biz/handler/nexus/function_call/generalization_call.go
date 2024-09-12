@@ -6,6 +6,9 @@ package function_call
 import (
 	"context"
 	"fmt"
+	"github.com/AdrianWangs/ai-nexus/go-common/nacos"
+	"github.com/cloudwego/hertz/pkg/common/json"
+	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/genericclient"
 	"github.com/cloudwego/kitex/pkg/generic"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -20,9 +23,23 @@ func GeneralizationCall(functionName string, params string) string {
 
 	splitName := strings.Split(functionName, "-")
 
-	microServiceName := splitName[0]
-	//serviceName := splitName[1]
-	functionName = splitName[2]
+	// 用来组合，thrift 的服务名称和方法名称不可能包含-，所以最后两个一定是
+	splitNum := len(splitName)
+
+	microServiceName := ""
+	serviceName := ""
+	functionName = ""
+
+	for i := 0; i < splitNum-2; i++ {
+		microServiceName += splitName[i] + "-"
+	}
+	microServiceName = microServiceName[:len(microServiceName)-1]
+	serviceName = splitName[splitNum-2]
+	functionName = splitName[splitNum-1]
+
+	klog.Debug("microServiceName:", microServiceName)
+	klog.Debug("serviceName:", serviceName)
+	klog.Debug("functionName:", functionName)
 
 	// 本地文件 idl 解析
 	// YOUR_IDL_PATH thrift 文件路径: 举例 ./idl/example.thrift
@@ -34,19 +51,54 @@ func GeneralizationCall(functionName string, params string) string {
 	}
 
 	// 构造 map 类型的泛化调用
-	g, err := generic.MapThriftGeneric(p)
+	g, err := generic.JSONThriftGeneric(p)
 	if err != nil {
 		klog.Error("调用失败:", err.Error())
 		return "调用失败:" + err.Error()
 	}
-	cli, err := genericclient.NewClient(microServiceName, g)
+
+	// nacos 注册中心
+	r := nacos.GetNacosResolver()
+
+	cli, err := genericclient.NewClient(microServiceName, g, client.WithResolver(r))
 	if err != nil {
 		klog.Error("调用失败:", err.Error())
 		return "调用失败:" + err.Error()
 	}
-	// 'ExampleMethod' 方法名必须包含在 idl 定义中
-	// resp 类型为 map[string]interface{}
-	resp, err := cli.GenericCall(context.Background(), functionName, params)
+
+	// 将 params 转化为 map 类型
+	paramMap := make(map[string]interface{})
+
+	err = json.Unmarshal([]byte(params), &paramMap)
+	if err != nil {
+		klog.Error("调用失败:", err.Error())
+		return "调用失败:" + err.Error()
+	}
+
+	// 取出 map 中的第一个参数
+	var request interface{}
+	for _, v := range paramMap {
+		request = v
+		break
+	}
+
+	// 将 request 转化json
+	req, err := json.Marshal(request)
+
+	if err != nil {
+		klog.Error("调用失败:", err.Error())
+		return "调用失败:" + err.Error()
+	}
+
+	fmt.Println("req:", string(req))
+
+	// 调用函数
+	resp, err := cli.GenericCall(context.Background(), functionName, string(req))
+
+	if err != nil {
+		klog.Error("调用失败:", err.Error())
+		return "调用失败:" + err.Error()
+	}
 
 	return pretty.Sprint(resp)
 }
