@@ -115,7 +115,7 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 
 	// 这里应该是固定的 openai 格式（目前）
 	if sa._type == "" {
-		sa._type = "tool"
+		sa._type = "function"
 	}
 
 	// 返回工具调用结果作为工具调用消息，插入到消息队列中

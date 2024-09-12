@@ -17,7 +17,7 @@ type NexusServiceImpl struct {
 // var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
 var baseUrl = "https://4.0.wokaai.com/v1/"
 var apiKey = "" // 自行去官网申请 apiKey
-var model = "gpt-4o"
+var model = "gpt-4o-mini"
 
 // 提示词
 var prompt = `

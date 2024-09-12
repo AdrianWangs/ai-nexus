@@ -92,6 +92,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 	// 结束对话
 	if event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonStop {
 
+		klog.Debug("=====================结束本轮对话=====================")
 		// 结束本轮对话
 		sa.EndConversation()
 
@@ -103,6 +104,9 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
 
 		finishReason := string(event.Choices[0].FinishReason)
+
+		klog.Debug("结束函数调用：", finishReason)
+
 		// 生成响应，告诉前端当前正在调用函数
 		functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
 		// 监控完以后该转发刚刚的对话了
@@ -122,7 +126,7 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 	if delta.Content != "" {
 
 		// 打印对话内容
-		klog.Info("stream_agent.go-->Monitor: ", delta.Content)
+		//klog.Debug("主 ai 的对话： ", delta.Content)
 		sa.content += delta.Content
 
 	}
@@ -134,11 +138,6 @@ func (sa *StreamAgent) Monitor(event openai.ChatCompletionChunk, target nexus_mi
 
 	toolCallChunk := delta.ToolCalls[0]
 
-	// 判断是否是函数调用
-	if toolCallChunk.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
-		return
-	}
-
 	// 完善函数调用相关的信息，也就是切片组合成完整信息
 	sa.MergeFunctionCallChunks(toolCallChunk)
 
@@ -149,7 +148,7 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 
 	// 这里应该是固定的 openai 格式（目前）
 	if sa._type == "" {
-		sa._type = "tool"
+		sa._type = "function"
 	}
 
 	// 返回机器人的消息，插入到消息队列中,一般是指明一个函数调用操作
@@ -221,17 +220,20 @@ func (sa *StreamAgent) MergeFunctionCallChunks(toolCallChunk openai.ChatCompleti
 
 	// 函数调用 id（不知道有啥用）
 	if toolCallChunk.ID != "" {
+		klog.Debug("合并函数调用 ID:", toolCallChunk.ID)
 		sa.id = toolCallChunk.ID
 	}
 
 	// 函数调用名称
 	function := toolCallChunk.Function
 	if function.Name != "" {
+		klog.Debug("合并函数调用名称:", function.Name)
 		sa.functionName += function.Name
 	}
 
 	// 函数调用参数
 	if function.Arguments != "" {
+		klog.Debug("合并函数调用参数:", function.Arguments)
 		sa.functionArguments += function.Arguments
 	}
 }
@@ -257,7 +259,9 @@ func (sa *StreamAgent) GenerateAssistantMessage() openai.ChatCompletionMessage {
 
 // GenerateToolMessage 生成工具类型的消息
 func (sa *StreamAgent) GenerateToolMessage(res string) openai.ChatCompletionToolMessageParam {
-	return openai.ToolMessage(sa.id, res)
+	toolMessage := openai.ToolMessage(sa.id, res)
+
+	return toolMessage
 }
 
 // ClearContext 清空本次对话的上下文
