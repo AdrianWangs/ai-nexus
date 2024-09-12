@@ -3,8 +3,10 @@ package nacos
 
 import (
 	"github.com/AdrianWangs/ai-nexus/go-common/conf"
+	"github.com/cloudwego/kitex/pkg/discovery"
 	register "github.com/cloudwego/kitex/pkg/registry"
 	"github.com/kitex-contrib/registry-nacos/registry"
+	"github.com/kitex-contrib/registry-nacos/resolver"
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
@@ -58,5 +60,20 @@ func GetNacosRegistry() register.Registry {
 	}
 
 	return registry.NewNacosRegistry(client)
+
+}
+
+// GetNacosResolver 获取nacos resolver
+func GetNacosResolver() discovery.Resolver {
+
+	// 获取nacos配置
+	client, err := GetNacosConfigClient()
+
+	if err != nil {
+		log.Fatalf("get nacos client error_code: %v", err)
+		return nil
+	}
+
+	return resolver.NewNacosResolver(client)
 
 }
