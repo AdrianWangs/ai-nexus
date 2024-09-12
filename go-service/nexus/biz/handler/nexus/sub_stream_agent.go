@@ -3,6 +3,7 @@
 package nexus
 
 import (
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/function_call"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -138,25 +139,12 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 // DoFunctionForSubNexus 执行函数
 func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (res string, err error) {
 
-	klog.Info("==========")
-	klog.Info("调用函数:", sa.currentTool.FunctionName)
-	klog.Info("调用参数:", sa.currentTool.FunctionArguments)
+	klog.Info("次级 ai 调用函数:", sa.currentTool.FunctionName)
+	klog.Info("次级 ai 调用参数:", sa.currentTool.FunctionArguments)
 
-	switch sa.currentTool.FunctionName {
-	case "user-service-UserService-GetUser":
-		res = `小王同学：18 岁，男，爱好：篮球、游戏、旅游`
-	case "test-TravelPlanService-queryTouristSpot":
-		res = "金鸡湖、苏州博物馆"
-	case "plan-service-ScheduleService-createEvent":
-		res = "执行成功"
+	res = function_call.GeneralizationCall(sa.currentTool.FunctionName, sa.currentTool.FunctionArguments)
 
-	default:
-		res = "运行成功，无返回结果"
-
-	}
-
-	klog.Info("调用结果:", res)
-	klog.Info("==========")
+	klog.Info("次级 ai 调用结果:", res)
 
 	return
 }
