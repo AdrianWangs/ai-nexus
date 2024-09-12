@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	idlPath := "./../../idl/user-service.thrift"
+	idlPath := "./../../idl/user.thrift"
 
 	p, err := generic.NewThriftFileProvider(idlPath)
 
