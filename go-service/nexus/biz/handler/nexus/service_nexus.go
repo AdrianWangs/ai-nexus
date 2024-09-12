@@ -60,6 +60,7 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 	idlPath := fmt.Sprintf("./resources/idl/%s.thrift", service)
 
 	qwenInstance.SetTools(GetParamsFromThrift(service, idlPath))
+	klog.Debug("次级 工具列表：", qwenInstance.Tools())
 
 	qwenInstance.Init(baseUrl, apiKey)
 	qwenInstance.SetModel(model)

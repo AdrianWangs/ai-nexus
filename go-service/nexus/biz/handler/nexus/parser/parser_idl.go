@@ -98,7 +98,7 @@ func parseIdlFromThrift(thrift *parser.Thrift) (res []openai.ChatCompletionToolP
 		for _, function := range functions {
 
 			// 方法名称
-			functionName := service.Name + "." + function.Name
+			functionName := service.Name + "-" + function.Name
 
 			// 方法参数列表
 			arguments := function.Arguments

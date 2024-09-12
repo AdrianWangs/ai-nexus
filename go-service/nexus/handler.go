@@ -71,8 +71,6 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	// 最顶级的应该是先将微服务列表传入，然后让ai选择使用哪一个微服务
 	qwenInstance.SetTools(nexus.GetServicesFromThrift())
 
-	klog.Debug(pretty.Sprint(qwenInstance.Tools()))
-
 	// 注册流代理，用于转发流，也就是将 openai 返回的流消息转发给 kitex 的流对象
 	streamAgent := nexus.NewStreamAgent()
 
