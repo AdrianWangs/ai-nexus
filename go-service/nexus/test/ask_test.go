@@ -20,7 +20,7 @@ func TestAsk(t *testing.T) {
 
 	messages = append(messages, &nexus_microservice.Message{
 		Role:    "user",
-		Content: "我想去苏州玩，帮我找点好玩的经典，然后帮我安排一下行程计划",
+		Content: "帮我找一下用户 id 为 1 的用户信息",
 	})
 
 	ctx := context.Background()

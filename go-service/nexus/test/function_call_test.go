@@ -11,13 +11,15 @@ import (
 
 func TestFunctionCall(t *testing.T) {
 
+	klog.SetLevel(klog.LevelDebug)
+
 	/** 设置当前路径为项目根目录 */
 	if err := os.Chdir("../"); err != nil {
 		klog.Error("设置当前路径为项目根目录失败")
 		os.Exit(1)
 	}
 
-	res := function_call.GeneralizationCall("plan-ScheduleService-createEvent", `{"event":{"title":"苏州经典旅游行程计划","description":"安排苏州的经典旅游景点","startTime":"2023-10-01T09:00:00","endTime":"2023-10-01T18:00:00","location":"苏州"}}`)
+	res := function_call.GeneralizationCall("user-service-UserService-GetUser", `{"request":{"UserId":1}}`)
 
 	fmt.Print(res)
 
