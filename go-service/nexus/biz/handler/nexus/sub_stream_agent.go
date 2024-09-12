@@ -143,12 +143,13 @@ func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusServ
 	klog.Info("调用参数:", sa.currentTool.FunctionArguments)
 
 	switch sa.currentTool.FunctionName {
-	case "lan-service.ScheduleService.createEvent":
-		res = `金鸡湖:票价：100元，开放时间：8:00-18:00苏州博物馆:票价：50元，开放时间：9:00-17:00`
-	case "test.TravelPlanService.queryTouristSpot":
+	case "user-service-UserService-GetUser":
+		res = `小王同学：18 岁，男，爱好：篮球、游戏、旅游`
+	case "test-TravelPlanService-queryTouristSpot":
 		res = "金鸡湖、苏州博物馆"
-	case "plan-service.ScheduleService.createEvent":
+	case "plan-service-ScheduleService-createEvent":
 		res = "执行成功"
+
 	default:
 		res = "运行成功，无返回结果"
 
