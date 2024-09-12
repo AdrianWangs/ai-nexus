@@ -2,7 +2,6 @@
 package parser
 
 import (
-	"fmt"
 	"github.com/AdrianWangs/ai-nexus/go-common/idlParser"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/thriftgo/parser"
@@ -91,7 +90,7 @@ func parseIdlFromThrift(thrift *parser.Thrift) (res []openai.ChatCompletionToolP
 	for _, service := range services {
 
 		// 服务名称
-		fmt.Println("\t|", service.Name)
+		//fmt.Println("\t|", service.Name)
 
 		// 服务方法列表
 		functions := service.Functions
@@ -331,6 +330,7 @@ func struct2Map(structs []*parser.StructLike) map[string]*parser.StructLike {
 
 		structsMap[structLike.Name] = structLike
 
+		/**
 		fmt.Println()
 
 		// 字段解释
@@ -355,6 +355,7 @@ func struct2Map(structs []*parser.StructLike) map[string]*parser.StructLike {
 			// 字段类型
 			fmt.Println("\t\t|", field.Type)
 		}
+		**/
 
 	}
 

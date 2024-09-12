@@ -9,7 +9,7 @@ import (
 	"reflect"
 )
 
-var DefaultQwenInstance Qwen
+var DefaultQwenInstance *Qwen
 
 type Qwen struct {
 	baseUrl  string
@@ -117,6 +117,7 @@ func (nexus *Qwen) NewStream() *ssestream.Stream[openai.ChatCompletionChunk] {
 		Messages: openai.F(nexus.messages),
 		Tools:    openai.F(nexus.tools),
 	}
+
 	return nexus.client.Chat.Completions.NewStreaming(ctx, nexus.params)
 
 }

@@ -125,10 +125,6 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 	// 将消息添加到消息列表中
 	sa.messages = append(sa.messages, assistantMessages, toolMessage)
 
-	// 添加消息到主 ai 的消息队列中
-	mainStreamAgent.AddMessage(assistantMessages)
-	mainStreamAgent.AddMessage(toolMessage)
-
 	// 清空上下文，防止前面流影响后面的操作
 	sa.ClearContext()
 
@@ -140,15 +136,21 @@ func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusServ
 	klog.Info("==========")
 	klog.Info("调用函数:", sa.functionName)
 	klog.Info("调用参数:", sa.functionArguments)
-	klog.Info("调用结果:", "")
-	klog.Info("==========")
 
-	if sa.functionName == " test.TravelPlanService.queryTouristSpot" {
+	switch sa.functionName {
+	case "lan-service.ScheduleService.createEvent":
 		res = `金鸡湖:票价：100元，开放时间：8:00-18:00苏州博物馆:票价：50元，开放时间：9:00-17:00`
-	} else {
+	case "test.TravelPlanService.queryTouristSpot":
+		res = "金鸡湖、苏州博物馆"
+	case "plan-service.ScheduleService.createEvent":
+		res = "执行成功"
+	default:
 		res = "运行成功，无返回结果"
+
 	}
 
-	// 将方法转化给次级 ai 进行调用
+	klog.Info("调用结果:", res)
+	klog.Info("==========")
+
 	return
 }

@@ -159,13 +159,17 @@ func (sa *StreamAgent) CallService(target nexus_microservice.NexusService_AskSer
 	sa.messages = append(sa.messages, assistantMessages)
 
 	// 调用次级 ai
-	//  TODO 这边记得要接收一下返回的服务结果
 	// 次级ai 会进行额外的信息插入的操作
-	_, err := sa.DoService(target, req)
+	res, err := sa.DoService(target, req)
 
 	if err != nil {
 		klog.Error("服务调用失败:", err)
 	}
+
+	klog.Debug("服务调用结果:", res)
+
+	// 返回结果，要告知主 ai已经调用完毕
+	sa.messages = append(sa.messages, sa.GenerateToolMessage(res))
 
 	// 清空上下文，防止前面流影响后面的操作
 	sa.ClearContext()
@@ -179,6 +183,8 @@ func (sa *StreamAgent) DoService(target nexus_microservice.NexusService_AskServe
 	// ai 生成给次级 ai 的提示词
 	arguments := sa.functionArguments
 
+	klog.Debug("调用服务:", serviceName)
+	klog.Debug("请求的提示词：", arguments)
 	// 将 argument 尝试从 json 转化成 map
 	var argumentMap map[string]interface{}
 	err := json.Unmarshal([]byte(arguments), &argumentMap)
@@ -250,13 +256,8 @@ func (sa *StreamAgent) GenerateAssistantMessage() openai.ChatCompletionMessage {
 }
 
 // GenerateToolMessage 生成工具类型的消息
-func (sa *StreamAgent) GenerateToolMessage(res string) openai.ChatCompletionMessage {
-	return openai.ChatCompletionMessage{
-		Content:      res,
-		Role:         "tool",
-		FunctionCall: openai.ChatCompletionMessageFunctionCall{},
-		ToolCalls:    []openai.ChatCompletionMessageToolCall{},
-	}
+func (sa *StreamAgent) GenerateToolMessage(res string) openai.ChatCompletionToolMessageParam {
+	return openai.ToolMessage(sa.id, res)
 }
 
 // ClearContext 清空本次对话的上下文

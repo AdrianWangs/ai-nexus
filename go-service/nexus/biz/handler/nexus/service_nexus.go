@@ -17,9 +17,10 @@ type NexusServiceImpl struct {
 }
 
 // 通义大模型
-var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
+// var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
+var baseUrl = "https://4.0.wokaai.com/v1/"
 var apiKey = "" // 自行去官网申请 apiKey
-var model = "qwen-max"
+var model = "gpt-4o"
 
 // 提示词
 var prompt = `
@@ -34,21 +35,31 @@ var prompt = `
 ## 限制
 - 只进行函数调用，不做任何其他回复。
 - 确保参数填写正确，符合用户请求。
+- 函数调用失败的话重试次数不超过三次
 `
 
 // AskService 是一个流式接口，接收主 ai 的需求并指导次级 ai 进行函数调用
 // [mainStreamAgent] 是主 ai 的流代理对象，毕竟我们当前调用还是在主 ai 中，所以需要将消息加入到主 ai 的消息列表中
 func AskService(service string, nexusPrompt string, req *nexus_microservice.AskRequest, stream nexus_microservice.NexusService_AskServerServer, mainStreamAgent *StreamAgent) (res string, err error) {
 
-	klog.Info("==========")
+	klog.Info("======================================================")
 	klog.Info("调用服务:", service)
 	klog.Info("请求的提示词：", nexusPrompt)
 	klog.Info("调用结果:")
-	klog.Info("==========")
+	klog.Info("======================================================")
 	// 从环境变量中获取 API_KEY
 	apiKey = os.Getenv("API_KEY")
 
 	qwenInstance := models.NewQwen()
+
+	// 如果模型设置不为空，就设置用户指定的模型
+	if req.Model != nil {
+		qwenInstance.SetModel(*req.Model)
+	}
+
+	idlPath := fmt.Sprintf("./resources/idl/%s.thrift", service)
+
+	qwenInstance.SetTools(GetParamsFromThrift(service, idlPath))
 
 	qwenInstance.Init(baseUrl, apiKey)
 	qwenInstance.SetModel(model)
@@ -61,20 +72,8 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 		openai.UserMessage(nexusPrompt),
 	})
 
-	// 如果模型设置不为空，就设置用户指定的模型
-	if req.Model != nil {
-		qwenInstance.SetModel(*req.Model)
-	}
-
-	idlPath := fmt.Sprintf("./resources/idl/%s.thrift", service)
-
-	qwenInstance.SetTools(GetParamsFromThrift(service, idlPath))
-
 	// 注册流代理，用于转发流，也就是将 openai 返回的流消息转发给 kitex 的流对象
 	streamAgent := NewStreamAgent()
-
-	// 返回结果，要告知主 ai已经调用完毕
-	mainStreamAgent.messages = append(mainStreamAgent.messages, streamAgent.GenerateToolMessage("进行服务调用"))
 
 	// 使用代理转发流，并在转发过程中自动执行函数调用
 	for !streamAgent.IsStop() {
@@ -103,5 +102,26 @@ func AskService(service string, nexusPrompt string, req *nexus_microservice.AskR
 	klog.Info("次级对话结果:")
 	pretty.Println(qwenInstance.Messages())
 	klog.Info("************************************************")
+
+	res = ""
+
+	// 将次级 ai 对话的所有工具的结果作为结果返回
+	for _, message := range qwenInstance.Messages() {
+		if val, ok := message.(openai.ChatCompletionMessage); ok {
+			res += fmt.Sprintf("%s:%s\n", val.Role, val.Content)
+			if len(val.ToolCalls) <= 0 {
+				continue
+			}
+
+			for _, tool := range val.ToolCalls {
+				res += fmt.Sprintf("调用函数：%s\n", tool.Function.Name)
+				res += fmt.Sprintf("参数：%s\n", tool.Function.Arguments)
+			}
+
+		} else if val, ok := message.(openai.ChatCompletionToolMessageParam); ok {
+			res += fmt.Sprintf("%s:%s\n", val.Role, val.Content)
+		}
+	}
+
 	return
 }
