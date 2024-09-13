@@ -3,7 +3,7 @@ package redis
 import (
 	"context"
 
-	"github.com/AdrianWangs/ai-nexus/go-service/user/conf"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/conf"
 	"github.com/redis/go-redis/v9"
 )
 

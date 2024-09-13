@@ -1,13 +1,16 @@
 package conf
 
 import (
+	"github.com/bytedance/go-tagexpr/v2/validator"
 	"github.com/kitex-contrib/config-nacos/nacos"
 	"github.com/kr/pretty"
 	"github.com/nacos-group/nacos-sdk-go/vo"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"sync"
 
-	common_config "github.com/AdrianWangs/ai-nexus/go-common/conf"
+	commonconfig "github.com/AdrianWangs/ai-nexus/go-common/conf"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"gopkg.in/yaml.v2"
 )
@@ -84,8 +87,50 @@ func initConf() {
 
 	conf = new(Config)
 
+	err := loadLocalConf(env)
+
+	// 如果不存在本地文件，则从远程加载
+	if err != nil {
+		klog.Error("本地配置文件不存在，尝试从远程加载")
+		klog.Error(err)
+		err = loadRemoteConf(env)
+	}
+
+	if err != nil {
+		klog.Fatalf("读取配置文件失败 - %v", err)
+	}
+}
+
+// 从本地加载配置
+func loadLocalConf(env string) error {
+	prefix := "conf"
+	confFileRelPath := filepath.Join(prefix, filepath.Join(GetEnv(), "conf.yaml"))
+	content, err := ioutil.ReadFile(confFileRelPath)
+
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(content, conf)
+	if err != nil {
+		klog.Error("parse yaml error - %v", err)
+		return err
+	}
+	if err := validator.Validate(conf); err != nil {
+		klog.Error("validate config error - %v", err)
+		return err
+	}
+	conf.Env = env
+
+	klog.Info("本地配置文件加载成功")
+	klog.Info(pretty.Sprint(conf))
+
+	return nil
+}
+
+// 从远程加载配置
+func loadRemoteConf(env string) error {
 	// 从公共配置中加载 Nacos 配置
-	nacos_config := common_config.GetConf().Nacos
+	nacos_config := commonconfig.GetConf().Nacos
 	client, err := nacos.NewClient(nacos.Options{
 		Address:     nacos_config.Address,
 		Port:        nacos_config.Port,
@@ -94,7 +139,7 @@ func initConf() {
 	})
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 	client.RegisterConfigCallback(vo.ConfigParam{
 		DataId:   "nexus-config.yaml",
@@ -105,17 +150,14 @@ func initConf() {
 		err = yaml.Unmarshal([]byte(s), conf)
 		if err != nil {
 			klog.Error("转换配置失败 - %v", err)
-			panic(err)
 		}
-		klog.Info("重启配置")
 
-		// 打印配置
-		klog.Infof("配置:")
-
-		pretty.Printf("%# v\n", conf)
-
-		klog.Info("配置加载成功")
 	}, 100)
+
+	klog.Info("远程配置文件加载成功")
+	klog.Info(pretty.Sprint(conf))
+
+	return nil
 }
 
 func GetEnv() string {

@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"github.com/AdrianWangs/ai-nexus/go-service/user/conf"
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/conf"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
