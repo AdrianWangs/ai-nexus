@@ -1,5 +1,5 @@
 // @Author Adrian.Wang 2024/8/30 19:50:00
-package ask
+package test
 
 import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"

@@ -4,6 +4,8 @@ import (
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	nexus_microservice "github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kr/pretty"
 	"os"
 )
 
@@ -12,9 +14,10 @@ type NexusServiceImpl struct {
 }
 
 // 通义大模型
-var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
+// var baseUrl = "https://dashscope.aliyuncs.com/compatible-mode/v1/"
+var baseUrl = "https://4.0.wokaai.com/v1/"
 var apiKey = "" // 自行去官网申请 apiKey
-var model = "qwen-max"
+var model = "gpt-4o-mini"
 
 // 提示词
 var prompt = `
@@ -48,7 +51,8 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 	apiKey = os.Getenv("API_KEY")
 
 	qwenInstance := models.NewQwen()
-	models.DefaultQwenInstance = *qwenInstance
+
+	models.DefaultQwenInstance = qwenInstance
 
 	qwenInstance.Init(baseUrl, apiKey)
 	qwenInstance.SetModel(model)
@@ -82,6 +86,8 @@ func (s *NexusServiceImpl) AskServer(req *nexus_microservice.AskRequest, stream 
 
 		// 将消息添加到消息列表中
 		qwenInstance.AddMessages(streamAgent.Messages())
+
+		klog.Debug(pretty.Sprint(qwenInstance.Messages()))
 
 		// 将当前流代理的消息清除，否则会导致本轮的对话堆积起来，streamAgent 只负责一次对话
 		// 但是函数调用需要多次对话直到 ai 自己认为可以结束了，才会真的暂停

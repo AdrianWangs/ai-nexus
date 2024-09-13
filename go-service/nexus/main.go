@@ -72,7 +72,7 @@ func kitexInit() (opts []server.Option) {
 	logger.Logger().SetFormatter(&MyFormatter{})
 
 	klog.SetLogger(logger)
-	klog.SetLevel(conf.LogLevel())
+	klog.SetLevel(klog.LevelDebug)
 
 	asyncWriter := &zapcore.BufferedWriteSyncer{
 		WS: zapcore.AddSync(&lumberjack.Logger{

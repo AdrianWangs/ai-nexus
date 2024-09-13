@@ -96,7 +96,7 @@ func GetParamsFromThrift(serviceName string, idlPath string) []openai.ChatComple
 	for index, _ := range toolParams {
 		// 服务名称
 		toolParams[index].Function.Value.Name = openai.String(
-			serviceName + "." + toolParams[index].Function.Value.Name.String())
+			serviceName + "-" + toolParams[index].Function.Value.Name.String())
 	}
 
 	return toolParams

@@ -10,6 +10,8 @@ struct Event {
     6: string endTime,
 }
 
+struct Empty{}
+
 enum EventType {
     MEETING = 1,
     TASK = 2,
@@ -37,5 +39,5 @@ service ScheduleService {
     TypedEvent getEventById(1: i64 eventId),
 
     // 列出所有事件
-    list<TypedEvent> listAllEvents(),
+    list<TypedEvent> listAllEvents(1: Empty empty),
 }

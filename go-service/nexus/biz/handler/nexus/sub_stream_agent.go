@@ -3,6 +3,7 @@
 package nexus
 
 import (
+	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/function_call"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/biz/handler/nexus/models"
 	"github.com/AdrianWangs/ai-nexus/go-service/nexus/kitex_gen/nexus_microservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -67,15 +68,25 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 		event.Choices[0].FinishReason == openai.ChatCompletionChunkChoicesFinishReasonToolCalls {
 
 		finishReason := string(event.Choices[0].FinishReason)
-		functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
-		// 监控完以后该转发刚刚的对话了
-		err := target.Send(functionCallResponse)
-		if err != nil {
-			klog.Error("MonitorForSubNexus--> 发送给用户的响应 :    执行错误: ", err)
-		}
+		klog.Debug("结束函数调用：", finishReason)
 
-		// 调用函数
-		sa.CallFunctionForSubNexus(target, mainStreamAgent)
+		for _, toolParam := range sa.toolMap {
+			sa.currentTool = toolParam
+			// 生成响应，告诉前端当前正在调用函数
+			functionCallResponse := sa.GenerateToolMessageResponse(finishReason)
+			// 监控完以后该转发刚刚的对话了
+			err := target.Send(functionCallResponse)
+			if err != nil {
+				klog.Error("Monitor--> 发送给用户的响应 :    执行错误: ", err)
+			}
+
+			// 调用服务，可能涉及子 ai 调用，所以要把流对象和相关请求一起传入
+			sa.CallFunctionForSubNexus(target, mainStreamAgent)
+
+			// 清空上下文，防止前面流影响后面的操作
+			sa.ClearContext()
+
+		}
 		return
 	}
 
@@ -91,14 +102,12 @@ func (sa *StreamAgent) MonitorForSubNexus(event openai.ChatCompletionChunk, targ
 		return
 	}
 
-	toolCallChunk := delta.ToolCalls[0]
-	// 判断是否是函数调用
-	if toolCallChunk.Type != openai.ChatCompletionChunkChoicesDeltaToolCallsTypeFunction {
-		return
-	}
+	for _, toolCall := range delta.ToolCalls {
+		toolCallChunk := toolCall
 
-	// 完善函数调用相关的信息，也就是切片组合成完整信息
-	sa.MergeFunctionCallChunks(toolCallChunk)
+		// 完善函数调用相关的信息，也就是切片组合成完整信息
+		sa.MergeFunctionCallChunks(toolCallChunk)
+	}
 }
 
 // CallFunctionForSubNexus 调用函数
@@ -114,8 +123,8 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 	}
 
 	// 这里应该是固定的 openai 格式（目前）
-	if sa._type == "" {
-		sa._type = "tool"
+	if sa.currentTool.Type == "" {
+		sa.currentTool.Type = "function"
 	}
 
 	// 返回工具调用结果作为工具调用消息，插入到消息队列中
@@ -125,30 +134,17 @@ func (sa *StreamAgent) CallFunctionForSubNexus(target nexus_microservice.NexusSe
 	// 将消息添加到消息列表中
 	sa.messages = append(sa.messages, assistantMessages, toolMessage)
 
-	// 添加消息到主 ai 的消息队列中
-	mainStreamAgent.AddMessage(assistantMessages)
-	mainStreamAgent.AddMessage(toolMessage)
-
-	// 清空上下文，防止前面流影响后面的操作
-	sa.ClearContext()
-
 }
 
 // DoFunctionForSubNexus 执行函数
 func (sa *StreamAgent) DoFunctionForSubNexus(target nexus_microservice.NexusService_AskServerServer) (res string, err error) {
 
-	klog.Info("==========")
-	klog.Info("调用函数:", sa.functionName)
-	klog.Info("调用参数:", sa.functionArguments)
-	klog.Info("调用结果:", "")
-	klog.Info("==========")
+	klog.Info("次级 ai 调用函数:", sa.currentTool.FunctionName)
+	klog.Info("次级 ai 调用参数:", sa.currentTool.FunctionArguments)
 
-	if sa.functionName == " test.TravelPlanService.queryTouristSpot" {
-		res = `金鸡湖:票价：100元，开放时间：8:00-18:00苏州博物馆:票价：50元，开放时间：9:00-17:00`
-	} else {
-		res = "运行成功，无返回结果"
-	}
+	res = function_call.GeneralizationCall(sa.currentTool.FunctionName, sa.currentTool.FunctionArguments)
 
-	// 将方法转化给次级 ai 进行调用
+	klog.Info("次级 ai 调用结果:", res)
+
 	return
 }
