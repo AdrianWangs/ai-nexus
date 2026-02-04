@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Nexus - 群聊调度台</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🌐 AI Nexus</h1>
+                <p>群聊调度台</p>
+            </div>
+            <button class="new-chat-btn" id="new-chat-btn">
+                ➕ 新建群聊
+            </button>
+            <div class="session-list" id="session-list">
+            </div>
+            <div class="sidebar-footer">
+                <span>● 已连接</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="chat-header" id="chat-header">
+                <div class="chat-header-title">AI Nexus</div>
+                <div class="chat-header-meta">群聊调度台</div>
+            </header>
+
+            <div id="status-card-container"></div>
+
+            <div class="message-list" id="message-list">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🤖</div>
+                    <div class="empty-state-title">AI Nexus</div>
+                    <div class="empty-state-desc">点击"新建群聊"开始与 AI 助手对话</div>
+                </div>
+            </div>
+
+            <div class="composer" id="composer-container">
+            </div>
+        </main>
+
+        <aside class="agent-panel">
+            <div class="agent-panel-header">
+                <h2>🖥️ 在线服务</h2>
+                <p class="agent-panel-meta" id="agent-count">当前在线：0</p>
+            </div>
+            <div class="quick-mention" id="quick-mention">
+                <div class="quick-mention-title">快速 @</div>
+                <div class="quick-mention-list"></div>
+            </div>
+            <div class="agent-list" id="agent-list">
+            </div>
+        </aside>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

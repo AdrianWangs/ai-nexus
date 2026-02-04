@@ -1,0 +1,31 @@
+name: user-service
+display_name: "User Service"
+description: "Handles user management including registration, queries, and profile updates"
+version: "1.0.0"
+type: normal
+
+host: localhost
+port: 8081
+
+llm:
+  provider: openai
+  api_key: "${OPENAI_API_KEY}"
+  base_url: "${OPENAI_BASE_URL}"
+  model: "gpt-4o-mini"
+  temperature: 0.3
+  timeout: 60s
+
+registry:
+  type: etcd
+  endpoints:
+    - "localhost:2379"
+  prefix: "/ai-nexus/agents/"
+  ttl: 30
+
+skills:
+  - name: "user-management"
+    description: "Create, query, update, and delete user accounts"
+    keywords: ["user", "account", "profile", "register", "login"]
+  - name: "authentication"
+    description: "Handle user authentication and authorization"
+    keywords: ["login", "logout", "password", "token"]

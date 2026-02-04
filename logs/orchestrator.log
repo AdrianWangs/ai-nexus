@@ -1,0 +1,5 @@
+2026/01/31 00:19:56 Loaded agent: order-service at http://localhost:8082
+2026/01/31 00:19:56 Loaded agent: product-service at http://localhost:8083
+2026/01/31 00:19:56 Loaded agent: user-service at http://localhost:8081
+2026/01/31 00:19:56 Orchestrator starting on port 9091
+2026/02/04 11:25:30 Shutting down...

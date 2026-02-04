@@ -1,0 +1,38 @@
+# moved from examples/product-service
+name: product-service
+display_name: "Product Service"
+description: "Handles product catalog management including queries, inventory, and pricing"
+version: "1.0.0"
+type: normal
+
+host: localhost
+port: 8083
+
+# LLM configuration
+llm:
+  provider: openai
+  api_key: ${OPENAI_API_KEY}
+  base_url: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+  model: ${OPENAI_MODEL:-gpt-4o-mini}
+  temperature: 0.3
+  timeout: 60s
+
+# Registry configuration
+registry:
+  type: etcd
+  endpoints:
+    - "localhost:2379"
+  prefix: "/ai-nexus/agents/"
+  ttl: 30
+
+# Skills
+skills:
+  - name: "product-catalog"
+    description: "Search and browse product catalog"
+    keywords: ["product", "item", "goods", "search", "find"]
+  - name: "inventory-management"
+    description: "Check product stock and availability"
+    keywords: ["stock", "inventory", "available", "quantity"]
+  - name: "pricing"
+    description: "Get product prices and discounts"
+    keywords: ["price", "cost", "discount", "promotion"]

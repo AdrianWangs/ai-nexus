@@ -1,0 +1,37 @@
+name: orchestrator
+display_name: "AI Orchestrator"
+description: "Intelligent orchestrator that analyzes user requests and routes to appropriate agents"
+version: "1.0.0"
+type: orchestrator
+
+host: localhost
+port: 9091
+
+llm:
+  provider: openai
+  api_key: "${OPENAI_API_KEY}"
+  base_url: "${OPENAI_BASE_URL}"
+  model: "gpt-4o-mini"
+  temperature: 0.7
+  max_tokens: 4096
+  timeout: 120s
+
+registry:
+  type: etcd
+  endpoints:
+    - "localhost:2379"
+  prefix: "/ai-nexus/agents/"
+  ttl: 30
+
+skills:
+  - name: "intent-analysis"
+    description: "Analyze user intent and determine which agents to call"
+    keywords: ["help", "query", "search", "find", "create", "update", "delete"]
+  - name: "multi-agent-orchestration"
+    description: "Coordinate multiple agents to complete complex tasks"
+    keywords: ["and", "then", "also", "both"]
+
+capabilities:
+  - "intent-analysis"
+  - "agent-routing"
+  - "result-aggregation"

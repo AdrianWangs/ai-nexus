@@ -1,5 +1,9 @@
 .idea/*
 
+# Config files with sensitive data (API keys, etc.)
+**/config.yaml
+config.yaml
+
 nacos/logs/*
 
 nacos/data/connection/*
@@ -10,4 +14,7 @@ nacos/data/tps/*
 
 redis/*
 
+.logs/
+.run/
+.trae/
 go-service/*/tmp
