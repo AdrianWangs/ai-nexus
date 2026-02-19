@@ -1,0 +1,6 @@
+2026/01/31 00:20:02 Discovered agent: orchestrator at http://localhost:9091
+2026/01/31 00:20:02 Discovered agent: order-service at http://localhost:8082
+2026/01/31 00:20:02 Discovered agent: product-service at http://localhost:8083
+2026/01/31 00:20:02 Discovered agent: user-service at http://localhost:8081
+2026/01/31 00:20:02 WebUI starting on http://localhost:8080
+2026/02/04 11:25:30 Shutting down...

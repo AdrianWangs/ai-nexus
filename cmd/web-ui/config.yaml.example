@@ -1,0 +1,31 @@
+# moved from examples/web-ui
+name: web-ui
+display_name: "Web UI"
+description: "Message routing hub for AI-Nexus"
+version: "1.0.0"
+
+host: localhost
+port: 8080
+
+# Registry configuration
+registry:
+  type: etcd
+  endpoints:
+    - "localhost:2379"
+  prefix: "/ai-nexus/agents/"
+  ttl: 30
+
+# Session storage
+session:
+  type: redis
+  addr: "localhost:6379"
+  password: ""
+  db: 0
+  ttl: 168h  # 7 days
+
+# Server configuration
+server:
+  read_timeout: 30s
+  write_timeout: 120s
+  cors_origins:
+    - "*"

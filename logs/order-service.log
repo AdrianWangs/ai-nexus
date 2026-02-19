@@ -1,0 +1,4 @@
+2026/01/31 00:19:47 Order service tools registered: query_order, create_order, update_order_status, list_orders
+2026/01/31 00:19:47 Agent order-service starting on port 8082
+2026/02/04 11:25:30 Shutting down...
+{"level":"warn","ts":"2026-02-04T11:25:30.405288+0800","logger":"etcd-client","caller":"v3@v3.5.17/retry_interceptor.go:63","msg":"retrying of unary invoker failed","target":"etcd-endpoints://0x140002d45a0/localhost:2379","attempt":0,"error":"rpc error: code = Canceled desc = context canceled"}

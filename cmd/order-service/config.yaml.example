@@ -1,0 +1,35 @@
+# moved from examples/order-service
+name: order-service
+display_name: "Order Service"
+description: "Handles order management including creation, queries, and status updates"
+version: "1.0.0"
+type: normal
+
+host: localhost
+port: 8082
+
+# LLM configuration
+llm:
+  provider: openai
+  api_key: ${OPENAI_API_KEY}
+  base_url: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+  model: ${OPENAI_MODEL:-gpt-4o-mini}
+  temperature: 0.3
+  timeout: 60s
+
+# Registry configuration
+registry:
+  type: etcd
+  endpoints:
+    - "localhost:2379"
+  prefix: "/ai-nexus/agents/"
+  ttl: 30
+
+# Skills
+skills:
+  - name: "order-management"
+    description: "Create, query, and manage orders"
+    keywords: ["order", "purchase", "buy", "cart", "checkout"]
+  - name: "order-tracking"
+    description: "Track order status and delivery"
+    keywords: ["track", "status", "delivery", "shipping"]

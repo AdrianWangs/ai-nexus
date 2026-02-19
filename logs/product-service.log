@@ -1,0 +1,4 @@
+2026/01/31 00:19:50 Product service tools registered: query_product, check_stock, list_categories, list_products
+2026/01/31 00:19:50 Agent product-service starting on port 8083
+2026/02/04 11:25:30 Shutting down...
+{"level":"warn","ts":"2026-02-04T11:25:30.403590+0800","logger":"etcd-client","caller":"v3@v3.5.17/retry_interceptor.go:63","msg":"retrying of unary invoker failed","target":"etcd-endpoints://0x140002565a0/localhost:2379","attempt":0,"error":"rpc error: code = Canceled desc = context canceled"}
